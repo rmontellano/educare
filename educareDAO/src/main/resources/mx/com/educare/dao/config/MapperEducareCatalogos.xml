@@ -1,0 +1,729 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="MapperEducareCatalogos">
+
+	<resultMap
+		type="mx.com.educare.dto.Grado"
+		id="gradoMap">
+
+		<result column="idgrado"  property="idGrado" />
+		<result column="idseccion" property="idSeccion"  />
+		<result column="numgrado" property="numGrado"  />
+		<result column="ultimogrado" property="ultimoGrado"  />
+		<result column="status" property="status" />
+		<result column="descripcion" property="descripcion" />
+	</resultMap>
+
+	<resultMap
+		type="mx.com.educare.dto.Grupo"
+		id="grupoMap">
+
+		<result column="idgrupo"  property="idGrupo" />
+		<result column="nomgrupo" property="nomGrupo"  />
+		<result column="descripcion" property="descripcion" />
+		<result column="capacidad" property="capacidad"  />
+		<result column="idgrado" property="idgrado"  />
+		<result column="tipoGrupo" property="tipoGrupo"  />
+		<result column="status" property="status" />
+		<result column="seccion" property="seccion"  />
+		<result column="idseccion" property="idSeccion"  />
+		<result column="numgrado" property="numGrado" />
+		<result column="ultimogrado" property="ultimoGrado"  />
+	</resultMap>
+
+	<resultMap
+		type="mx.com.educare.dto.Criterio"
+		id="criterioMap">
+
+		<result column="idcriterio"  property="idCriterio" />
+		<result column="tipocriterio" property="tipoCriterio"  />
+		<result column="descripcion" property="descripcion" />
+		<result column="calculocriterio" property="calculoCriterio" />
+		<result column="status" property="status" />
+	</resultMap>
+
+	<resultMap
+		type="mx.com.educare.dto.Materia"
+		id="materiaMap">
+
+		<result column="idmateria"  property="idMateria" />
+		<result column="nombre" property="nombre"  />
+		<result column="creditos" property="creditos" />
+		<result column="clavesep" property="claveSep" />
+		<result column="tipomat" property="tipoMat" />
+		<result column="idgrado" property="idGrado" />
+		<result column="tipogrupo" property="tipoGrupo" />
+		<result column="tipocaptura" property="tipoCaptura" />
+		<result column="status" property="status" />
+	</resultMap>
+
+	<resultMap
+		type="mx.com.educare.dto.GrupoAlumno"
+		id="grupoAlumnoMap">
+
+		<result column="idgrupo_materia"  property="idgrupoMateria" />
+		<result column="materia" property="materia"  />
+	</resultMap>
+
+	<resultMap
+		type="mx.com.educare.dto.Puesto"
+		id="puestoMap">
+
+		<result column="idpuesto"  property="idPuesto" />
+		<result column="descripcion" property="descripcion"  />
+	</resultMap>
+
+	<resultMap
+		type="mx.com.educare.dto.Empleado"
+		id="empleadoMap">
+
+		<result column="idempleado"  property="idEmpleado" />
+		<result column="nombre" property="nombre" />
+		<result column="direccion"  property="direccion" />
+		<result column="email" property="email" />
+		<result column="telefono"  property="telefonoCasa" />
+		<result column="telcel" property="telefonoCelular" />
+		<result column="colonia"  property="colonia" />
+		<result column="cp" property="codigoPostal" />
+		<result column="fecingreso"  property="fechaIngreso" />
+		<result column="fechanacimiento" property="fechaNacimiento" />
+		<result column="tiposangre"  property="tipoSangre" />
+		<result column="dir_imagen" property="dirImagen" />
+		<result column="sexo"  property="sexo" />
+		<result column="curp" property="curp" />
+		<result column="idpuesto"  property="idPuesto" />
+		<result column="activo" property="activo" />
+		<result column="apellidop"  property="apellidoPaterno" />
+		<result column="apellidom" property="apellidoMaterno" />
+		<result column="rfc"  property="rfc" />
+		<result column="nombrecontacto" property="nombreContacto" />
+		<result column="telcontacto"  property="telefonoContacto" />
+		<result column="numext" property="numeroExterior" />
+		<result column="numint"  property="numeroInterior" />
+		<result column="status" property="status" />
+	</resultMap>
+
+	<resultMap
+		type="mx.com.educare.dto.Alumno"
+		id="alumnoMap">
+
+		<result column="matricula"  property="matricula" />
+		<result column="nombre" property="nombre" />
+		<result column="apellidop"  property="apellidoPaterno" />
+		<result column="apellidom" property="apellidoMaterno" />
+		<result column="fechan" property="fechaNacimiento" />
+		<result column="lugarn" property="lugarNacimiento" />
+		<result column="nacionalidad" property="nacionalidad" />
+		<result column="direccion"  property="direccion" />
+		<result column="colonia"  property="colonia" />
+		<result column="cp" property="codigoPostal" />
+		<result column="escprecedencia" property="escuelaPrecedencia" />
+		<result column="fecingreso" property="fechaIngreso" />
+		<result column="tiposangre"  property="tipoSangre" />
+		<result column="activo" property="activo" />
+		<result column="idgrupo"  property="idGrupo" />
+		<result column="sexo"  property="sexo" />
+		<result column="curp" property="curp" />
+		<result column="dir_imagen" property="dirImagen" />
+		<result column="nia" property="nia" />
+		<result column="alergias" property="alergias" />
+		<result column="telefono"  property="telefonoCasa" />
+		<result column="telcel" property="telefonoCelular" />
+		<result column="email" property="email" />
+		<result column="rfc"  property="rfc" />
+		<result column="numext" property="numeroExterior" />
+		<result column="numint"  property="numeroInterior" />
+		<result column="status" property="status" />
+	</resultMap>
+
+	<resultMap type="mx.com.educare.dto.Menu" id="menuMap">
+
+		<result column="id_menu" property="idMenu" />
+		<result column="id_padre" property="idPadre" />
+		<result column="menu" property="menu" />
+		<result column="descripcion" property="descripcion" />
+		<result column="pagina" property="pagina" />
+		<result column="status" property="status" />
+		<result column="submenus" property="submenus" />
+	</resultMap>
+
+	<resultMap type="mx.com.educare.dto.Catalogo" id="catalogoMap">
+		<result column="idopcioncat" property="idOpcion" />
+		<result column="idcatalogo" property="idCatalogo" />
+		<result column="descripcion" property="descripcion" />
+		<result column="status" property="status" />
+		<result column="tipocat" property="tipoCategoria" />
+		<result column="desctipocat" property="descTipoCat" />
+	</resultMap>
+
+	<!-- Comienza Grado  -->
+	<select id="obtieneTodosGrados" resultMap="gradoMap">
+		SELECT * FROM grado
+	</select>
+
+	<insert id="insertarGrado" parameterType="java.util.HashMap"
+		keyProperty="idgrado">
+
+		INSERT INTO grado
+		(idseccion,
+		numgrado,
+		ultimogrado,
+		status)
+		VALUES
+		(#{idSeccion},
+		#{numGrado},
+		#{ultimoGrado},
+		#{status});
+
+		<selectKey resultType="java.lang.Integer" keyProperty="idgrado">
+			SELECT MAX(idgrado) as idgrado FROM grado
+		</selectKey>
+	</insert>
+
+	<select id="GradoPorId" parameterType="int" resultMap="gradoMap">
+		SELECT * FROM
+		grado WHERE idgrado = #{idGrado}  and status != 0
+	</select>
+
+	<update id="ActualizarGrado" parameterType="java.util.HashMap">
+		UPDATE grado
+		SET
+			idseccion = #{idSeccion},
+			numgrado = #{numGrado},
+			ultimogrado = #{ultimoGrado}
+		WHERE
+			idgrado = #{idGrado};
+	</update>
+
+	<update id="EliminarGrado" parameterType="java.util.HashMap">
+		UPDATE grado
+		SET
+			status = 0
+		WHERE
+			idgrado = #{idGrado};
+	</update>
+
+	<select id="ListaGradoSeccion" resultMap="gradoMap">
+		SELECT g.idgrado,
+			concat(g.numgrado,' ',s.descripcion) as descripcion
+		FROM grado g INNER JOIN opcioncat s on g.idseccion=s.idopcioncat
+		WHERE s.desctipocat = 'Seccion'
+		ORDER BY g.idseccion, g.numgrado ASC
+	</select>
+
+	<select id="ObtieneTodosGrados" resultMap="gradoMap">
+		SELECT g.*,o.descripcion
+		FROM grado g
+        INNER JOIN opcioncat o on
+		g.idseccion=o.idopcioncat
+        ORDER BY g.idseccion, numgrado
+	</select>
+
+
+	<select id="ObtieneTodoPorColumna" parameterType="java.util.HashMap" resultMap="gradoMap">
+		SELECT g.*, o.descripcion
+		FROM grado g
+		INNER JOIN opcioncat o ON
+		g.idseccion = o.idopcioncat
+		WHERE idgrado = #{idGrado}
+			<if test="idSeccion != 0">
+				AND idseccion = #{idSeccion}
+			</if>
+			<if test="numGrado != 0">
+				AND numgrado = #{numGrado}
+			</if>
+			<if test="ultimoGrado != 0">
+				AND ultimogrado = #{ultimoGrado}
+			</if>
+		ORDER BY o.idopcioncat, g.numgrado
+	</select>
+	<!-- Termina Grado -->
+
+	<!-- Comienza Grupo  -->
+	<select id="obtieneTodosGrupos" resultMap="grupoMap">
+		SELECT gru.idgrupo as idgrupo,
+			concat(g.numgrado,' ',gru.nomgrupo,' ',s.descripcion) as descripcion
+		FROM grado g
+			INNER JOIN opcioncat s on s.idopcioncat = g.idseccion
+			INNER JOIN grupo gru on gru.idgrado = g.idgrado
+			LEFT JOIN grupo_materia gm on gm.idgrupo = gru.idgrupo
+		WHERE gm.idgrupo_materia is null
+        	AND g.status != 0
+		ORDER BY s.idopcioncat, g.numgrado, gru.nomgrupo
+	</select>
+
+	<insert id="insertarGrupo" parameterType="java.util.HashMap"
+		keyProperty="idgrupo">
+
+		INSERT INTO grupo
+			(nomgrupo,
+			descripcion,
+			capacidad,
+			idgrado,
+			tipogrupo,
+			status)
+		VALUES
+			(#{nomGrupo},
+			#{descripcion},
+			#{capacidad},
+			#{idGrado},
+			#{tipoGrupo},
+			#{status});
+
+		<selectKey resultType="java.lang.Integer" keyProperty="idgrupo">
+			SELECT MAX(idgrupo) + 1 as idgrupo FROM grupo
+		</selectKey>
+	</insert>
+
+	<select id="grupoPorId" parameterType="int" resultMap="grupoMap">
+		SELECT * FROM grupo WHERE idgrupo = #{idGrupo} and status != 0
+	</select>
+
+	<update id="ActualizarGrupo" parameterType="java.util.HashMap">
+		UPDATE grupo
+		SET
+			nomgrupo = #{nomGrupo},
+			descripcion = #{descripcion},
+			capacidad = #{capacidad},
+			idgrado = #{idGrado},
+			tipogrupo = #{tipoGrupo}
+		WHERE
+			idgrupo =#{idGrupo};
+	</update>
+
+	<update id="EliminarGrupo" parameterType="java.util.HashMap">
+		UPDATE grupo
+		SET
+			status = 0
+		WHERE
+			idgrupo = #{idGrupo};
+	</update>
+
+	<select id="ListaGrupoSeccion" resultMap="grupoMap">
+		SELECT gru.idgrupo as
+			idgrupo,
+			concat(g.numgrado,' ',
+			gru.nomgrupo,
+			' ',s.descripcion) as descripcion
+        FROM grado g
+		INNER JOIN opcioncat s on s.idopcioncat=g.idseccion
+		INNER JOIN grupo gru on gru.idgrado=g.idgrado
+
+	</select>
+
+	<select id="ObtieneTodosGrupos" resultMap="grupoMap">
+		SELECT gru.idgrupo as idgrupo,
+			concat(g.numgrado,' ',gru.nomgrupo,' ',s.descripcion) as descripcion
+		FROM grado g
+			INNER JOIN opcioncat s on s.idopcioncat = g.idseccion
+			INNER JOIN grupo gru on gru.idgrado = g.idgrado
+			LEFT JOIN grupo_materia gm on gm.idgrupo = gru.idgrupo
+		WHERE gm.idgrupo_materia is null
+			ORDER BY s.idopcioncat, g.numgrado, gru.nomgrupo
+	</select>
+
+	<select id="ObtieneGrupoTodoPorColumna" parameterType="java.util.HashMap" resultMap="grupoMap">
+
+		SELECT gru.idgrupo,
+			gru.nomgrupo,
+			gru.descripcion,
+			gru.capacidad,
+			gru.idgrado,
+			gru.tipogrupo,
+			gru.status,
+			concat(g.numgrado,' ',s.descripcion) as seccion,
+			g.idseccion as idseccion,
+			g.numgrado as numgrado, g.ultimogrado as
+			ultimogrado
+		FROM grado g
+			INNER JOIN opcioncat s on s.idopcioncat=g.idseccion
+			INNER JOIN grupo gru on gru.idgrado=g.idgrado
+			LEFT JOIN grupo_materia gm on gm.idgrupo = gru.idgrupo
+		where gm.idgrupo_materia is null
+		<choose>
+			<when test="idgrupo != 0">
+				AND	gru.idgrupo = #{idGrupo}
+			</when>
+			<when test="idgrado != 0">
+				AND	gru.idgrado = #{idGrado}
+			</when>
+			<when test="nomgrupo != null">
+				AND	gru.nomgrupo like #{nomGrupo}
+			</when>
+			<when test="descripcion != null">
+				AND	gru.descripcion like #{descripcion}
+			</when>
+			<when test="capacidad != 0">
+				AND	gru.capacidad = #{capacidad}
+			</when>
+			<when test="idseccion != 0">
+				AND	g.idseccion = #{idSeccion}
+			</when>
+			<when test="tipogrupo != 0">
+				AND	gru.tipogrupo = #{tipoGrupo}
+			</when>
+		</choose>
+		order by s.idopcioncat, g.numgrado, gru.nomgrupo
+	</select>
+
+	<!-- Termina Grupo -->
+
+	<!-- Inicia Criterio -->
+	<select id="obtieneTodosCriterios" resultMap="criterioMap">
+		SELECT * FROM criterio WHERE status != 0
+	</select>
+
+	<insert id="insertarCriterio" parameterType="java.util.HashMap"
+		keyProperty="idcriterio">
+
+		INSERT INTO criterio
+			(tipocriterio,
+			descripcion,
+			calculocriterio,
+			status)
+		VALUES
+			(#{tipoCredito},
+			#{descripcion},
+			#{calculoCriterio},
+			#{status});
+
+		<selectKey resultType="java.lang.Integer" keyProperty="idcriterio">
+			SELECT MAX(idcriterio) + 1 as idcriterio FROM criterio
+		</selectKey>
+	</insert>
+
+	<update id="ActualizarCriterio" parameterType="java.util.HashMap">
+
+		UPDATE criterio
+		SET
+			tipocriterio = #{tipoCredito},
+			descripcion = #{descripcion},
+			calculocriterio = #{calculoCriterio}
+		WHERE idcriterio = #{idCriterio};
+	</update>
+
+	<update id="EliminarCriterio" parameterType="java.util.HashMap">
+
+		UPDATE criterio
+		SET
+			status = 0
+		WHERE idcriterio = #{idCriterio};
+	</update>
+
+	<select id="CriterioPorId" parameterType="int" resultMap="criterioMap">
+		SELECT * FROM criterio WHERE idcriterio = #{idCriterio} and status != 0
+	</select>
+	<!-- Termina Criterio -->
+
+	<!-- Inicia Materia -->
+
+	<select id="obtieneTodasMaterias" resultMap="materiaMap">
+		SELECT * FROM materia WHERE status != 0
+	</select>
+
+	<insert id="insertarMateria" parameterType="java.util.HashMap">
+
+		INSERT INTO materia
+			(idmateria,
+			nombre,
+			creditos,
+			clavesep,
+			tipomat,
+			idgrado,
+			tipogrupo,
+			tipocaptura,
+			status)
+		VALUES
+			(#{idMateria},
+			#{nombre},
+			#{creditos},
+			#{claveSep},
+			#{tipomat},
+			#{idGrado},
+			#{tipoGrupo},
+			#{tipoCaptura},
+			#{status});
+	</insert>
+
+	<update id="ActualizarMateria" parameterType="java.util.HashMap">
+
+		UPDATE materia
+		SET
+			nombre = #{nombre},
+			creditos = #{creditos},
+			clavesep = #{claveSep},
+			tipomat = #{tipomat},
+			idgrado = #{idGrado},
+			tipogrupo= #{tipoGrupo},
+			tipocaptura= #{tipoCaptura}
+		WHERE
+			idmateria = #{idMateria}
+	</update>
+
+	<update id="EliminarMateria" parameterType="java.util.HashMap">
+		UPDATE materia
+		SET
+			status = 0
+		WHERE
+			idmateria = #{idMateria}
+	</update>
+
+	<select id="materiaPorId" parameterType="String" resultMap="materiaMap">
+		SELECT * FROM materia WHERE idmateria = #{idMateria} and status != 0
+	</select>
+
+	<select id="obtieneMateriaHorario" parameterType="int" resultMap="materiaMap">
+		SELECT m.* FROM materia m
+			INNER JOIN opcioncat opc on m.tipogrupo =
+			opc.idopcioncat
+			WHERE opc.descripcion != 'Mixto'
+			AND m.idgrado = #{idGrado}
+	</select>
+
+	<select id="obtieneMateriaPorColumna" parameterType="java.util.HashMap" resultMap="materiaMap">
+		SELECT m.idmateria, m.nombre, m.creditos, m.clavesep, om.descripcion
+			as tipomat, og.descripcion as tipogrupo, oc.descripcion as tipocaptura,
+			concat(g.numgrado,' ',s.descripcion) as idgrado
+		FROM materia m
+			INNER JOIN opcioncat om on m.tipomat = om.idopcioncat
+			INNER JOIN opcioncat og on m.tipogrupo = og.idopcioncat
+			INNER JOIN opcioncat oc on m.tipocaptura = oc.idopcioncat
+			LEFT JOIN grado g on g.idgrado = m.idgrado
+			INNER JOIN opcioncat s on s.idopcioncat = g.idseccion
+		WHERE m.status != 0
+			<if test="idMateria != null">
+				AND m.idmateria like #{idMateria}
+			</if>
+			<if test="nombre != null">
+				AND m.nombre like #{nombre}
+			</if>
+			<if test="creditos != 0">
+				AND m.creditos = #{creditos}
+			</if>
+			<if test="claveSep != null">
+				AND m.clavesep like #{claveSep}
+			</if>
+			<if test="tipomat != 0">
+				AND m.tipomat = #{tipoMat}
+			</if>
+			<if test="idGrado != 0">
+				AND m.idgrado = #{idGrado}
+			</if>
+    </select>
+	<!-- Termina Materia -->
+
+	<!-- Inicia Puesto -->
+
+	<insert id="insertarPuesto" parameterType="java.util.HashMap"
+		keyProperty="idpuesto">
+
+		INSERT INTO puesto
+			(descripcion,
+			status)
+		VALUES
+			(
+			#{descripcion},
+			#{status});
+
+		<selectKey resultType="java.lang.Integer" keyProperty="idpuesto">
+			SELECT MAX(idpuesto) + 1 as idpuesto FROM puesto
+		</selectKey>
+	</insert>
+
+	<update id="EliminarPuesto" parameterType="java.util.HashMap">
+		UPDATE puesto
+		SET
+			status = 0
+		WHERE
+			idpuesto = #{idPuesto}
+	</update>
+
+	<update id="ActualizarPuesto" parameterType="java.util.HashMap">
+
+		UPDATE puesto
+		SET
+			descripcion=#{descripcion}
+		WHERE
+			idpuesto = #{idPuesto}
+	</update>
+
+	<select id="PuestoPorId" parameterType="int" resultMap="puestoMap">
+		SELECT * FROM puesto WHERE idpuesto = #{idPuesto} and status != 0
+	</select>
+
+	<select id="listaPuestoTodos" resultMap="puestoMap">
+		SELECT * FROM puesto WHERE status != 0
+	</select>
+
+	<select id="ObtienePuestoPorColumna" parameterType="java.util.HashMap" resultMap="puestoMap">
+		SELECT * FROM puesto
+		WHERE status != 0
+			<if test="idPuesto != 0">
+				AND idpuesto = #{idPuesto}
+			</if>
+			<if test="descripcion !=  null">
+				AND descripcion = #{descripcion}
+			</if>
+	</select>
+	<!-- Termina Puesto -->
+
+	<!-- Inicia Empleado -->
+
+	<insert id="insertarEmpleado" parameterType="java.util.HashMap">
+
+		INSERT INTO empleado
+			(idempleado,
+			nombre,
+			direccion,
+			email,
+			telefono,
+			telcel,
+			colonia,
+			cp,
+			fecingreso,
+			fechanacimiento,
+			tiposangre,
+			dir_imagen,
+			sexo,
+			curp,
+			idpuesto,
+			activo,
+			apellidop,
+			apellidom,
+			rfc,
+			nombrecontacto,
+			telcontacto,
+			numext,
+			numint,
+			status)
+		VALUES
+			(#{idEmpleado},
+			#{nombre},
+			#{direccion},
+			#{email},
+			#{telefonoCasa},
+			#{telefonoCelular},
+			#{colonia},
+			#{codigoPostal},
+			#{fechaIngreso},
+			#{fechaNacimiento},
+			#{tipoSangre},
+			#{dirImagen},
+			#{sexo},
+			#{curp},
+			#{idPuesto},
+			#{activo},
+			#{apellidoPaterno},
+			#{apellidoMaterno},
+			#{rfc},
+			#{nombreContacto},
+			#{telefonoContacto},
+		 	#{numeroExterior},
+		 	#{numeroInterior},
+		 	#{status})
+	</insert>
+
+	<select id="listaEmpleadoTodos" resultMap="empleadoMap">
+		SELECT * FROM empleado WHERE status != 0
+	</select>
+
+	<select id="listaEmpleadoPorId" parameterType="String"  resultMap="empleadoMap">
+		SELECT * FROM empleado WHERE idempleado = #{idEmpleado} AND status != 0
+	</select>
+
+	<update id="eliminarEmpleado" parameterType="java.util.HashMap">
+		UPDATE empleado
+		SET
+			status = 0
+		WHERE
+			idempleado = #{idEmpleado}
+	</update>
+
+	<update id="actualizarEmpleado" parameterType="java.util.HashMap">
+
+		UPDATE empleado
+		SET
+			idempleado = #{idEmpleado},
+			nombre = #{nombre},
+			direccion = #{direccion},
+			email = #{email},
+			telefono = #{telefonoCasa} ,
+			telcel = #{telefonoCelular},
+			colonia = #{colonia},
+			cp = #{codigoPostal},
+			fecingreso = #{fechaIngreso},
+			fechanacimiento = #{fechaNacimiento},
+			tiposangre = #{tipoSangre},
+			<if test="dirImagen != null">
+				dir_imagen = #{dirImagen},
+			</if>
+			sexo = #{sexo},
+			curp = #{curp},
+			idpuesto = #{idPuesto},
+			activo = #{activo},
+			apellidop = #{apellidoPaterno},
+			apellidom = #{apellidoMaterno},
+			rfc = #{rfc},
+			nombrecontacto = #{nombreContacto},
+			telcontacto = #{telefonoContacto},
+			numext = #{numeroExterior},
+			numint	= #{numeroInterior}
+		WHERE idempleado = #{idEmpleado} AND status != 0
+	</update>
+	<!-- Termina Empleado -->
+
+	<!-- Inicia Alumno -->
+
+	<select id="listaAlumnosTodos" resultMap="alumnoMap">
+		SELECT * FROM alumnos WHERE status != 0
+	</select>
+	<!-- Termina Empleado -->
+
+	<!-- Inicia GrupoAlumno -->
+
+	<!-- Termina GrupoAlumno -->
+
+	<!-- Inicia Menu-->
+
+	<select id="menuPorId" parameterType="int" resultMap="menuMap">
+		SELECT * FROM menu WHERE id_menu = #{idMenu} and status = 'ACTI'
+	</select>
+
+	<select id="obtenerMenu" parameterType="int" resultMap="menuMap">
+		SELECT M.id_menu AS idMenu
+		    , M.menu
+		    , M.pagina
+		    , M.descripcion
+		    , (SELECT COUNT(*)
+		       FROM menu M2 INNER
+		           JOIN perfil_menu P2 ON M2.id_menu = P2.id_menu
+		       WHERE M.id_menu = M2.id_padre AND P.id_perfil = P2.id_perfil) AS submenus
+		FROM menu M
+		INNER JOIN perfil_menu P ON M.id_menu = P.id_menu
+		INNER JOIN perfil U ON P.id_perfil = U.id_perfil AND U.id_perfil = #{idPerfil}
+		AND M.id_padre IS NULL
+		ORDER BY P.orden, M.menu
+	</select>
+
+	<select id="obtenerSubMenu" parameterType="java.util.HashMap" resultMap="menuMap">
+		SELECT  m.id_padre as idPadre
+		,m.id_menu AS idMenu
+		, m.menu
+		, m.pagina
+		, m.descripcion
+		FROM menu m
+		INNER JOIN perfil_menu p ON m.id_menu = p.id_menu
+		WHERE m.id_padre = #{idPadre} AND p.id_perfil = #{idPerfil} AND m.status = 'ACTI'
+		ORDER BY p.orden, m.menu
+	</select>
+
+	<!-- Termina Menu -->
+
+	<!-- Inicia Catalogo -->
+	<select id="obtenerCatalogo" parameterType="String" resultMap="catalogoMap">
+		SELECT * FROM opcioncat WHERE desctipocat = #{tipoCatalogo}
+	</select>
+	<!-- Inicia Catalogo -->
+
+</mapper>
+

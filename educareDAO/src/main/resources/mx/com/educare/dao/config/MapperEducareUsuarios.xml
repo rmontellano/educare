@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="MapperEducareUsuarios">
+	<resultMap type="mx.com.educare.dto.auth.Usuario"	id="usuarioMap">
+			<result column="id_empleado"  property="idEmpleado" />
+			<result column="fecha_alta" property="fechaAlta"  />
+			<result column="fecha_ultimo_acceso" property="fechaUltimoAcceso"  />
+			<result column="fecha_baja" property="fechaBaja"  />
+	</resultMap>
+		
+	<select id="obtenerUsuario" parameterType="String" resultMap="usuarioMap">
+		SELECT * FROM usuarios WHERE usuario = #{usuario}
+	</select>
+</mapper>

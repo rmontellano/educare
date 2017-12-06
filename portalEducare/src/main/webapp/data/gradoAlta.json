@@ -1,0 +1,17 @@
+{
+	header: {
+	status: true,
+	uid: "b37d9e8fc0a8001f500e29fc18d24fe1",
+	tipo: 0
+	},
+	grados: [
+	{
+		idGrado: 0,
+		idSeccion: 0,
+		numGrado: 0,
+		ultimoGrado: 0,
+		status: 0,
+		tipo: 0
+	}],
+	tipo: 0
+}

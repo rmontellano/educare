@@ -1,0 +1,39 @@
+# FRONTEND JavaScript - Npm
+# Logs
+logs
+*.log*
+# Dependency directory
+node_modules
+#dist folder or production build folder
+dist
+
+# BACKEND Java - Maven
+target
+.project
+
+# Android
+/build
+*.iml
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+/captures
+.externalNativeBuild
+.idea/
+app/google-services.json
+
+#Eclipse
+.classpath
+.eclipse-pmd
+.project
+.settings
+.directory
+.svn
+
+
+# NetBeans
+nbproject
+
+# Mac files
+.DS_Store
