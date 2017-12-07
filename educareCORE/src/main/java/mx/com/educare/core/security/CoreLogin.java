@@ -1,6 +1,5 @@
 package mx.com.educare.core.security;
 
-import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

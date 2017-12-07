@@ -44,34 +44,7 @@ public class EducareDAOImpl implements EducareDAO {
 
 	}
 
-	/**
-	 * Metodo que se utilizar para buscar todos los grados
-	 * @param uid Identificador Unico
-	 * @return Lista de Grado
-	 */
-	public List<Grado> buscarTodosGrado(String uid) throws EducareException {
-		LogHandler.info(uid, this.getClass(), "Entro a buscarTodosGrado ");
-		SqlSession sesionNTx = null;
-		List<Grado> listaGrados = null;
-
-		try {
-			sesionNTx = FabricaDeConexiones.obtenerSesionNTx();
-			listaGrados = sesionNTx.selectList("MapperEducareCatalogos.obtieneTodosGrados");
-
-			if (listaGrados.isEmpty()) {
-				throw new Exception("No registro en la tabla de Grado");
-			}
-
-		} catch (Exception ex) {
-			LogHandler.info(uid, this.getClass(), ex.getMessage());
-			ex.printStackTrace();
-	    } finally {
-	    	FabricaDeConexiones.close(sesionNTx);
-	    }
-
-		return listaGrados;
-	}
-
+/***************************************INICIAN OPERACIONES DEL CATALOGO DE GRADO *******************************************/
 	/**
 	 * Metodo que sirve para insertar grado
 	 * @param uid Identificador Unico
@@ -90,7 +63,7 @@ public class EducareDAOImpl implements EducareDAO {
 
 			final java.util.HashMap<String, Object> parametrosInsert = new HashMap<String, Object>();
 			parametrosInsert.put( "idSeccion", grado.getIdSeccion());
-			parametrosInsert.put( "numGrado", grado.getNumGrado());
+			parametrosInsert.put( "numGrado", grado.getNomGrado());
 			parametrosInsert.put( "ultimoGrado", grado.getUltimoGrado());
 			parametrosInsert.put( "status", 0);
 
@@ -113,79 +86,7 @@ public class EducareDAOImpl implements EducareDAO {
 	    }
 		return respuesta;
 	}
-
-	/**
-	 * Metodo que se utiliza para buscar por un Id
-	 * @param uid Identificador Unico
-	 * @param idGrado Es el Id a buscar
-	 * @return Objeto de tipo grado
-	 */
-	public Grado buscarGradoPorId(String uid, int idGrado) throws EducareException {
-		LogHandler.info(uid, this.getClass(), "buscarGradoPorId ");
-		SqlSession sesionNTx = null;
-		Grado grado = null;
-
-		try {
-
-			sesionNTx = FabricaDeConexiones.obtenerSesionNTx();
-			grado = sesionNTx.selectOne("MapperEducareCatalogos.GradoPorId", idGrado);
-
-			if (grado == null) {
-				throw new Exception("No se encontro el registro");
-			}
-
-		} catch (Exception ex) {
-			LogHandler.info(uid, this.getClass(), ex.getMessage());
-			ex.printStackTrace();
-	    } finally {
-	    	FabricaDeConexiones.close(sesionNTx);
-	    }
-		return grado;
-	}
-
-	/**
-	 * Metodo que sirve para actualizar grado
-	 * @param uid Identificador Unico
-	 * @param grado Es el Id a buscar
-	 * @return Objeto de tipo grado
-	 */
-	public GradoRespuesta actualizarGrado(String uid, Grado grado) throws EducareException {
-		LogHandler.info(uid, this.getClass(), "Entro a actualizar grado ");
-		SqlSession sesionTx = null;
-		GradoRespuesta respuesta = new GradoRespuesta();
-		respuesta.setHeader(new EncabezadoRespuesta());
-		respuesta.getHeader().setUid(uid);
-		respuesta.getHeader().setStatus(true);
-		int actualizar;
-		try {
-
-			final java.util.HashMap<String, Object> parametrosUpdate = new HashMap<String, Object>();
-			parametrosUpdate.put( "idGrado", grado.getIdGrado());
-			parametrosUpdate.put( "idSeccion", grado.getIdSeccion());
-			parametrosUpdate.put( "numGrado", grado.getNumGrado());
-			parametrosUpdate.put( "ultimoGrado", grado.getUltimoGrado());
-			parametrosUpdate.put( "status", 0);
-
-			sesionTx = FabricaDeConexiones.obtenerSesionTx();
-			actualizar = sesionTx.update("MapperEducareCatalogos.ActualizarGrado", parametrosUpdate);
-
-			if ( actualizar == 0) {
-				throw new Exception("No fue posible insertar el grado");
-			}
-
-			sesionTx.commit();
-			respuesta.getHeader().setMensaje("Se actualizo correctamente");
-		} catch (Exception e) {
-			FabricaDeConexiones.rollBack(sesionTx);
-			LogHandler.info(uid, this.getClass(), e.getMessage());
-			respuesta.getHeader().setStatus(false);
-			respuesta.getHeader().setMensaje(e.getMessage());
-	    } finally {
-	    	FabricaDeConexiones.close(sesionTx);
-	    }
-		return respuesta;
-	}
-
+	
 	/**
 	 * Metodo que se utiliza para eliminar un grado
 	 * @param uid Identificador Unico
@@ -222,68 +123,55 @@ public class EducareDAOImpl implements EducareDAO {
 	}
 
 	/**
-	 * Metodo que se utiliza para listaGradosSeccion
+	 * Metodo que sirve para actualizar grado
 	 * @param uid Identificador Unico
-	 * @return Lista de tipo grado
+	 * @param grado Es el Id a buscar
+	 * @return Objeto de tipo grado
 	 */
-	public List<Grado> listaGradoSeccion(String uid) throws EducareException {
-		LogHandler.info(uid, this.getClass(), "Entro a listaGradoSeccion ");
-		SqlSession sesionNTx = null;
-		List<Grado> listaGrados = null;
-
+	public GradoRespuesta actualizarGrado(String uid, Grado grado) throws EducareException {
+		LogHandler.info(uid, this.getClass(), "Entro a actualizar grado ");
+		SqlSession sesionTx = null;
+		GradoRespuesta respuesta = new GradoRespuesta();
+		respuesta.setHeader(new EncabezadoRespuesta());
+		respuesta.getHeader().setUid(uid);
+		respuesta.getHeader().setStatus(true);
+		int actualizar;
 		try {
-			sesionNTx = FabricaDeConexiones.obtenerSesionNTx();
-			listaGrados = sesionNTx.selectList("MapperEducareCatalogos.ListaGradoSeccion");
 
-			if (listaGrados.isEmpty()) {
-				throw new Exception("No registro en la tabla de Grado con seccion");
+			final java.util.HashMap<String, Object> parametrosUpdate = new HashMap<String, Object>();
+			parametrosUpdate.put( "idGrado", grado.getIdGrado());
+			parametrosUpdate.put( "idSeccion", grado.getIdSeccion());
+			parametrosUpdate.put( "numGrado", grado.getNomGrado());
+			parametrosUpdate.put( "ultimoGrado", grado.getUltimoGrado());
+			parametrosUpdate.put( "status", 0);
+
+			sesionTx = FabricaDeConexiones.obtenerSesionTx();
+			actualizar = sesionTx.update("MapperEducareCatalogos.ActualizarGrado", parametrosUpdate);
+
+			if ( actualizar == 0) {
+				throw new Exception("No fue posible insertar el grado");
 			}
 
-		} catch (Exception ex) {
-			LogHandler.info(uid, this.getClass(), ex.getMessage());
-			ex.printStackTrace();
+			sesionTx.commit();
+			respuesta.getHeader().setMensaje("Se actualizo correctamente");
+		} catch (Exception e) {
+			FabricaDeConexiones.rollBack(sesionTx);
+			LogHandler.info(uid, this.getClass(), e.getMessage());
+			respuesta.getHeader().setStatus(false);
+			respuesta.getHeader().setMensaje(e.getMessage());
 	    } finally {
-	    	FabricaDeConexiones.close(sesionNTx);
+	    	FabricaDeConexiones.close(sesionTx);
 	    }
-
-		return listaGrados;
+		return respuesta;
 	}
-
-	/**
-	 * Metodo que se utilizar para obtener todos los grados
-	 * @param uid Identificador Unico
-	 * @return Lista de tipo grado
-	 */
-	public List<Grado> obtieneTodosGrados(String uid) throws EducareException {
-		LogHandler.info(uid, this.getClass(), "Entro a ObtieneTodosGrados ");
-		SqlSession sesionNTx = null;
-		List<Grado> listaGrados = null;
-
-		try {
-			sesionNTx = FabricaDeConexiones.obtenerSesionNTx();
-			listaGrados = sesionNTx.selectList("MapperEducareCatalogos.ObtieneTodosGrados");
-
-			if (listaGrados.isEmpty()) {
-				throw new Exception("No encontro registro de todos los grados");
-			}
-
-		} catch (Exception ex) {
-			LogHandler.info(uid, this.getClass(), ex.getMessage());
-			ex.printStackTrace();
-	    } finally {
-	    	FabricaDeConexiones.close(sesionNTx);
-	    }
-
-		return listaGrados;
-	}
-
+	
 	/**
 	 * Metodo que se utilizar para obtener todos los grados por columna
 	 * @param uid Identificador Unico
 	 * @param grado Objeto de tipo grado
 	 * @return Lista de tipo grado
 	 */
-	public List<Grado> obtieneTodosGradosPorColumna(String uid, Grado grado) throws EducareException {
+	public List<Grado> buscarGrado(String uid, Grado grado) throws EducareException {
 		LogHandler.info(uid, this.getClass(), "Entro a ObtieneTodosGrados ");
 		SqlSession sesionNTx = null;
 		List<Grado> listaGrados = null;
@@ -292,29 +180,14 @@ public class EducareDAOImpl implements EducareDAO {
 			sesionNTx = FabricaDeConexiones.obtenerSesionNTx();
 
 			final java.util.HashMap<String, Object> parametros = new HashMap<String, Object>();
+			parametros.put("todos", grado.getTipoBusqueda());
+			parametros.put("idGrado", grado.getIdGrado());
+			parametros.put("idSeccion", grado.getIdSeccion());
+			parametros.put("nomGrado", grado.getNomGrado());
+			parametros.put("ultimoGrado", grado.getUltimoGrado());
+			
 
-			if (grado.getIdGrado() != 0) {
-				parametros.put( "idGrado", grado.getIdGrado());
-			} else {
-				parametros.put( "idGrado", 0);
-			}
-			if (grado.getIdSeccion() != 0) {
-				parametros.put( "idSeccion", grado.getIdSeccion());
-			} else {
-				parametros.put( "idSeccion", 0);
-			}
-			if (grado.getNumGrado() != 0) {
-				parametros.put( "numGrado", grado.getNumGrado());
-			} else {
-				parametros.put( "numGrado", 0);
-			}
-			if (grado.getUltimoGrado() != 0) {
-				parametros.put( "ultimoGrado", grado.getUltimoGrado());
-			} else {
-				parametros.put( "ultimoGrado",  0);
-			}
-
-			listaGrados = sesionNTx.selectList("MapperEducareCatalogos.ObtieneTodoPorColumna", parametros);
+			listaGrados = sesionNTx.selectList("MapperEducareCatalogos.obtenerGrado", parametros);
 
 			if (listaGrados.isEmpty()) {
 				throw new Exception("No encontro registro de todos los grados");
@@ -330,6 +203,7 @@ public class EducareDAOImpl implements EducareDAO {
 		return listaGrados;
 	}
 
+/***************************************TERMINAN OPERACIONES DEL CATALOGO DE GRADO *******************************************/
 
 	/**
 	 * Metodo que se utilizar para buscar todos los Grupos

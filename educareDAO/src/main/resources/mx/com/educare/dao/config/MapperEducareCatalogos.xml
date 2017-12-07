@@ -8,7 +8,7 @@
 
 		<result column="idgrado"  property="idGrado" />
 		<result column="idseccion" property="idSeccion"  />
-		<result column="numgrado" property="numGrado"  />
+		<result column="nomgrado" property="nomGrado"  />
 		<result column="ultimogrado" property="ultimoGrado"  />
 		<result column="status" property="status" />
 		<result column="descripcion" property="descripcion" />
@@ -157,6 +157,29 @@
 	</resultMap>
 
 	<!-- Comienza Grado  -->
+	
+	<select id="obtenerGrado" parameterType="java.util.HashMap" resultMap="gradoMap">
+		 SELECT g.*, o.descripcion FROM grado g
+         INNER JOIN opcioncat o ON g.idseccion = o.idopcioncat
+		 <if test="todos == 'NO'">
+		     WHERE 
+		     <if test="idGrado != 0">
+		       idgrado = #{idGrado}
+		     </if>  
+			<if test="idSeccion != 0">
+				AND idseccion = #{idSeccion}
+			</if>
+			<if test="nomGrado != 0">
+				AND numgrado = #{numGrado}
+			</if>
+			<if test="ultimoGrado != 0">
+				AND ultimogrado = #{ultimoGrado}
+			</if>
+		 </if>
+		ORDER BY g.idseccion, g.numgrado
+	</select>
+	
+	
 	<select id="obtieneTodosGrados" resultMap="gradoMap">
 		SELECT * FROM grado
 	</select>
@@ -173,11 +196,7 @@
 		(#{idSeccion},
 		#{numGrado},
 		#{ultimoGrado},
-		#{status});
-
-		<selectKey resultType="java.lang.Integer" keyProperty="idgrado">
-			SELECT MAX(idgrado) as idgrado FROM grado
-		</selectKey>
+		#{status})
 	</insert>
 
 	<select id="GradoPorId" parameterType="int" resultMap="gradoMap">

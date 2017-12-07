@@ -33,7 +33,7 @@ public class Grado extends ObjetoValor {
 	/**
 	 * The numGrado.
 	 */
-	private int numGrado;
+	private int nomGrado;
 	/**
 	 * The ultimoGrado.
 	 */
@@ -46,6 +46,8 @@ public class Grado extends ObjetoValor {
 	 * The descripcion.
 	 */
 	private String descripcion;
+	
+	private String tipoBusqueda;
 	/**
 	 * @return the idGrado
 	 */
@@ -73,14 +75,14 @@ public class Grado extends ObjetoValor {
 	/**
 	 * @return the numGrado
 	 */
-	public int getNumGrado() {
-		return numGrado;
+	public int getNomGrado() {
+		return nomGrado;
 	}
 	/**
 	 * @param numGrado the numGrado to set
 	 */
-	public void setNumGrado(int numGrado) {
-		this.numGrado = numGrado;
+	public void setNomGrado(int nomGrado) {
+		this.nomGrado = nomGrado;
 	}
 	/**
 	 * @return the ultimoGrado
@@ -119,4 +121,25 @@ public class Grado extends ObjetoValor {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
+	/**
+	 * @return the tipoBusqueda
+	 */
+	public String getTipoBusqueda() {
+		return tipoBusqueda;
+	}
+	/**
+	 * @param tipoBusqueda the tipoBusqueda to set
+	 */
+	public void setTipoBusqueda(String tipoBusqueda) {
+		this.tipoBusqueda = tipoBusqueda;
+	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Grado [idGrado=" + idGrado + ", idSeccion=" + idSeccion + ", nomGrado=" + nomGrado + ", ultimoGrado="
+				+ ultimoGrado + ", status=" + status + ", descripcion=" + descripcion + ", tipoBusqueda=" + tipoBusqueda
+				+ "]";
+	}	
 }
