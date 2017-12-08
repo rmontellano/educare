@@ -3,15 +3,14 @@
  */
 package mx.com.educare.dto.auth;
 
+import java.io.Serializable;
 import java.util.Date;
-
-import mx.com.educare.dto.util.ObjetoValor;
 
 /**
  * @author hsamano
  *
  */
-public class Usuario extends ObjetoValor{
+public class Usuario implements Serializable{
 	/**
 	 * Serializable
 	 */

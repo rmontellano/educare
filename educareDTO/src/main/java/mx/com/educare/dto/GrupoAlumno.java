@@ -3,13 +3,13 @@
  */
 package mx.com.educare.dto;
 
-import mx.com.educare.dto.util.ObjetoValor;
+import java.io.Serializable;
 
 /**
  * @author tonyocampoc@gmail.com
  *
  */
-public class GrupoAlumno extends ObjetoValor {
+public class GrupoAlumno implements Serializable {
 
 	/**
 	 * Instancia de GrupoAlumno

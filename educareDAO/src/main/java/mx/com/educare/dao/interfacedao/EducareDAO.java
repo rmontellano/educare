@@ -11,7 +11,6 @@ import mx.com.educare.dto.CriterioRespuesta;
 import mx.com.educare.dto.Empleado;
 import mx.com.educare.dto.EmpleadoRespuesta;
 import mx.com.educare.dto.Grado;
-import mx.com.educare.dto.GradoRespuesta;
 import mx.com.educare.dto.Grupo;
 import mx.com.educare.dto.GrupoRespuesta;
 import mx.com.educare.dto.Materia;
@@ -21,6 +20,7 @@ import mx.com.educare.dto.MenuRespuesta;
 import mx.com.educare.dto.Puesto;
 import mx.com.educare.dto.PuestoRespuesta;
 import mx.com.educare.dto.auth.Usuario;
+import mx.com.educare.dto.util.RespuestaGrado;
 import mx.com.educare.util.excepciones.EducareException;
 
 /**
@@ -35,7 +35,7 @@ public interface EducareDAO {
 	 * @param grado Objeto de tipo grado
 	 * @return GradoRespuesta
 	 */
-	public GradoRespuesta insertarGrado(String uid, Grado grado) throws EducareException;
+	public RespuestaGrado insertarGrado(String uid, Grado grado) throws EducareException;
 
 	/**
 	 * Metodo que sirve para actualizar grado
@@ -43,7 +43,7 @@ public interface EducareDAO {
 	 * @param grado Es el Id a buscar
 	 * @return Lista de tipo grado
 	 */
-	public GradoRespuesta actualizarGrado(String uid, Grado grado) throws EducareException;
+	public RespuestaGrado actualizarGrado(String uid, Grado grado) throws EducareException;
 
 	/**
  	 * Metodo que se utiliza para eliminar un grado
@@ -51,7 +51,7 @@ public interface EducareDAO {
 	 * @param idGrado Es el Id a buscar
 	 * @return Objeto de tipo grado
 	 */
-	public GradoRespuesta eliminarGrado(String uid, int idGrado) throws EducareException;
+	public RespuestaGrado eliminarGrado(String uid, int idGrado) throws EducareException;
 
 	/**
 	 * Metodo que se utilizar para obtener todos los grados por columna

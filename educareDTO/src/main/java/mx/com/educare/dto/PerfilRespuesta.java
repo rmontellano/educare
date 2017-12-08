@@ -3,14 +3,15 @@
  */
 package mx.com.educare.dto;
 
+import java.io.Serializable;
+
 import mx.com.educare.dto.util.EncabezadoRespuesta;
-import mx.com.educare.dto.util.ObjetoValor;
 
 /**
  * @author ca.ocampo
  *
  */
-public class PerfilRespuesta extends ObjetoValor {
+public class PerfilRespuesta implements Serializable {
 
 	/**
 	 * Instancia de PerfilRespuesta

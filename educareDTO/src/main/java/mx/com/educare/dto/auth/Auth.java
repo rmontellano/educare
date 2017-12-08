@@ -1,13 +1,14 @@
 package mx.com.educare.dto.auth;
 
+import java.io.Serializable;
+
 import mx.com.educare.dto.util.EncabezadoRespuesta;
-import mx.com.educare.dto.util.ObjetoValor;
 /**
  * 
  * @author hsamano
  *
  */
-public class Auth extends ObjetoValor {
+public class Auth implements Serializable {
 
 	/**
 	 * Serializable

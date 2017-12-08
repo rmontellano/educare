@@ -3,16 +3,16 @@
  */
 package mx.com.educare.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
 import mx.com.educare.dto.util.EncabezadoRespuesta;
-import mx.com.educare.dto.util.ObjetoValor;
 
 /**
  * @author tonyocampoc@gmail.com
  *
  */
-public class CatalogoRespuesta extends ObjetoValor {
+public class CatalogoRespuesta implements Serializable {
 
 	/**
 	 * Instancia de CatalogoRespuesta

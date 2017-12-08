@@ -3,13 +3,13 @@
  */
 package mx.com.educare.dto;
 
-import mx.com.educare.dto.util.ObjetoValor;
+import java.io.Serializable;
 
 /**
  * @author tonyocampoc@gmail.com
  *
  */
-public class Perfil extends ObjetoValor {
+public class Perfil implements Serializable{
 
 	/**
 	 * Instancia de Perfil

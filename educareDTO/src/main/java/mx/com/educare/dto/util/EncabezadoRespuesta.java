@@ -1,6 +1,6 @@
 package mx.com.educare.dto.util;
 
-import mx.com.educare.dto.util.ObjetoValor;
+import java.io.Serializable;
 
 /**
  *
@@ -9,7 +9,7 @@ import mx.com.educare.dto.util.ObjetoValor;
  * @author tonyocampoc@gmail.com
  *
  */
-public class EncabezadoRespuesta extends ObjetoValor {
+public class EncabezadoRespuesta implements Serializable {
 
 	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;

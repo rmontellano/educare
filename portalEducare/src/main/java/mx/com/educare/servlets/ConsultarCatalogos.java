@@ -22,7 +22,6 @@ import mx.com.educare.dto.CriterioRespuesta;
 import mx.com.educare.dto.Empleado;
 import mx.com.educare.dto.EmpleadoRespuesta;
 import mx.com.educare.dto.Grado;
-import mx.com.educare.dto.GradoRespuesta;
 import mx.com.educare.dto.Grupo;
 import mx.com.educare.dto.GrupoRespuesta;
 import mx.com.educare.dto.Materia;
@@ -31,6 +30,7 @@ import mx.com.educare.dto.Menu;
 import mx.com.educare.dto.MenuRespuesta;
 import mx.com.educare.dto.Puesto;
 import mx.com.educare.dto.PuestoRespuesta;
+import mx.com.educare.dto.util.RespuestaGrado;
 
 /**
  * Servlet implementation class ConsultarCatalogos
@@ -88,7 +88,7 @@ public class ConsultarCatalogos extends HttpServlet {
 		String json = "";
 
 		List<Grado> lista = null;
-		GradoRespuesta respuestaGrado = null;
+		RespuestaGrado respuestaGrado = null;
 		List<Grupo> listaGRupo = null;
 		GrupoRespuesta respuestaGrupo = null;
 		List<Criterio> listaCriterio = null;

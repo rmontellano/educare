@@ -3,13 +3,13 @@
  */
 package mx.com.educare.dto;
 
-import mx.com.educare.dto.util.ObjetoValor;
+import java.io.Serializable;
 
 /**
  * @author tonyocampoc@gmail.com
  *
  */
-public class Grado extends ObjetoValor {
+public class Grado implements Serializable {
 
 	/**
 	 * Instancia de Grado
@@ -33,7 +33,7 @@ public class Grado extends ObjetoValor {
 	/**
 	 * The numGrado.
 	 */
-	private int nomGrado;
+	private int numGrado;
 	/**
 	 * The ultimoGrado.
 	 */
@@ -46,7 +46,7 @@ public class Grado extends ObjetoValor {
 	 * The descripcion.
 	 */
 	private String descripcion;
-	
+	/**tpo*/
 	private String tipoBusqueda;
 	/**
 	 * @return the idGrado
@@ -75,14 +75,14 @@ public class Grado extends ObjetoValor {
 	/**
 	 * @return the numGrado
 	 */
-	public int getNomGrado() {
-		return nomGrado;
+	public int getNumGrado() {
+		return numGrado;
 	}
 	/**
 	 * @param numGrado the numGrado to set
 	 */
-	public void setNomGrado(int nomGrado) {
-		this.nomGrado = nomGrado;
+	public void setNumGrado(int numGrado) {
+		this.numGrado = numGrado;
 	}
 	/**
 	 * @return the ultimoGrado
@@ -138,7 +138,7 @@ public class Grado extends ObjetoValor {
 	 */
 	@Override
 	public String toString() {
-		return "Grado [idGrado=" + idGrado + ", idSeccion=" + idSeccion + ", nomGrado=" + nomGrado + ", ultimoGrado="
+		return "Grado [idGrado=" + idGrado + ", idSeccion=" + idSeccion + ", numGrado=" + numGrado + ", ultimoGrado="
 				+ ultimoGrado + ", status=" + status + ", descripcion=" + descripcion + ", tipoBusqueda=" + tipoBusqueda
 				+ "]";
 	}	

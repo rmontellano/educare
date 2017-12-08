@@ -3,13 +3,13 @@
  */
 package mx.com.educare.dto;
 
-import mx.com.educare.dto.util.ObjetoValor;
+import java.io.Serializable;
 
 /**
  * @author tonyocampoc@gmail.com
  *
  */
-public class Menu extends ObjetoValor {
+public class Menu implements Serializable {
 
 	/**
 	 * Instancia de Menu

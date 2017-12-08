@@ -3,15 +3,14 @@
  */
 package mx.com.educare.dto;
 
+import java.io.Serializable;
 import java.util.Date;
-
-import mx.com.educare.dto.util.ObjetoValor;
 
 /**
  * @author tonyocampoc@gmail.com
  *
  */
-public class Empleado extends ObjetoValor {
+public class Empleado implements Serializable {
 	/**
 	 * Instancia de Empleado
 	 */

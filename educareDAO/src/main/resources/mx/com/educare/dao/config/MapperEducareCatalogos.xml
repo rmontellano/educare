@@ -159,7 +159,7 @@
 	<!-- Comienza Grado  -->
 	
 	<select id="obtenerGrado" parameterType="java.util.HashMap" resultMap="gradoMap">
-		 SELECT g.*, o.descripcion FROM grado g
+		 SELECT g.idgrado, g.idseccion, g.numgrado, g.ultimogrado, o.descripcion FROM grado g
          INNER JOIN opcioncat o ON g.idseccion = o.idopcioncat
 		 <if test="todos == 'NO'">
 		     WHERE 
