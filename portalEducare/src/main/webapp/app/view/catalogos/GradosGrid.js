@@ -1,43 +1,78 @@
 Ext.define('EducareV2.view.catalogos.GradosGrid',{
 	extend: 'Ext.grid.Panel',
-	
+	requires: 'Ext.grid.column.CheckColumn',
 	xtype: 'gradosgrid',
     itemId: 'gradosgrid',
-	//title: 'Grados',
-	store: 'catalogos.Grados',
+	title: 'Grados',
+	autoScroll: true,
+	flex: 1,
+	height: 350,
+	width: '100%',
+	//store: 'catalogos.Grados',
+	plugins: [
+        Ext.create('Ext.grid.plugin.CellEditing', {
+            clicksToEdit: 2,
+            listeners: {
+              'beforeedit': function(e) {
+                var me = this;
+                console.log(me);
+                var allowed = !!me.isEditAllowed;
+                if (!me.isEditAllowed)
+                      	me.isEditAllowed = true;
+                    	me.startEditByPosition({row: e.rowIdx, column: e.colIdx});
+                return allowed;
+              },
+              'edit': function(e) {
+                this.isEditAllowed = false;
+              },
+              'afteredit': function(e) {
+                //Despues de la edición
+                    console.info('Salio con Enter');
+              }
+            }
+        })
+    ],
     viewConfig: {
         stripeRows: false
     },
-    width: '100%',
+   
 	columns:[{
-        xtype: 'actioncolumn',
-        //locked: true,
-        text: 'Eliminar',
-        width: 49,
-        sortable: false,
-        items: [{
-            icon: 'images/icons/eliminar.png',
-            tooltip: 'Ver',
-            scope: this,
-            handler: function(grid, rowIndex, colIndex) {
-            	Ext.Msg.confirm('Educare - Confirmación', '\xBFEstá seguro de eliminar el registro?', function(id){
-                   if(id === 'yes'){
-                	   grid.getStore().removeAt(rowIndex);
-                   }
-		        });
-            	//alert('Eliminar');
-                //var rec = grid.getStore().getAt(rowIndex);
-                //window.open(rec.get('ruta'),'',false);
-            }
-        }]
+        text: '#',
+        xtype: 'rownumberer',
+		align: 'center',
+		summaryType: 'count',
+		summaryRenderer: function(v, params, data) {
+	        return ('<b>REG:</b>&nbsp;&nbsp;' + v); 
+        },	        
+        width: 50
+        }, {
+    		xtype: 'actioncolumn', 
+    		text: 'Editar',
+    		width: 50,
+    		itemId: 'GridEditarGrado',
+    		align: 'center',
+    		items: [{
+    			tooltip : 'Editar Grado',
+    			icon	: 'images/icons/editp.png'
+    		}]
+    	},{
+    		xtype: 'actioncolumn', 
+    		text: 'Eliminar',
+    		width: 50,
+    		itemId: 'GridEliminarGrado',
+    		align: 'center',
+    		items: [{
+    			tooltip : 'Eliminar Grado',
+    			icon	: 'images/icons/eliminar.png'      	
+    		}]
     },{
         text: 'Sección',
         dataIndex: 'descripcion',
-        width: 80
+        width: 200
     },{
         text: 'Grado',
         dataIndex: 'numGrado',
-        width: 55
+        width: 150
     },{
         text: 'Último grado',
         dataIndex: 'ultimoGrado',
@@ -48,30 +83,6 @@ Ext.define('EducareV2.view.catalogos.GradosGrid',{
         		return 'SI';
         	}
         },
-        width: 72
-    },{
-        xtype: 'actioncolumn',
-        //locked: true,
-        text: 'Editar',
-        width: 41,
-        sortable: false,
-        items: [{
-            icon: 'images/icons/editar.png',
-            tooltip: 'Editar',
-            scope: this,
-            handler: function(grid, rowIndex, colIndex) {
-            	//alert('Editar');
-            	Ext.ComponentQuery.query('gradospanel')[0].show();
-            	Ext.ComponentQuery.query('[itemId=btnGuardar]')[0].hide();
-            	Ext.ComponentQuery.query('[itemId=btnAgregar]')[0].hide();
-    			Ext.ComponentQuery.query('[itemId=btnActualizar]')[0].show();
-            	Ext.ComponentQuery.query('[itemId=gradosWindow]')[0].setSize(330,400);
-                var rec = grid.getStore().getAt(rowIndex);
-                Ext.ComponentQuery.query('[itemId=numNombreGrado]')[0].setValue(rec.get('numGrado'));
-                Ext.ComponentQuery.query('[itemId=cbbSeccion]')[0].setValue(rec.get('descripcion'));
-                Ext.ComponentQuery.query('[itemId=cbbUltimoGradoEscolar]')[0].setValue(rec.get('ultimoGrado'));
-                //window.open(rec.get('ruta'),'',false);
-            }
-        }]
+        width: 150
     }]
 });

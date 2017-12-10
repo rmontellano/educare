@@ -1,6 +1,6 @@
 Ext.define('EducareV2.controller.MainController',{
 	extend: 'Ext.app.Controller',
-	stores: ['ParametrosUrl'],
+	stores: ['ParametrosUrl', 'StoreGrados'],
 	requires: [
 		'EducareV2.view.catalogos.GradosGrid',
 		'EducareV2.view.catalogos.GradosPanel',
@@ -17,14 +17,6 @@ Ext.define('EducareV2.controller.MainController',{
 			}
 		});
 	},
-	onLaunch: function() {
-		Ext.Msg.buttonText = {  
-            ok     : "Aceptar",
-            cancel : "Cancelar",
-            yes    : "Si",
-            no     : "No"
-        };
-	},
 	catalogoGrados: function(){
 		if(Ext.ComponentQuery.query('[itemId=gradosWindow]')[0] == undefined) {
 			var gradosWindow = Ext.create('Ext.window.Window', {
@@ -32,26 +24,24 @@ Ext.define('EducareV2.controller.MainController',{
 	            itemId: 'gradosWindow',
 	            closeAction: 'destroy',
 	            maximized: false,
-	            width: 400,
+	            width: 600,
 	            height: 400,
-//	            maxWidth: 330,
-//	            maxHeight: 400,
 	            layout: 'vbox',
 	            resizable: true,
 	            constrain: true,
 	            closable : true,
-	            //modal: true,
 	            items: [{
-	                flex: 1,
 	                xtype: 'gradospanel'
 	            },{
-	            	flex: 1.5,
 	                xtype: 'gradosAlta'
 	            },{
-	            	flex: 1.5,
 	                xtype: 'gradosgrid'
 	            }]
-	        });
+	        });	
+			//Secciones
+		    Ext.ComponentQuery.query('combobox[itemId=cbbSeccion]')[0].setReadOnly(true);
+		    //Carga de secciones
+		    Ext.ComponentQuery.query('combobox[itemId=cbbSeccion]')[0].getStore().load();
 			//Ext.ComponentQuery.query('gradospanel')[0].setSize(330,40);
 			//Ext.ComponentQuery.query('[itemId=fsgrados]')[0].hide();
 //			Ext.ComponentQuery.query('[itemId=btnGuardar]')[0].hide();
@@ -60,21 +50,21 @@ Ext.define('EducareV2.controller.MainController',{
         	//Ext.ComponentQuery.query('[itemId=gradosWindow]')[0].setSize(330,300);
 			//gradosWindow.setSize(330,200);
 			Ext.ComponentQuery.query('[itemId=mainContainer]')[0].add(gradosWindow);
-			Ext.ComponentQuery.query('gradosgrid')[0].getStore().load({
-				scope: this,
-			    callback: function(records, operation, success) {
-			    	console.log(records);
-			        console.log(operation);
-			        console.log(success);
-			    	if(success) {
-			    		var jsonResponse = Ext.decode(operation.response.responseText);
-			    		if(jsonResponse.tipo == -1) {
-			    			//history.go(-(history.length - 1));
-			    			//window.location.replace('/portalEducare');
-			    		}
-			    	}
-			    }
-			});
+//			Ext.ComponentQuery.query('gradosgrid')[0].getStore().load({
+//				scope: this,
+//			    callback: function(records, operation, success) {
+//			    	console.log(records);
+//			        console.log(operation);
+//			        console.log(success);
+//			    	if(success) {
+//			    		var jsonResponse = Ext.decode(operation.response.responseText);
+//			    		if(jsonResponse.tipo == -1) {
+//			    			//history.go(-(history.length - 1));
+//			    			//window.location.replace('/portalEducare');
+//			    		}
+//			    	}
+//			    }
+//			});
 			gradosWindow.show();
 		}
 	},

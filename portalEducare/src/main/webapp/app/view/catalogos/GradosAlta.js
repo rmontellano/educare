@@ -3,8 +3,8 @@ Ext.define('EducareV2.view.catalogos.GradosAlta',{
 	xtype: 'gradosAlta',
 	itemId: 'gradosAlta',
 	border: false,
-	bodyPagging: 20,
-	//width: '100%',
+	bodyPagging: 10,
+	width: '100%',
 	requires: 'Ext.form.FieldContainer',
 	fieldDefaults: {
 		labelAlign: 'center',
@@ -13,6 +13,43 @@ Ext.define('EducareV2.view.catalogos.GradosAlta',{
 		bodyStyle: 'padding:2px',
 		margins: '3'
 	},
+	
+	dockedItems: [{
+		dock: 'top',
+		//cls: '',
+		xtype: 'toolbar',
+		pack: 'end',
+		//heigth: 10,
+		items: [{                         
+			xtype: 'button',
+			text: 'Agregar Grado',
+			itemId: 'btnAgregarGrados',
+			icon: 'images/icons/nuevo.png',
+			margin: '0px 0px 0px 10px',
+			scale: 'small'	
+		}, {
+			xtype: 'tbspacer',
+			width: 125
+		}, {                         
+			xtype: 'button',
+			text: 'Limpiar Grado',
+			itemId: 'btnLimpiarGrados',
+			icon: 'images/icons/limpiar.png',
+			margin: '0px 0px 0px 10px',
+			scale: 'small'	
+		}, {
+			xtype: 'tbspacer',
+			width: 125
+		}, {                         
+			xtype: 'button',
+			text: 'Guardar Grado',
+			itemId: 'btnGuardarGrados',
+			icon: 'images/icons/guardar.png',
+			margin: '0px 0px 0px 10px',
+			scale: 'small'	
+		}]
+	}],
+	
 	config: {
 		items: [{
 			xtype: 'fieldset',
@@ -27,21 +64,21 @@ Ext.define('EducareV2.view.catalogos.GradosAlta',{
 				},
 				items: [{
 					     xtype: 'tbspacer',
-					     width: 30
+					     width: 80
 				   }, {
 						xtype: 'label',
 						text:'Sección',
 						fieldStyle: 'font-size:0.8em;background: #E6E6E6; font-weight:bold;'
 					}, {
 						xtype: 'tbspacer',
-						width: 70
+						width: 200
 					}, {
 						xtype: 'label',
-						text:'Nombre',
+						text:'Grado',
 						fieldStyle: 'font-size:0.8em;background: #E6E6E6; font-weight:bold;'
 					}, {
 						xtype: 'tbspacer',
-						width: 85
+						width: 125
 					}, {
 						xtype: 'label',
 						text:'Último Grado Escolar',
@@ -56,7 +93,7 @@ Ext.define('EducareV2.view.catalogos.GradosAlta',{
 				items: [{
 					xtype: 'combobox',
 					itemId: 'cbbSeccionGrado',
-					width: 100,
+					width: 200,
 					//store: '',
 					//displayField: '',
 					//queryMode: 'local',
@@ -64,14 +101,20 @@ Ext.define('EducareV2.view.catalogos.GradosAlta',{
 					editable: false,
 					emptyText: 'Elegir...'
 				}, {
+					xtype: 'tbspacer',
+					width: 50
+				}, {
 					xtype: 'textfield',
 					fieldStyle: 'font-size:0.8em;background: #E6E6E6; font-weight:bold;',
 					width: 150,
 					itemId: 'txfNombreGrado'
 				}, {
+					xtype: 'tbspacer',
+					width: 50
+				}, {
 					xtype: 'textfield',
 					fieldStyle: 'font-size:0.8em;background: #E6E6E6; font-weight:bold;',
-					width: 120,
+					width: 150,
 					itemId: 'txfUltimoGrado'
 		        }]
 			   

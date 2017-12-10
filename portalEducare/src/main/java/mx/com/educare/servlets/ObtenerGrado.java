@@ -11,15 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import mx.com.educare.comun.GUIDGenerator;
 import mx.com.educare.core.EducareCatalogosNegocio;
-import mx.com.educare.core.security.CoreLogin;
 import mx.com.educare.dto.Grado;
-import mx.com.educare.dto.GradoRespuesta;
-import mx.com.educare.dto.auth.Auth;
-import mx.com.educare.dto.util.EncabezadoRespuesta;
 
 import org.apache.log4j.Logger;
 
-import com.google.gson.Gson;
 
 /**
  * Servlet implementation class ObtenerGrado
@@ -70,66 +65,24 @@ public class ObtenerGrado extends HttpServlet {
 
 		response.setContentType("application/json;charset=UTF-8");
 		PrintWriter out = response.getWriter();
-		CoreLogin coreL = new CoreLogin();
-		Gson gson = new Gson();
-		Auth respuesta = new Auth();
 		String uid = "";
 		EducareCatalogosNegocio admin = new EducareCatalogosNegocio();
 		Grado grado = new Grado();
-		GradoRespuesta respuestaGrado = null;
+		String respuestaGrado = null;
 		uid = GUIDGenerator.generateGUID(ObtenerGrado.class.getSimpleName());
 
-		String servicio = request.getParameter("s");
-		respuesta =  coreL.validaToken(request.getParameter("q"), uid);
+		String servicio = request.getParameter("operacion");
 
-		if (respuesta.getHeader().isStatus()) {
-
-			if (servicio != null) {
-
-				if (servicio.equals("btg")) {
-					respuestaGrado = admin.buscarTodosGrado(uid);
-				} else if (servicio.equals("ig")) {
-
-					if ((request.getParameter("idSeccion") != null || "".equals(request.getParameter("idSeccion")))
-							&& (request.getParameter("numGrado") != null || "".equals(request.getParameter("numGrado")))
-							&& (request.getParameter("ultimoGrado") != null || "".equals(request.getParameter("ultimoGrado")))) {
-
-						grado.setIdSeccion(Integer.parseInt(request.getParameter("idSeccion")));
-						grado.setNumGrado(Integer.parseInt(request.getParameter("numGrado")));
-						grado.setUltimoGrado(Integer.parseInt(request.getParameter("ultimoGrado")));
-
-						respuestaGrado = admin.insertarGrado(uid, grado);
-					} else {
-						respuesta.setHeader(new EncabezadoRespuesta("Petición invalida.", false));
-					}
-				} else if (servicio.equals("eg")) {
-					if ((request.getParameter("idGrado") != null || "".equals(request.getParameter("idGrado")))) {
-
-						respuestaGrado = admin.eliminarGrado(uid, Integer.parseInt(request.getParameter("idGrado")));
-					} else {
-						respuesta.setHeader(new EncabezadoRespuesta("Petición invalida.", false));
-					}
-				} else if (servicio.equals("ag")) {
-
-					if ((request.getParameter("idSeccion") != null || "".equals(request.getParameter("idSeccion")))
-							&& (request.getParameter("numGrado") != null || "".equals(request.getParameter("numGrado")))
-							&& (request.getParameter("ultimoGrado") != null || "".equals(request.getParameter("ultimoGrado")))) {
-
-						grado.setIdSeccion(Integer.parseInt(request.getParameter("idSeccion")));
-						grado.setNumGrado(Integer.parseInt(request.getParameter("numGrado")));
-						grado.setUltimoGrado(Integer.parseInt(request.getParameter("ultimoGrado")));
-
-						respuestaGrado = admin.actualizarGrado(uid, grado);
-					}  else {
-						respuesta.setHeader(new EncabezadoRespuesta("Petición invalida.", false));
-					}
-				}
-			} else {
-				respuesta.setHeader(new EncabezadoRespuesta("Petición invalida.", false));
-			}
-			out.print(gson.toJson(respuestaGrado));
-		} else {
-			out.print(gson.toJson(respuesta));
+        if (servicio != null) {
+          if (servicio.equals("catalogoGrado")) {
+			  grado.setTipoBusqueda("SI");
+			  respuestaGrado = admin.buscarGrado(uid, grado);
+		   }  
 		}
+        if (servicio == null || respuestaGrado == null) {
+        	respuestaGrado = "{ \"header\": {	\"status\": false,	"
+					+ "\"mensaje\": \"La petición viene nula\"	}}";
+        }
+	 out.print(respuestaGrado);
 	}
 }

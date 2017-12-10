@@ -6,7 +6,7 @@ Ext.application({
         'MainController'
     ],
 	stores: [
-		'catalogos.Grados'
+		'StoreGrados'
     ],
 	model:  [
     ],

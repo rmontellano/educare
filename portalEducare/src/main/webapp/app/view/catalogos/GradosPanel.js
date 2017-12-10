@@ -13,21 +13,6 @@ Ext.define('EducareV2.view.catalogos.GradosPanel',{
 		margins: '3'
 	},
 	//title: 'Grados',
-	dockedItems: [{
-		dock: 'bottom',
-		//cls: '',
-		xtype: 'toolbar',
-		pack: 'end',
-		//heigth: 10,
-		items: [{                         
-			xtype: 'button',
-			text: 'Agregar Grado',
-			itemId: 'btnAgregarGrados',
-			icon: 'images/icons/nuevo.png',
-			margin: '0px 0px 0px 10px',
-			scale: 'small'	
-		}]
-	}],
 	config: {
 		items: [{
 			xtype: 'fieldset',
@@ -39,16 +24,20 @@ Ext.define('EducareV2.view.catalogos.GradosPanel',{
 				xtype: 'combobox',
 				fieldLabel: 'Sección',
 				itemId: 'cbbSeccion',
-				//store: '',
-				//displayField: '',
-				//queryMode: 'local',
-				//valueField: '',
-				editable: false,
+				width: 270,
+				store: 'StoreGrados',
+				queryMode: 'local',
+				allowBlank: false,
+				displayField: 'descripcion',
+				valueField: 'idSeccion',
+//				editable: false,
+				fieldStyle: 'font-size:10px;color:#213DA9;font-weight:bold;',
 				emptyText: 'Elegir...'
 			},{
 				xtype: 'numberfield',
 				fieldLabel: 'Grado',
 				itemId: 'numNombreGrado',
+				width: 200,
 				maxValue: 6,
 				minValue: 1,
 				//store: '',
@@ -65,6 +54,7 @@ Ext.define('EducareV2.view.catalogos.GradosPanel',{
 					xtype: 'combobox',
 					fieldLabel: 'Último Grado Escolar',
 					itemId: 'cbbUltimoGradoEscolar',
+					width: 200,
 					//store: '',
 					//displayField: '',
 					//queryMode: 'local',
