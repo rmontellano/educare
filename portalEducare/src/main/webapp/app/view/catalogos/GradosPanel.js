@@ -23,7 +23,7 @@ Ext.define('EducareV2.view.catalogos.GradosPanel',{
 			items: [{
 				xtype: 'combobox',
 				fieldLabel: 'Sección',
-				itemId: 'cbbSeccion',
+				itemId: 'cbbSeccion_Grado',
 				width: 270,
 				store: 'StoreGrados',
 				queryMode: 'local',
@@ -33,18 +33,18 @@ Ext.define('EducareV2.view.catalogos.GradosPanel',{
 //				editable: false,
 				fieldStyle: 'font-size:10px;color:#213DA9;font-weight:bold;',
 				emptyText: 'Elegir...'
-			},{
-				xtype: 'numberfield',
+			}, {
+				xtype: 'combobox',
 				fieldLabel: 'Grado',
-				itemId: 'numNombreGrado',
-				width: 200,
-				maxValue: 6,
-				minValue: 1,
-				//store: '',
-				//displayField: '',
-				//queryMode: 'local',
-				//valueField: '',
-				editable: false,
+				itemId: 'cbbGrado_Grado',
+				width: 270,
+				store: 'StoreGrados',
+				queryMode: 'local',
+				allowBlank: false,
+				displayField: 'numGrado',
+				valueField: 'idGrado',
+//				editable: false,
+				fieldStyle: 'font-size:10px;color:#213DA9;font-weight:bold;',
 				emptyText: 'Elegir...'
 			},{
 				xtype: 'container',
@@ -53,13 +53,15 @@ Ext.define('EducareV2.view.catalogos.GradosPanel',{
 				items: [{
 					xtype: 'combobox',
 					fieldLabel: 'Último Grado Escolar',
-					itemId: 'cbbUltimoGradoEscolar',
-					width: 200,
-					//store: '',
-					//displayField: '',
-					//queryMode: 'local',
-					//valueField: '',
-					editable: false,
+					itemId: 'cbbUltimoGradoEscolar_Grado',
+					width: 270,
+					store: 'StoreGrados',
+					queryMode: 'local',
+					allowBlank: false,
+					displayField: 'ultimoGrado',
+					valueField: 'idGrado',
+//					editable: false,
+					fieldStyle: 'font-size:10px;color:#213DA9;font-weight:bold;',
 					emptyText: 'Elegir...'
 				},{
 					xtype: 'button',

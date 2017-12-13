@@ -23,14 +23,14 @@ Ext.define('EducareV2.model.ModelGrados',{
 			
 			proxy: {
 		        type: 'ajax',
-		        url: '/portalEducare/ObtenerGrado?q=31323334335l31353030333437373633&operacion=catalogoGrado',
+		        url: '/portalEducare/ObtenerGrado',
 		        timeout: 30000,
 		        reader: {
 		            type: 'json',
 		            root: 'listGrado'
 		        },
 		        actionMethods: {
-		            read: 'GET'
+		            read: 'POST'
 		        }
 		    }
 });

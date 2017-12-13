@@ -1,3 +1,5 @@
+var storeGradosDatos;
+
 Ext.define('EducareV2.controller.MainController',{
 	extend: 'Ext.app.Controller',
 	stores: ['ParametrosUrl', 'StoreGrados'],
@@ -15,7 +17,30 @@ Ext.define('EducareV2.controller.MainController',{
 			'#btnGrados':{
 				click: this.catalogoGrados
 			}
+		//,
+		//	 'button[itemId=btnGuardarGrados]': {
+	     //           click: this.onClickGuardarSolicitud
+	     //   }
 		});
+	},
+	onLaunch: function() {
+		//cbbSeccion
+        this.getStoreGradosStore().load({
+            async: true,
+            params: {
+            	'q':'31323334335l31353030333437373633',
+            	'operacion': 'catalogoGrado'
+            },
+            timeout: 120000,
+            callback: function(th,op,sc){
+                console.info('cbbSeccion --->')
+                storeGradosDatos = th;
+                console.info(storeGradosDatos);
+            },
+            failure: function(){
+                console.error('Ocurrio un error al realizar la consulta de sección.');
+            }
+        });
 	},
 	catalogoGrados: function(){
 		if(Ext.ComponentQuery.query('[itemId=gradosWindow]')[0] == undefined) {
@@ -38,10 +63,7 @@ Ext.define('EducareV2.controller.MainController',{
 	                xtype: 'gradosgrid'
 	            }]
 	        });	
-			//Secciones
-		    Ext.ComponentQuery.query('combobox[itemId=cbbSeccion]')[0].setReadOnly(true);
-		    //Carga de secciones
-		    Ext.ComponentQuery.query('combobox[itemId=cbbSeccion]')[0].getStore().load();
+			
 			//Ext.ComponentQuery.query('gradospanel')[0].setSize(330,40);
 			//Ext.ComponentQuery.query('[itemId=fsgrados]')[0].hide();
 //			Ext.ComponentQuery.query('[itemId=btnGuardar]')[0].hide();
