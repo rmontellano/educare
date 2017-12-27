@@ -1,8 +1,8 @@
-var storeGradosDatos;
+var storeGradosDatos, storeSeccionDatos, storeUltimosGradosDatos;
 
 Ext.define('EducareV2.controller.MainController',{
 	extend: 'Ext.app.Controller',
-	stores: ['ParametrosUrl', 'StoreGrados'],
+	stores: ['ParametrosUrl', 'StoreGrados', 'StoreSecciones', 'StoreUltimoGrado'],
 	requires: [
 		'EducareV2.view.catalogos.GradosGrid',
 		'EducareV2.view.catalogos.GradosPanel',
@@ -16,31 +16,65 @@ Ext.define('EducareV2.controller.MainController',{
 		this.control({
 			'#btnGrados':{
 				click: this.catalogoGrados
-			}
-		//,
-		//	 'button[itemId=btnGuardarGrados]': {
-	     //           click: this.onClickGuardarSolicitud
-	     //   }
+			},
+			 'button[itemId=btnBuscarGrados]': {
+	                click: this.onClickBuscarGrados
+	        }
 		});
 	},
 	onLaunch: function() {
 		//cbbSeccion
+        this.getStoreSeccionesStore().load({
+            async: true,
+            params: {
+            	'q':'31323334335l31353030333437373633',
+            	'operacion': 'llenarComboSeccion'
+            },
+            timeout: 120000,
+            callback: function(th,op,sc){
+                console.info('storeSeccionDatos --->')
+                storeSeccionDatos = th;
+                console.info(storeSeccionDatos);
+            },
+            failure: function(){
+                console.error('Ocurrio un error al realizar la consulta de secciones.');
+            }
+        });
+        
         this.getStoreGradosStore().load({
             async: true,
             params: {
             	'q':'31323334335l31353030333437373633',
-            	'operacion': 'catalogoGrado'
+            	'operacion': 'llenarComboGrado'
             },
             timeout: 120000,
             callback: function(th,op,sc){
-                console.info('cbbSeccion --->')
+                console.info('storeGradosDatos --->')
                 storeGradosDatos = th;
                 console.info(storeGradosDatos);
             },
             failure: function(){
-                console.error('Ocurrio un error al realizar la consulta de sección.');
+                console.error('Ocurrio un error al realizar la consulta de grados.');
             }
         });
+        
+        this.getStoreUltimoGradoStore().load({
+            async: true,
+            params: {
+            	'q':'31323334335l31353030333437373633',
+            	'operacion': 'llenarComboUltimoGrado'
+            },
+            timeout: 120000,
+            callback: function(th,op,sc){
+                console.info('storeUltimosGradosDatos --->')
+                storeUltimosGradosDatos = th;
+                console.info(storeUltimosGradosDatos);
+            },
+            failure: function(){
+                console.error('Ocurrio un error al realizar la consulta de ultimos grados.');
+            }
+        });
+        
 	},
 	catalogoGrados: function(){
 		if(Ext.ComponentQuery.query('[itemId=gradosWindow]')[0] == undefined) {
@@ -90,6 +124,50 @@ Ext.define('EducareV2.controller.MainController',{
 			gradosWindow.show();
 		}
 	},
+	
+	onClickBuscarGrados: function() {
+		 console.info('>>>>> Buscar Grado <<<<<<');
+		var mask = this.mostrarMascara('Buscando Grados');
+		 var idSeccion='';
+         if(Ext.ComponentQuery.query('combobox[itemId=cbbSeccion_Grado]')[0] != undefined)
+        	 idSeccion = Ext.ComponentQuery.query('combobox[itemId=cbbSeccion_Grado]')[0].getValue();
+         var idGrado='';
+         if(Ext.ComponentQuery.query('combobox[itemId=cbbGrado_Grado]')[0] != undefined)
+        	 idGrado = Ext.ComponentQuery.query('combobox[itemId=cbbGrado_Grado]')[0].getValue();
+         var idUltimoGrado='';
+         if(Ext.ComponentQuery.query('combobox[itemId=cbbUltimoGradoEscolar_Grado]')[0] != undefined)
+        	 idUltimoGrado = Ext.ComponentQuery.query('combobox[itemId=cbbUltimoGradoEscolar_Grado]')[0].getValue();
+         console.info('idSeccion: ' + idSeccion);
+         console.info('idGrado: ' + idGrado);
+         console.info('idUltimoGrado: ' + idUltimoGrado);
+         
+         Ext.Ajax.request({
+             params: {
+                 'idSeccion': idSeccion,
+                 'idGrado': idGrado,
+                 'idUltimoGrado': idUltimoGrado,
+                 'q':'31323334335l31353030333437373633',
+             	  'operacion': 'catalogoBusquedaGrado'
+             },
+             timeout: 900000,
+             url: '/portalEducare/ObtenerGrado',
+             method: 'POST',
+             scope: this,
+             success: function(th,opt,suc){
+                 console.log(th);
+                 //Cambio de Xml a Json
+                  var guardarXmlResponse = Ext.decode(th.responseText);
+                 console.info('guardarXmlResponse:');
+                 console.info(guardarXmlResponse);
+                 mask.hide();
+             },
+             failure: function(th,opt,suc){
+                 mask.hide();
+             }
+         });      
+		
+	},
+	
 	mostrarMascara : function (msg) {
         var mensaje =  '<br/><br/><br/> <b> ' + msg + '...</b> <br>  Espere por favor.';
         var myMask = new Ext.LoadMask( Ext.getBody(), {

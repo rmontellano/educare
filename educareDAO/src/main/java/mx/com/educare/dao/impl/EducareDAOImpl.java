@@ -181,10 +181,8 @@ public class EducareDAOImpl implements EducareDAO {
 				sesionNTx = FabricaDeConexiones.obtenerSesionNTx();
 	
 				final java.util.HashMap<String, Object> parametros = new HashMap<String, Object>();
-				parametros.put("todos", grado.getTipoBusqueda());
-				parametros.put("idGrado", grado.getIdGrado());
-				parametros.put("idSeccion", grado.getIdSeccion());
-				parametros.put("numGrado", grado.getNumGrado());
+				parametros.put("descripcion", grado.getDescripcion());
+				parametros.put("numGrado", grado.getIdGrado());
 				parametros.put("ultimoGrado", grado.getUltimoGrado());
 				LogHandler.info(uid, this.getClass(), "parametros enviados: " + parametros);
 				
@@ -205,6 +203,83 @@ public class EducareDAOImpl implements EducareDAO {
 	    }
 
 		return listaGrados;
+	}
+	
+	/**
+	 * Metodo de realizar la busqueda de secciones
+	 * @param uid Identificador Unico
+	 * @param grado Objeto de tipo grado
+	 * @return Lista de tipo grado
+	 */
+	public List<Grado> llenarComboSeccion(String uid) throws EducareException {
+		LogHandler.info(uid, this.getClass(), "Entro a llenarComboSeccion ");
+		SqlSession sesionNTx = null;
+		List<Grado> listaSecciones = null;
+		try {		
+				sesionNTx = FabricaDeConexiones.obtenerSesionNTx();			
+				listaSecciones = sesionNTx.selectList("MapperEducareCatalogos.llenarComboSeccion");
+				LogHandler.info(uid, this.getClass(), "listaSecciones: " + listaSecciones);
+				if (listaSecciones.isEmpty()) {
+					throw new Exception("No hay secciones a mostrar");
+				}		
+		} catch (Exception ex) {
+			LogHandler.error(uid, this.getClass(), ex.getMessage(), ex);
+	    } finally {
+	    	FabricaDeConexiones.close(sesionNTx);
+	    }
+		return listaSecciones;
+	}
+	
+	/**
+	 * Metodo de realizar la busqueda de grados
+	 * @param uid Identificador Unico
+	 * @param grado Objeto de tipo grado
+	 * @return Lista de tipo grado
+	 */
+	public List<Grado> llenarComboGrado(String uid) throws EducareException {
+		LogHandler.info(uid, this.getClass(), "Entro a llenarComboGrado ");
+		SqlSession sesionNTx = null;
+		List<Grado> listaGrados = null;
+		try {	
+				sesionNTx = FabricaDeConexiones.obtenerSesionNTx();	
+				listaGrados = sesionNTx.selectList("MapperEducareCatalogos.llenarComboGrado");
+				LogHandler.info(uid, this.getClass(), "listaGrados: " + listaGrados);
+	
+				if (listaGrados.isEmpty()) {
+					throw new Exception("No hay grados a mostrar");
+				}		
+		} catch (Exception ex) {
+			LogHandler.error(uid, this.getClass(), ex.getMessage(), ex);
+	    } finally {
+	    	FabricaDeConexiones.close(sesionNTx);
+	    }
+		return listaGrados;
+	}
+	
+	/**
+	 * Metodo de realizar la busqueda de la ultimo grado
+	 * @param uid Identificador Unico
+	 * @param grado Objeto de tipo grado
+	 * @return Lista de tipo grado
+	 */
+	public List<Grado> llenarComboUltimoGrado(String uid) throws EducareException {
+		LogHandler.info(uid, this.getClass(), "Entro a llenarComboUltimoGrado ");
+		SqlSession sesionNTx = null;
+		List<Grado> listaUltimoGrado = null;
+		try {	
+				sesionNTx = FabricaDeConexiones.obtenerSesionNTx();	
+				listaUltimoGrado = sesionNTx.selectList("MapperEducareCatalogos.llenarComboUltimoGrado");
+				LogHandler.info(uid, this.getClass(), "listaUltimoGrado: " + listaUltimoGrado);
+	
+				if (listaUltimoGrado.isEmpty()) {
+					throw new Exception("No hay ultimos grados a mostrar");
+				}		
+		} catch (Exception ex) {
+			LogHandler.error(uid, this.getClass(), ex.getMessage(), ex);
+	    } finally {
+	    	FabricaDeConexiones.close(sesionNTx);
+	    }
+		return listaUltimoGrado;
 	}
 
 /***************************************TERMINAN OPERACIONES DEL CATALOGO DE GRADO *******************************************/

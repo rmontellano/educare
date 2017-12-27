@@ -1,12 +1,12 @@
-Ext.define('EducareV2.model.ModelGrados',{
+Ext.define('EducareV2.model.ModelUltimoGrado',{
 	extend: 'Ext.data.Model',
 
 	fields: [{
 				name:'idGrado',
 				type:'int'
 			},{
-				name:'numGrado',
-				type:'int'
+				name:'descripcion',
+				type:'string'
 			}],
 			
 			proxy: {

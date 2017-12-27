@@ -29,6 +29,7 @@ import mx.com.educare.dto.PuestoRespuesta;
 import mx.com.educare.dto.util.EncabezadoRespuesta;
 import mx.com.educare.dto.util.RespuestaGrado;
 import mx.com.educare.log.LogHandler;
+import mx.com.educare.util.ValidadorReglas;
 import mx.com.educare.util.excepciones.EducareException;
 
 /**
@@ -41,6 +42,113 @@ public class EducareCatalogosNegocio {
 	Gson gson = new Gson();
 	/**conectarse con el negocio*/
 	EducareDAOFactory dao = new EducareDAOFactory();
+	
+	/**
+	 * Metodo de realizar la busqueda de secciones
+	 * @param uid Identificador Unico
+	 * @param grado Objeto de tipo grado
+	 * @return Lista de tipo grado
+	 */
+	public String llenarComboSeccion(String uid) {
+		LogHandler.info(uid, getClass(), "Entrada al metodo llenarComboSeccion: " + uid);
+		RespuestaGrado respuestaGrado = new RespuestaGrado();
+		respuestaGrado.setHeader(new EncabezadoRespuesta());
+		respuestaGrado.getHeader().setStatus(true);
+		String respuesta = null;
+		EducareDAO core = null;
+		List<Grado> listSeccion = null;
+		try {
+			core = dao.obtenerInstanciaDao();
+			listSeccion = core.llenarComboSeccion(uid);
+			LogHandler.info(uid, getClass(), "listSeccion: " + listSeccion);
+			if (listSeccion != null && listSeccion.size() > 0) {			
+				respuestaGrado.setListGrado(listSeccion);		
+			} else {
+				LogHandler.info(uid, getClass(), "la consulta no arrojo secciones");
+				respuestaGrado.getHeader().setStatus(false);
+				respuestaGrado.getHeader().setMensaje("La consulta no arrojo secciones");
+			}
+		} catch (Exception ex) {
+			LogHandler.error(uid, getClass(), "Error al llenarComboSeccion : " + ex.getMessage(), ex);
+			respuestaGrado.getHeader().setStatus(false);
+			respuestaGrado.getHeader().setMensaje(ex.getMessage());
+		}
+		respuesta = gson.toJson(respuestaGrado);
+		LogHandler.info(uid, getClass(), "Salida del  metodo llenarComboSeccion: " + respuesta);
+		return respuesta;	
+	}
+	
+	/**
+	 * Metodo de realizar la busqueda de secciones
+	 * @param uid Identificador Unico
+	 * @param grado Objeto de tipo grado
+	 * @return Lista de tipo grado
+	 */
+	public String llenarComboGrado(String uid) {
+		LogHandler.info(uid, getClass(), "Entrada al metodo llenarComboGrado: " + uid);
+		RespuestaGrado respuestaGrado = new RespuestaGrado();
+		respuestaGrado.setHeader(new EncabezadoRespuesta());
+		respuestaGrado.getHeader().setStatus(true);
+		String respuesta = null;
+		EducareDAO core = null;
+		List<Grado> listGrado = null;
+		try {
+			core = dao.obtenerInstanciaDao();
+			listGrado = core.llenarComboGrado(uid);
+			LogHandler.info(uid, getClass(), "listGrado: " + listGrado);
+			if (listGrado != null && listGrado.size() > 0) {			
+				respuestaGrado.setListGrado(listGrado);		
+			} else {
+				LogHandler.info(uid, getClass(), "la consulta no arrojo grados");
+				respuestaGrado.getHeader().setStatus(false);
+				respuestaGrado.getHeader().setMensaje("La consulta no arrojo grados");
+			}
+		} catch (Exception ex) {
+			LogHandler.error(uid, getClass(), "Error al llenarComboSeccion : " + ex.getMessage(), ex);
+			respuestaGrado.getHeader().setStatus(false);
+			respuestaGrado.getHeader().setMensaje(ex.getMessage());
+		}
+		respuesta = gson.toJson(respuestaGrado);
+		LogHandler.info(uid, getClass(), "Salida del  metodo llenarComboGrado: " + respuesta);
+		return respuesta;	
+	}
+	
+	/**
+	 * Metodo que se utilizar para obtener todos los grados por columna
+	 * @param uid Identificador Unico
+	 * @param grado Objeto de tipo grado
+	 * @return Lista de tipo grado
+	 */
+	public String llenarComboUltimoGrado(String uid) {
+		LogHandler.info(uid, getClass(), "Entrada al metodo llenarComboUltimoGrado: " + uid);
+		RespuestaGrado respuestaGrado = new RespuestaGrado();
+		respuestaGrado.setHeader(new EncabezadoRespuesta());
+		respuestaGrado.getHeader().setStatus(true);
+		String respuesta = null;
+		EducareDAO core = null;
+		List<Grado> listUltimoGrado = null;
+
+		try {
+			core = dao.obtenerInstanciaDao();
+			listUltimoGrado = core.llenarComboUltimoGrado(uid);
+			if (listUltimoGrado != null && listUltimoGrado.size() > 0) {
+				listUltimoGrado = ValidadorReglas.comboUltimoGrado(uid, listUltimoGrado);
+				LogHandler.info(uid, getClass(), "listUltimoGrado: " + listUltimoGrado);
+				respuestaGrado.setListGrado(listUltimoGrado);	
+			} else {
+				LogHandler.info(uid, getClass(), "la consulta no arrojo ultimo grado  ");
+				respuestaGrado.getHeader().setStatus(false);
+				respuestaGrado.getHeader().setMensaje("La consulta no arrojo ultimo grado");
+			}
+		} catch (Exception ex) {
+			LogHandler.error(uid, getClass(), "Error al consultar : " + ex.getMessage(), ex);
+			respuestaGrado.getHeader().setStatus(false);
+			respuestaGrado.getHeader().setMensaje(ex.getMessage());
+		}
+		respuesta = gson.toJson(respuestaGrado);
+		LogHandler.info(uid, getClass(), "Salida del  metodo llenarComboUltimoGrado: " + respuesta);
+		return respuesta;
+	}
 
 	/**
 	 * Metodo que se utilizar para obtener todos los grados por columna

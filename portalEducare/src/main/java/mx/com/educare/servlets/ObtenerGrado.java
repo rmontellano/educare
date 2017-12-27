@@ -10,8 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mx.com.educare.comun.GUIDGenerator;
+import mx.com.educare.constantes.Constantes;
 import mx.com.educare.core.EducareCatalogosNegocio;
 import mx.com.educare.dto.Grado;
+import mx.com.educare.util.ValidadorReglas;
 
 import org.apache.log4j.Logger;
 
@@ -74,10 +76,27 @@ public class ObtenerGrado extends HttpServlet {
 		String servicio = request.getParameter("operacion");
 
         if (servicio != null) {
-          if (servicio.equals("catalogoGrado")) {
-			  grado.setTipoBusqueda("SI");
-			  respuestaGrado = admin.buscarGrado(uid, grado);
-		   }  
+          if (servicio.equals("llenarComboSeccion")) {
+			  respuestaGrado = admin.llenarComboSeccion(uid);
+		   } else if (servicio.equals("llenarComboGrado")) {
+			   respuestaGrado = admin.llenarComboGrado(uid);
+		   } else if (servicio.equals("llenarComboUltimoGrado")) {
+			   respuestaGrado = admin.llenarComboUltimoGrado(uid);    
+           } else if (servicio.equals("catalogoBusquedaGrado")) {
+        	  String descripcion = request.getParameter("idSeccion");
+			  grado.setDescripcion(descripcion); 
+			  grado.setIdGrado(Integer.parseInt(request.getParameter("idGrado")));
+			  
+			  if (request.getParameter("idUltimoGrado") != null) {
+				  if (request.getParameter("idUltimoGrado").equals(Constantes.SI.getString())) {
+					  grado.setUltimoGrado(1); 
+				  } else {
+					  grado.setUltimoGrado(null); 
+				  }
+			  } 
+			   respuestaGrado = admin.buscarGrado(uid, grado);
+			   
+		   }
 		}
         if (servicio == null || respuestaGrado == null) {
         	respuestaGrado = "{ \"header\": {	\"status\": false,	"

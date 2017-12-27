@@ -8,7 +8,7 @@
 
 		<result column="idgrado"  property="idGrado" />
 		<result column="idseccion" property="idSeccion"  />
-		<result column="nomgrado" property="nomGrado"  />
+		<result column="numgrado" property="numGrado"  />
 		<result column="ultimogrado" property="ultimoGrado"  />
 		<result column="status" property="status" />
 		<result column="descripcion" property="descripcion" />
@@ -158,24 +158,39 @@
 
 	<!-- Comienza Grado  -->
 	
+	<select id="llenarComboSeccion"  resultMap="gradoMap">
+	   SELECT distinct  o.descripcion
+	   FROM grado g
+	   INNER JOIN opcioncat o ON g.idseccion = o.idopcioncat
+	   WHERE g.status != 0
+	</select>
+	
+	<select id="llenarComboGrado" resultMap="gradoMap">
+	  SELECT distinct  g.numgrado
+	  FROM grado g
+	  WHERE g.status != 0
+	</select>
+	
+	<select id="llenarComboUltimoGrado" resultMap="gradoMap">
+	 SELECT distinct  g.ultimogrado
+		FROM grado g
+		WHERE g.status != 0
+	</select>
+	
 	<select id="obtenerGrado" parameterType="java.util.HashMap" resultMap="gradoMap">
-		 SELECT g.idgrado, g.idseccion, g.numgrado, g.ultimogrado, o.descripcion FROM grado g
+		 SELECT g.idgrado, g.idseccion, g.numgrado, g.ultimogrado, o.descripcion, g.status 
+		 FROM grado g
          INNER JOIN opcioncat o ON g.idseccion = o.idopcioncat
-		 <if test="todos == 'NO'">
-		     WHERE 
-		     <if test="idGrado != 0">
-		       idgrado = #{idGrado}
+		 WHERE g.status != 0
+		     <if test="descripcion != null">
+		        AND o.descripcion = #{descripcion}
 		     </if>  
-			<if test="idSeccion != 0">
-				AND idseccion = #{idSeccion}
+			<if test="numGrado != null and numGrado != 0">
+				AND g.numgrado = #{numGrado}
 			</if>
-			<if test="nomGrado != 0">
-				AND numgrado = #{numGrado}
+			<if test="ultimoGrado != null">
+				AND g.ultimogrado = #{ultimoGrado}
 			</if>
-			<if test="ultimoGrado != 0">
-				AND ultimogrado = #{ultimoGrado}
-			</if>
-		 </if>
 		ORDER BY g.idseccion, g.numgrado
 	</select>
 	

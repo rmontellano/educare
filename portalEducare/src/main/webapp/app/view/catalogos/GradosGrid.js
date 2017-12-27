@@ -8,7 +8,7 @@ Ext.define('EducareV2.view.catalogos.GradosGrid',{
 	flex: 1,
 	height: 350,
 	width: '100%',
-	//store: 'catalogos.Grados',
+//	store: 'StoreBusquedaGrado',
 	plugins: [
         Ext.create('Ext.grid.plugin.CellEditing', {
             clicksToEdit: 2,

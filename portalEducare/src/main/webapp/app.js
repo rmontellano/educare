@@ -6,7 +6,9 @@ Ext.application({
         'MainController'
     ],
 	stores: [
-		'StoreGrados'
+		'StoreGrados',
+		'StoreSecciones',
+		'StoreUltimoGrado'
     ],
 	model:  [
     ],

@@ -35,7 +35,7 @@ public interface EducareDAO {
 	 * @param grado Objeto de tipo grado
 	 * @return GradoRespuesta
 	 */
-	public RespuestaGrado insertarGrado(String uid, Grado grado) throws EducareException;
+	RespuestaGrado insertarGrado(String uid, Grado grado) throws EducareException;
 
 	/**
 	 * Metodo que sirve para actualizar grado
@@ -43,7 +43,7 @@ public interface EducareDAO {
 	 * @param grado Es el Id a buscar
 	 * @return Lista de tipo grado
 	 */
-	public RespuestaGrado actualizarGrado(String uid, Grado grado) throws EducareException;
+	RespuestaGrado actualizarGrado(String uid, Grado grado) throws EducareException;
 
 	/**
  	 * Metodo que se utiliza para eliminar un grado
@@ -51,7 +51,31 @@ public interface EducareDAO {
 	 * @param idGrado Es el Id a buscar
 	 * @return Objeto de tipo grado
 	 */
-	public RespuestaGrado eliminarGrado(String uid, int idGrado) throws EducareException;
+	RespuestaGrado eliminarGrado(String uid, int idGrado) throws EducareException;
+	
+	/**
+	 * Metodo de realizar la busqueda de secciones
+	 * @param uid Identificador Unico
+	 * @param grado Objeto de tipo grado
+	 * @return Lista de tipo grado
+	 */
+	List<Grado> llenarComboSeccion(String uid) throws EducareException;
+	
+	/**
+	 * Metodo de realizar la busqueda de grados
+	 * @param uid Identificador Unico
+	 * @param grado Objeto de tipo grado
+	 * @return Lista de tipo grado
+	 */
+	List<Grado> llenarComboGrado(String uid) throws EducareException;
+	
+	/**
+	 * Metodo de realizar la busqueda de la ultimo grado
+	 * @param uid Identificador Unico
+	 * @param grado Objeto de tipo grado
+	 * @return Lista de tipo grado
+	 */
+	List<Grado> llenarComboUltimoGrado(String uid) throws EducareException;
 
 	/**
 	 * Metodo que se utilizar para obtener todos los grados por columna
