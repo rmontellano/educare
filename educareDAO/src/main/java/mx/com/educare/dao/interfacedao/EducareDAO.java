@@ -59,7 +59,7 @@ public interface EducareDAO {
 	 * @param grado Objeto de tipo grado
 	 * @return Lista de tipo grado
 	 */
-	List<Grado> llenarComboSeccion(String uid) throws EducareException;
+	List<Grado> llenarComboSeccion(String uid) throws Exception;
 	
 	/**
 	 * Metodo de realizar la busqueda de grados
@@ -67,7 +67,7 @@ public interface EducareDAO {
 	 * @param grado Objeto de tipo grado
 	 * @return Lista de tipo grado
 	 */
-	List<Grado> llenarComboGrado(String uid) throws EducareException;
+	List<Grado> llenarComboGrado(String uid) throws Exception;
 	
 	/**
 	 * Metodo de realizar la busqueda de la ultimo grado
@@ -75,7 +75,7 @@ public interface EducareDAO {
 	 * @param grado Objeto de tipo grado
 	 * @return Lista de tipo grado
 	 */
-	List<Grado> llenarComboUltimoGrado(String uid) throws EducareException;
+	List<Grado> llenarComboUltimoGrado(String uid) throws Exception;
 
 	/**
 	 * Metodo que se utilizar para obtener todos los grados por columna

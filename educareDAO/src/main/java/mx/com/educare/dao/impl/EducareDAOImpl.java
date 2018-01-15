@@ -65,7 +65,7 @@ public class EducareDAOImpl implements EducareDAO {
 			parametrosInsert.put( "idSeccion", grado.getIdSeccion());
 			parametrosInsert.put( "numGrado", grado.getNumGrado());
 			parametrosInsert.put( "ultimoGrado", grado.getUltimoGrado());
-			parametrosInsert.put( "status", 0);
+			
 
 			sesionTx = FabricaDeConexiones.obtenerSesionTx();
 			insertar = sesionTx.insert("insertarGrado", parametrosInsert);
@@ -172,7 +172,7 @@ public class EducareDAOImpl implements EducareDAO {
 	 * @return Lista de tipo grado
 	 */
 	public List<Grado> buscarGrado(String uid, Grado grado) throws EducareException {
-		LogHandler.info(uid, this.getClass(), "Entro a ObtieneTodosGrados ");
+		LogHandler.info(uid, this.getClass(), "Entro a buscarGrado ");
 		SqlSession sesionNTx = null;
 		List<Grado> listaGrados = null;
 
@@ -211,7 +211,7 @@ public class EducareDAOImpl implements EducareDAO {
 	 * @param grado Objeto de tipo grado
 	 * @return Lista de tipo grado
 	 */
-	public List<Grado> llenarComboSeccion(String uid) throws EducareException {
+	public List<Grado> llenarComboSeccion(String uid) throws Exception {
 		LogHandler.info(uid, this.getClass(), "Entro a llenarComboSeccion ");
 		SqlSession sesionNTx = null;
 		List<Grado> listaSecciones = null;
@@ -222,9 +222,7 @@ public class EducareDAOImpl implements EducareDAO {
 				if (listaSecciones.isEmpty()) {
 					throw new Exception("No hay secciones a mostrar");
 				}		
-		} catch (Exception ex) {
-			LogHandler.error(uid, this.getClass(), ex.getMessage(), ex);
-	    } finally {
+		} finally {
 	    	FabricaDeConexiones.close(sesionNTx);
 	    }
 		return listaSecciones;
@@ -236,7 +234,7 @@ public class EducareDAOImpl implements EducareDAO {
 	 * @param grado Objeto de tipo grado
 	 * @return Lista de tipo grado
 	 */
-	public List<Grado> llenarComboGrado(String uid) throws EducareException {
+	public List<Grado> llenarComboGrado(String uid) throws Exception {
 		LogHandler.info(uid, this.getClass(), "Entro a llenarComboGrado ");
 		SqlSession sesionNTx = null;
 		List<Grado> listaGrados = null;
@@ -248,9 +246,7 @@ public class EducareDAOImpl implements EducareDAO {
 				if (listaGrados.isEmpty()) {
 					throw new Exception("No hay grados a mostrar");
 				}		
-		} catch (Exception ex) {
-			LogHandler.error(uid, this.getClass(), ex.getMessage(), ex);
-	    } finally {
+		}  finally {
 	    	FabricaDeConexiones.close(sesionNTx);
 	    }
 		return listaGrados;
@@ -262,7 +258,7 @@ public class EducareDAOImpl implements EducareDAO {
 	 * @param grado Objeto de tipo grado
 	 * @return Lista de tipo grado
 	 */
-	public List<Grado> llenarComboUltimoGrado(String uid) throws EducareException {
+	public List<Grado> llenarComboUltimoGrado(String uid) throws Exception {
 		LogHandler.info(uid, this.getClass(), "Entro a llenarComboUltimoGrado ");
 		SqlSession sesionNTx = null;
 		List<Grado> listaUltimoGrado = null;
@@ -274,9 +270,7 @@ public class EducareDAOImpl implements EducareDAO {
 				if (listaUltimoGrado.isEmpty()) {
 					throw new Exception("No hay ultimos grados a mostrar");
 				}		
-		} catch (Exception ex) {
-			LogHandler.error(uid, this.getClass(), ex.getMessage(), ex);
-	    } finally {
+		} finally {
 	    	FabricaDeConexiones.close(sesionNTx);
 	    }
 		return listaUltimoGrado;
