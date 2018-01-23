@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+       <appender name="PortalEducare" class="org.apache.log4j.DailyRollingFileAppender">
+               <param name="File"                                
+                       value="applogs/PortalEducare/PortalEducare.log" />
+               <param name="DatePattern" value="'.'yyyy-MM-dd" />
+               <layout class="org.apache.log4j.PatternLayout">
+                       <param name="ConversionPattern" value="%d %5p %c -> %m %n" />
+               </layout>
+       </appender>
+       
+       <appender name="Consola"
+               class="org.apache.log4j.ConsoleAppender">
+               <layout class="org.apache.log4j.PatternLayout">
+                       <param name="ConversionPattern"
+                                  value="%d %5p %c -> %m %n"/>
+               </layout>
+       </appender>
+       
+       <root>
+               <priority value="all" />
+               <appender-ref ref="PortalEducare" />
+               <appender-ref ref="Consola" />
+       </root>
+</log4j:configuration>

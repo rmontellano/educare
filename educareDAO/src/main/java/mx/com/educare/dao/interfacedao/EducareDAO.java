@@ -31,27 +31,12 @@ import mx.com.educare.util.excepciones.EducareException;
 public interface EducareDAO {
 
 	/**
-	 * Metodo que se utilizar para buscar todos los grados
-	 * @param uid Identificador Unico
-	 * @return Lista de Grado
-	 */
-	public List<Grado> buscarTodosGrado(String uid) throws EducareException;
-
-	/**
 	 * Metodo que sirve para insertar grado
 	 * @param uid Identificador Unico
 	 * @param grado Objeto de tipo grado
 	 * @return GradoRespuesta
 	 */
-	public GradoRespuesta insertarGrado(String uid, Grado grado) throws EducareException;
-
-	/**
-	 * Metodo que se utiliza para buscar por un Id
-	 * @param uid Identificador Unico
-	 * @param idGrado Es el Id a buscar
-	 * @return Objeto de tipo grado
-	 */
-	public Grado buscarGradoPorId(String uid, int idGrado) throws EducareException;
+	RespuestaGrado insertarGrado(String uid, Grado grado) throws EducareException;
 
 	/**
 	 * Metodo que sirve para actualizar grado
@@ -59,7 +44,7 @@ public interface EducareDAO {
 	 * @param grado Es el Id a buscar
 	 * @return Lista de tipo grado
 	 */
-	public GradoRespuesta actualizarGrado(String uid, Grado grado) throws EducareException;
+	RespuestaGrado actualizarGrado(String uid, Grado grado) throws EducareException;
 
 	/**
  	 * Metodo que se utiliza para eliminar un grado
@@ -67,21 +52,31 @@ public interface EducareDAO {
 	 * @param idGrado Es el Id a buscar
 	 * @return Objeto de tipo grado
 	 */
-	public GradoRespuesta eliminarGrado(String uid, int idGrado) throws EducareException;
-
+	RespuestaGrado eliminarGrado(String uid, int idGrado) throws EducareException;
+	
 	/**
- 	 * Metodo que se utiliza para listaGradosSeccion
+	 * Metodo de realizar la busqueda de secciones
 	 * @param uid Identificador Unico
+	 * @param grado Objeto de tipo grado
 	 * @return Lista de tipo grado
 	 */
-	public List<Grado> listaGradoSeccion(String uid)  throws EducareException;
-
+	List<Grado> llenarComboSeccion(String uid) throws Exception;
+	
 	/**
-	 * Metodo que se utilizar para obtener todos los grados
+	 * Metodo de realizar la busqueda de grados
 	 * @param uid Identificador Unico
+	 * @param grado Objeto de tipo grado
 	 * @return Lista de tipo grado
 	 */
-	public List<Grado> obtieneTodosGrados(String uid) throws EducareException;
+	List<Grado> llenarComboGrado(String uid) throws Exception;
+	
+	/**
+	 * Metodo de realizar la busqueda de la ultimo grado
+	 * @param uid Identificador Unico
+	 * @param grado Objeto de tipo grado
+	 * @return Lista de tipo grado
+	 */
+	List<Grado> llenarComboUltimoGrado(String uid) throws Exception;
 
 	/**
 	 * Metodo que se utilizar para obtener todos los grados por columna
@@ -89,7 +84,7 @@ public interface EducareDAO {
 	 * @param grado Objeto de tipo grado
 	 * @return Lista de tipo grado
 	 */
-	public List<Grado> obtieneTodosGradosPorColumna(String uid, Grado grado)  throws EducareException;
+	public List<Grado> buscarGrado(String uid, Grado grado)  throws EducareException;
 
 	/**
 	 * Metodo que se utilizar para buscar todos los Grupos

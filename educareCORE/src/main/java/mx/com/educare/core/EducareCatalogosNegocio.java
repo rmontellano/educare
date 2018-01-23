@@ -6,6 +6,8 @@ package mx.com.educare.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.Gson;
+
 import mx.com.educare.dao.factory.EducareDAOFactory;
 import mx.com.educare.dto.Catalogo;
 import mx.com.educare.dto.CatalogoRespuesta;
@@ -33,30 +35,110 @@ import mx.com.educare.util.excepciones.EducareException;
  *
  */
 public class EducareCatalogosNegocio {
-
-
+	
+	/**convertidor de respuesta a json*/
+	Gson gson = new Gson();
+	/**conectarse con el negocio*/
+	EducareDAOFactory dao = new EducareDAOFactory();
+	
 	/**
-	 * Metodo que se utilizar para buscar todos los grados
+	 * Metodo de realizar la busqueda de secciones
 	 * @param uid Identificador Unico
-	 * @return Lista de Grado
+	 * @param grado Objeto de tipo grado
+	 * @return Lista de tipo grado
 	 */
-	public GradoRespuesta buscarTodosGrado(String uid) {
-
-		EducareDAOFactory dao = new EducareDAOFactory();
-		GradoRespuesta respuesta = new GradoRespuesta();
+	public String llenarComboSeccion(String uid) {
+		LogHandler.info(uid, getClass(), "Entrada al metodo llenarComboSeccion: " + uid);
+		RespuestaGrado respuestaGrado = new RespuestaGrado();
+		respuestaGrado.setHeader(new EncabezadoRespuesta());
+		respuestaGrado.getHeader().setStatus(true);
+		String respuesta = null;
+		EducareDAO core = null;
+		List<Grado> listSeccion = null;
+		try {
+			core = dao.obtenerInstanciaDao();
+			listSeccion = core.llenarComboSeccion(uid);
+			LogHandler.info(uid, getClass(), "listSeccion: " + listSeccion);
+			if (listSeccion != null && listSeccion.size() > 0) {			
+				respuestaGrado.setListGrado(listSeccion);		
+			} else {
+				LogHandler.info(uid, getClass(), "la consulta no arrojo secciones");
+				respuestaGrado.getHeader().setStatus(false);
+				respuestaGrado.getHeader().setMensaje("La consulta no arrojo secciones");
+			}
+		} catch (Exception ex) {
+			LogHandler.error(uid, getClass(), "Error al llenarComboSeccion : " + ex.getMessage(), ex);
+			respuestaGrado.getHeader().setStatus(false);
+			respuestaGrado.getHeader().setMensaje(ex.getMessage());
+		}
+		respuesta = gson.toJson(respuestaGrado);
+		LogHandler.info(uid, getClass(), "Salida del  metodo llenarComboSeccion: " + respuesta);
+		return respuesta;	
+	}
+	
+	/**
+	 * Metodo de realizar la busqueda de secciones
+	 * @param uid Identificador Unico
+	 * @param grado Objeto de tipo grado
+	 * @return Lista de tipo grado
+	 */
+	public String llenarComboGrado(String uid) {
+		LogHandler.info(uid, getClass(), "Entrada al metodo llenarComboGrado: " + uid);
+		RespuestaGrado respuestaGrado = new RespuestaGrado();
+		respuestaGrado.setHeader(new EncabezadoRespuesta());
+		respuestaGrado.getHeader().setStatus(true);
+		String respuesta = null;
+		EducareDAO core = null;
+		List<Grado> listGrado = null;
+		try {
+			core = dao.obtenerInstanciaDao();
+			listGrado = core.llenarComboGrado(uid);
+			LogHandler.info(uid, getClass(), "listGrado: " + listGrado);
+			if (listGrado != null && listGrado.size() > 0) {			
+				respuestaGrado.setListGrado(listGrado);		
+			} else {
+				LogHandler.info(uid, getClass(), "la consulta no arrojo grados");
+				respuestaGrado.getHeader().setStatus(false);
+				respuestaGrado.getHeader().setMensaje("La consulta no arrojo grados");
+			}
+		} catch (Exception ex) {
+			LogHandler.error(uid, getClass(), "Error al llenarComboSeccion : " + ex.getMessage(), ex);
+			respuestaGrado.getHeader().setStatus(false);
+			respuestaGrado.getHeader().setMensaje(ex.getMessage());
+		}
+		respuesta = gson.toJson(respuestaGrado);
+		LogHandler.info(uid, getClass(), "Salida del  metodo llenarComboGrado: " + respuesta);
+		return respuesta;	
+	}
+	
+	/**
+	 * Metodo que se utilizar para obtener todos los grados por columna
+	 * @param uid Identificador Unico
+	 * @param grado Objeto de tipo grado
+	 * @return Lista de tipo grado
+	 */
+	public String buscarGrado(String uid, Grado grado) {
+		LogHandler.info(uid, getClass(), "Entrada al metodo buscarGrado: " + uid);
+		RespuestaGrado respuestaGrado = new RespuestaGrado();
+		respuestaGrado.setHeader(new EncabezadoRespuesta());
+		respuestaGrado.getHeader().setStatus(true);
+		String respuesta = null;
+		EducareDAO core = null;
+		List<Grado> listGrado = null;
 
 		try {
-			LogHandler.info(uid, getClass(), "Entrada: " + uid);
-			respuesta.setGrados(dao.obtenerInstanciaDao().buscarTodosGrado(uid));
-			if (respuesta.getGrados() == null) {
-				respuesta.setGrados(new ArrayList<Grado>());
+			core = dao.obtenerInstanciaDao();
+			listGrado = core.buscarGrado(uid, grado);
+			if (listGrado != null && listGrado.size() > 0) {
+				respuestaGrado.setListGrado(listGrado);	
 			}
-			respuesta.setHeader(new EncabezadoRespuesta(uid));
 		} catch (Exception ex) {
 			LogHandler.error(uid, getClass(), "Error al consultar : " + ex.getMessage(), ex);
-			respuesta.setHeader(new EncabezadoRespuesta(ex.getMessage(), false));
+			respuestaGrado.getHeader().setStatus(false);
+			respuestaGrado.getHeader().setMensaje(ex.getMessage());
 		}
-
+		respuesta = gson.toJson(respuestaGrado);
+		LogHandler.info(uid, getClass(), "Salida del  metodo buscarGrado: " + respuesta);
 		return respuesta;
 	}
 
@@ -85,27 +167,6 @@ public class EducareCatalogosNegocio {
 			respuesta.setHeader(new EncabezadoRespuesta(ex.getMessage(), false));
 		}
 		return respuesta;
-	}
-
-	/**
-	 * Metodo que se utiliza para buscar por un Id
-	 * @param uid Identificador Unico
-	 * @param idGrado Es el Id a buscar
-	 * @return Objeto de tipo grado
-	 */
-	public Grado buscarGradoPorId(String uid, int idGrado) throws EducareException {
-		EducareDAOFactory dao = new EducareDAOFactory();
-		Grado grado = null;
-
-		try {
-			LogHandler.info(uid, getClass(), "Entrada: buscarGradoPorId " + uid);
-
-			grado = dao.obtenerInstanciaDao().buscarGradoPorId(uid, idGrado);
-		} catch (Exception ex) {
-			LogHandler.error(uid, getClass(), "Error al consultar : " + ex.getMessage(), ex);
-		}
-
-		return grado;
 	}
 
 	/**
@@ -155,71 +216,6 @@ public class EducareCatalogosNegocio {
 		}
 
 		return respuesta;
-	}
-
-	/**
-	 * Metodo que se utiliza para listaGradosSeccion
-	 * @param uid Identificador Unico
-	 * @return Lista de tipo grado
-	 */
-	public List<Grado> listaGradoSeccion(String uid) throws EducareException {
-
-		EducareDAOFactory dao = new EducareDAOFactory();
-		List<Grado> listaGrados = null;
-
-		try {
-			LogHandler.info(uid, getClass(), "Entrada: " + uid);
-
-			listaGrados = dao.obtenerInstanciaDao().listaGradoSeccion(uid);
-		} catch (Exception ex) {
-			LogHandler.error(uid, getClass(), "Error al consultar : " + ex.getMessage(), ex);
-		}
-
-		return listaGrados;
-	}
-
-	/**
-	 * Metodo que se utilizar para obtener todos los grados
-	 * @param uid Identificador Unico
-	 * @return Lista de tipo grado
-	 */
-	public List<Grado> obtieneTodosGrados(String uid) throws EducareException {
-
-		EducareDAOFactory dao = new EducareDAOFactory();
-		List<Grado> listaGrados = null;
-
-		try {
-			LogHandler.info(uid, getClass(), "Entrada: " + uid);
-
-			listaGrados = dao.obtenerInstanciaDao().obtieneTodosGrados(uid);
-		} catch (Exception ex) {
-			LogHandler.error(uid, getClass(), "Error al consultar : " + ex.getMessage(), ex);
-			//respuesta.setHeader(new EncabezadoRespuesta(ex.getMessage(), false));
-		}
-
-		return listaGrados;
-	}
-
-	/**
-	 * Metodo que se utilizar para obtener todos los grados por columna
-	 * @param uid Identificador Unico
-	 * @param grado Objeto de tipo grado
-	 * @return Lista de tipo grado
-	 */
-	public List<Grado> obtieneTodosGradosPorColumna(String uid,  Grado grado) throws EducareException {
-
-		EducareDAOFactory dao = new EducareDAOFactory();
-		List<Grado> listaGrados = null;
-
-		try {
-			LogHandler.info(uid, getClass(), "Entrada: " + uid);
-
-			listaGrados = dao.obtenerInstanciaDao().obtieneTodosGradosPorColumna(uid, grado);
-		} catch (Exception ex) {
-			LogHandler.error(uid, getClass(), "Error al consultar : " + ex.getMessage(), ex);
-		}
-
-		return listaGrados;
 	}
 
 	/**
