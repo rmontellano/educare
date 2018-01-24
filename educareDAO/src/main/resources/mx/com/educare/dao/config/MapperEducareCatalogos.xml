@@ -185,7 +185,7 @@
 		     <if test="descripcion != null">
 		        AND o.descripcion = #{descripcion}
 		     </if>  
-			<if test="numGrado != null and numGrado != 0">
+			<if test="numGrado != null">
 				AND g.numgrado = #{numGrado}
 			</if>
 			<if test="ultimoGrado != null">
@@ -219,7 +219,7 @@
 		grado WHERE idgrado = #{idGrado}  and status != 0
 	</select>
 
-	<update id="ActualizarGrado" parameterType="java.util.HashMap">
+	<update id="actualizarGrado" parameterType="java.util.HashMap">
 		UPDATE grado
 		SET
 			idseccion = #{idSeccion},

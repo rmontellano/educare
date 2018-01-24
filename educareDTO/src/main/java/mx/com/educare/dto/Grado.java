@@ -43,9 +43,13 @@ public class Grado implements Serializable  {
 	 */
 	private Integer status;
 	/**
-	 * The descripcion.
+	 * descripcion de la seccion.
 	 */
-	private String descripcion;
+	private String descripcionSeccion;
+	/**
+	 * descripcion del ultimo grado.
+	 */
+	private String descripcionUltimoGrado;
 
 	/**
 	 * @return the idGrado
@@ -108,16 +112,28 @@ public class Grado implements Serializable  {
 		this.status = status;
 	}
 	/**
-	 * @return the descripcion
+	 * @return the descripcionSeccion
 	 */
-	public String getDescripcion() {
-		return descripcion;
+	public String getDescripcionSeccion() {
+		return descripcionSeccion;
 	}
 	/**
-	 * @param descripcion the descripcion to set
+	 * @param descripcionSeccion the descripcionSeccion to set
 	 */
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	public void setDescripcionSeccion(String descripcionSeccion) {
+		this.descripcionSeccion = descripcionSeccion;
+	}
+	/**
+	 * @return the descripcionUltimoGrado
+	 */
+	public String getDescripcionUltimoGrado() {
+		return descripcionUltimoGrado;
+	}
+	/**
+	 * @param descripcionUltimoGrado the descripcionUltimoGrado to set
+	 */
+	public void setDescripcionUltimoGrado(String descripcionUltimoGrado) {
+		this.descripcionUltimoGrado = descripcionUltimoGrado;
 	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
@@ -125,6 +141,8 @@ public class Grado implements Serializable  {
 	@Override
 	public String toString() {
 		return "Grado [idGrado=" + idGrado + ", idSeccion=" + idSeccion + ", numGrado=" + numGrado + ", ultimoGrado="
-				+ ultimoGrado + ", status=" + status + ", descripcion=" + descripcion + "]";
+				+ ultimoGrado + ", status=" + status + ", descripcionSeccion=" + descripcionSeccion
+				+ ", descripcionUltimoGrado=" + descripcionUltimoGrado + "]";
 	}
+
 }

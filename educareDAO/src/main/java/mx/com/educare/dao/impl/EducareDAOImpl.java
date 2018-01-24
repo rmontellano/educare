@@ -130,7 +130,7 @@ public class EducareDAOImpl implements EducareDAO {
 	 * @return Objeto de tipo grado
 	 */
 	public RespuestaGrado actualizarGrado(String uid, Grado grado) throws EducareException {
-		LogHandler.info(uid, this.getClass(), "Entro a actualizar grado ");
+		LogHandler.info(uid, this.getClass(), "Entro a actualizar grado:  " + grado);
 		SqlSession sesionTx = null;
 		RespuestaGrado respuesta = new RespuestaGrado();
 		respuesta.setHeader(new EncabezadoRespuesta());
@@ -138,19 +138,22 @@ public class EducareDAOImpl implements EducareDAO {
 		respuesta.getHeader().setStatus(true);
 		int actualizar;
 		try {
+			
+			if (grado == null || grado.getIdGrado() != null) {
+				throw new Exception("Es necesario el idGrado para actualizarlo");
+			}
 
 			final java.util.HashMap<String, Object> parametrosUpdate = new HashMap<String, Object>();
 			parametrosUpdate.put( "idGrado", grado.getIdGrado());
 			parametrosUpdate.put( "idSeccion", grado.getIdSeccion());
 			parametrosUpdate.put( "numGrado", grado.getNumGrado());
 			parametrosUpdate.put( "ultimoGrado", grado.getUltimoGrado());
-			parametrosUpdate.put( "status", 0);
 
 			sesionTx = FabricaDeConexiones.obtenerSesionTx();
-			actualizar = sesionTx.update("MapperEducareCatalogos.ActualizarGrado", parametrosUpdate);
+			actualizar = sesionTx.update("MapperEducareCatalogos.actualizarGrado", parametrosUpdate);
 
 			if ( actualizar == 0) {
-				throw new Exception("No fue posible insertar el grado");
+				throw new Exception("No fue posible actualizar el grado " + grado);
 			}
 
 			sesionTx.commit();
@@ -183,14 +186,14 @@ public class EducareDAOImpl implements EducareDAO {
 	
 				final java.util.HashMap<String, Object> parametros = new HashMap<String, Object>();
 				parametros.put("descripcion", grado.getDescripcion());
-				parametros.put("numGrado", grado.getIdGrado());
+				parametros.put("numGrado", grado.getNumGrado());
 				parametros.put("ultimoGrado", grado.getUltimoGrado());
 				LogHandler.info(uid, this.getClass(), "parametros enviados: " + parametros);
 				
 				listaGrados = sesionNTx.selectList("MapperEducareCatalogos.obtenerGrado", parametros);
 				LogHandler.info(uid, this.getClass(), "listaGrados: " + listaGrados);
 	
-				if (listaGrados.isEmpty()) {
+				if (listaGrados == null || listaGrados.isEmpty()) {
 					throw new Exception("No hay registros a mostrar");
 				}
 			} else {

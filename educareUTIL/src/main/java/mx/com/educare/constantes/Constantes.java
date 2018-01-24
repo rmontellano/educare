@@ -106,7 +106,13 @@ public enum Constantes {
 	/**
 	 * Año Normal
 	 */
-	ANIO_NORMAL(365);
+	ANIO_NORMAL(365),
+
+	/**valor de 1*/
+	SI ("SI"),
+
+	/**valor de 0*/
+	NO ("NO");
 	
 
 	/**
