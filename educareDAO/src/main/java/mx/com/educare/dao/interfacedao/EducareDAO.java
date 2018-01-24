@@ -21,6 +21,7 @@ import mx.com.educare.dto.MenuRespuesta;
 import mx.com.educare.dto.Puesto;
 import mx.com.educare.dto.PuestoRespuesta;
 import mx.com.educare.dto.auth.Usuario;
+import mx.com.educare.dto.util.RespuestaGrado;
 import mx.com.educare.util.excepciones.EducareException;
 
 /**
