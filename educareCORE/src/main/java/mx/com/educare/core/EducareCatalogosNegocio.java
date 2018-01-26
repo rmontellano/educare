@@ -170,6 +170,7 @@ public class EducareCatalogosNegocio {
 			core = dao.obtenerInstanciaDao();
 			listGrado = core.buscarGrado(uid, grado);
 			if (listGrado != null && listGrado.size() > 0) {
+				listGrado = ValidadorReglas.comboUltimoGrado(uid, listGrado);
 				respuestaGrado.setListGrado(listGrado);	
 			} else {
 				respuestaGrado.getHeader().setStatus(false);
@@ -182,6 +183,39 @@ public class EducareCatalogosNegocio {
 		}
 		respuesta = gson.toJson(respuestaGrado);
 		LogHandler.info(uid, getClass(), "Salida del  metodo buscarGrado: " + respuesta);
+		return respuesta;
+	}
+	
+	/**
+	 * Metodo que sirve para actualizar grado
+	 * @param uid Identificador Unico
+	 * @param grado Es el Id a buscar
+	 * @return Objeto de tipo grado
+	 */
+	public String actualizarGrado(String uid, Grado grado) {
+
+		EducareDAOFactory dao = new EducareDAOFactory();
+		String respuesta = null;
+		RespuestaGrado respuestaGrado = null;
+		EducareDAO core = null;
+
+		try {
+			LogHandler.info(uid, getClass(), "Entrada actualizarGrado: " + uid);
+			core = dao.obtenerInstanciaDao();
+			respuestaGrado = core.actualizarGrado(uid, grado);
+			if (respuestaGrado == null || !respuestaGrado.getHeader().isStatus()) {
+				throw new Exception("Ocurrio un error al actualizar el grado: " + respuestaGrado.getHeader().getMensaje());
+			}
+		}
+		catch (Exception ex) {
+			LogHandler.error(uid, getClass(), "Error al actualizarGrado : " + ex.getMessage(), ex);
+			if (respuestaGrado == null) {
+				respuestaGrado = new RespuestaGrado();
+			}
+			respuestaGrado.setHeader(new EncabezadoRespuesta(ex.getMessage(), false));
+		}
+		respuesta = gson.toJson(respuestaGrado);
+		LogHandler.info(uid, getClass(), "Salida del  metodo actualizarGradok: " + respuesta);
 		return respuesta;
 	}
 //
@@ -212,34 +246,6 @@ public class EducareCatalogosNegocio {
 //		return respuesta;
 //	}
 //
-	/**
-	 * Metodo que sirve para actualizar grado
-	 * @param uid Identificador Unico
-	 * @param grado Es el Id a buscar
-	 * @return Objeto de tipo grado
-	 */
-	public String actualizarGrado(String uid, Grado grado) {
-
-		EducareDAOFactory dao = new EducareDAOFactory();
-		String respuesta = null;
-		RespuestaGrado respuestaGrado = null;
-		EducareDAO core = null;
-
-		try {
-			LogHandler.info(uid, getClass(), "Entrada actualizarGrado: " + uid);
-			core = dao.obtenerInstanciaDao();
-			respuestaGrado = core.actualizarGrado(uid, grado);
-			if (respuesta.getGrados() == null) {
-				respuesta.setGrados(new ArrayList<Grado>());
-			}
-			respuesta.setHeader(new EncabezadoRespuesta(uid));
-		}
-		catch (Exception ex) {
-			LogHandler.error(uid, getClass(), "Error al actualizarGrado : " + ex.getMessage(), ex);
-			respuesta.setHeader(new EncabezadoRespuesta(ex.getMessage(), false));
-		}
-		return respuesta;
-	}
 //
 //	/**
 //	 * Metodo que se utiliza para eliminar un grado

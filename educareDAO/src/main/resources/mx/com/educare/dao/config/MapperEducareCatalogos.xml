@@ -159,7 +159,7 @@
 	<!-- Comienza Grado  -->
 	
 	<select id="llenarComboSeccion"  resultMap="gradoMap">
-	   SELECT distinct  o.descripcion
+	   SELECT distinct  o.descripcion AS descripcionSeccion
 	   FROM grado g
 	   INNER JOIN opcioncat o ON g.idseccion = o.idopcioncat
 	   WHERE g.status != 0
@@ -178,7 +178,7 @@
 	</select>
 	
 	<select id="obtenerGrado" parameterType="java.util.HashMap" resultMap="gradoMap">
-		 SELECT g.idgrado, g.idseccion, g.numgrado, g.ultimogrado, o.descripcion, g.status 
+		 SELECT g.idgrado, g.idseccion, g.numgrado, g.ultimogrado, o.descripcion AS descripcionSeccion, g.status 
 		 FROM grado g
          INNER JOIN opcioncat o ON g.idseccion = o.idopcioncat
 		 WHERE g.status != 0
@@ -195,9 +195,15 @@
 	</select>
 	
 	
-	<select id="obtieneTodosGrados" resultMap="gradoMap">
-		SELECT * FROM grado
-	</select>
+	<update id="actualizarGrado" parameterType="java.util.HashMap">
+		UPDATE grado
+		SET
+			idseccion = #{idSeccion},
+			numgrado = #{numGrado},
+			ultimogrado = #{ultimoGrado}
+		WHERE
+			idgrado = #{idGrado};
+	</update>
 
 	<insert id="insertarGrado" parameterType="java.util.HashMap"
 		keyProperty="idgrado">
@@ -219,15 +225,7 @@
 		grado WHERE idgrado = #{idGrado}  and status != 0
 	</select>
 
-	<update id="actualizarGrado" parameterType="java.util.HashMap">
-		UPDATE grado
-		SET
-			idseccion = #{idSeccion},
-			numgrado = #{numGrado},
-			ultimogrado = #{ultimoGrado}
-		WHERE
-			idgrado = #{idGrado};
-	</update>
+	
 
 	<update id="EliminarGrado" parameterType="java.util.HashMap">
 		UPDATE grado

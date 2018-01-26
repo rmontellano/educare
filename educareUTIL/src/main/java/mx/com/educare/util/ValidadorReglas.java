@@ -18,10 +18,14 @@ public class ValidadorReglas {
 	 * @param grado valor a convertir en entero
 	 * @return  Integer resultado
 	 */
-	public static Integer validarGrado (String uid, String grado) {
+	public static Integer convertirUltimoGradoEntero (String uid, String grado) {
 		Integer valor = null;
 		if (grado != null && !grado.trim().isEmpty()) {
-			valor = Integer.parseInt(grado);
+			if (grado.equals(Constantes.NO.getString())) {
+				valor = 0;
+			} else {
+				valor = 1;
+			}		
 		} else {
 			valor = 0;
 		}
@@ -39,9 +43,9 @@ public class ValidadorReglas {
 		if (listGradoPet != null && listGradoPet.size() > 0) {
 			for (Grado grado : listGradoPet) {
 				if (grado != null && grado.getUltimoGrado() == 0) {
-					grado.setDescripcion(Constantes.NO.getString());
+					grado.setDescripcionUltimoGrado(Constantes.NO.getString());
 				} else {
-					grado.setDescripcion(Constantes.SI.getString());
+					grado.setDescripcionUltimoGrado(Constantes.SI.getString());
 				}
 			}
 		}	

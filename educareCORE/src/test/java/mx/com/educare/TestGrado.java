@@ -16,7 +16,8 @@ public class TestGrado {
 //		llenarComboSeccion();
 //		llenarComboGrado();
 //		llenarComboUltimoGrado();
-		buscarGrado();
+//		buscarGrado();
+		actualizarGrado();
 	}
 	
 	public void llenarComboSeccion() {		
@@ -36,10 +37,20 @@ public class TestGrado {
     
     public void buscarGrado() {
     	Grado grado = new Grado();
-    	grado.setDescripcion("Primaria");
+    	grado.setDescripcionSeccion("Primaria");
     	grado.setNumGrado(4);
-    	grado.setUltimoGrado(1);
+    	grado.setUltimoGrado(0);
     	String respuesta = negocio.buscarGrado("", grado);
+    	System.out.println(respuesta);
+    }
+    
+    public void actualizarGrado() {
+    	Grado grado = new Grado();
+    	grado.setIdGrado(7);
+    	grado.setDescripcionSeccion("Secundaria");
+    	grado.setNumGrado(6);
+    	grado.setDescripcionUltimoGrado("SI");
+    	String respuesta = negocio.actualizarGrado("", grado);
     	System.out.println(respuesta);
     }
 

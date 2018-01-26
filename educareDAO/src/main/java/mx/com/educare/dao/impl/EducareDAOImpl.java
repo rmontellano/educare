@@ -27,6 +27,7 @@ import mx.com.educare.dto.auth.Usuario;
 import mx.com.educare.dto.util.EncabezadoRespuesta;
 import mx.com.educare.dto.util.RespuestaGrado;
 import mx.com.educare.log.LogHandler;
+import mx.com.educare.util.ValidadorReglas;
 import mx.com.educare.util.excepciones.EducareException;
 
 import org.apache.ibatis.session.SqlSession;
@@ -136,28 +137,46 @@ public class EducareDAOImpl implements EducareDAO {
 		respuesta.setHeader(new EncabezadoRespuesta());
 		respuesta.getHeader().setUid(uid);
 		respuesta.getHeader().setStatus(true);
+		List<Grado> listaGrados = null;
 		int actualizar;
 		try {
 			
-			if (grado == null || grado.getIdGrado() != null) {
-				throw new Exception("Es necesario el idGrado para actualizarlo");
+			if (grado == null || grado.getIdGrado() == null || grado.getNumGrado() == null
+					|| grado.getDescripcionSeccion() == null || grado.getDescripcionUltimoGrado() == null) {
+				throw new Exception("Revisar la peticion alguno de los campos viene nulo: " + grado);
 			}
 
 			final java.util.HashMap<String, Object> parametrosUpdate = new HashMap<String, Object>();
 			parametrosUpdate.put( "idGrado", grado.getIdGrado());
-			parametrosUpdate.put( "idSeccion", grado.getIdSeccion());
 			parametrosUpdate.put( "numGrado", grado.getNumGrado());
-			parametrosUpdate.put( "ultimoGrado", grado.getUltimoGrado());
-
+			
 			sesionTx = FabricaDeConexiones.obtenerSesionTx();
+			
+			if(grado.getDescripcionSeccion() != null && !grado.getDescripcionSeccion().trim().isEmpty()) {
+				final java.util.HashMap<String, Object> parametroSeccion = new HashMap<String, Object>();
+				parametroSeccion.put("descripcion", grado.getDescripcionSeccion());
+				LogHandler.info(uid, this.getClass(), "parametros enviados: " + parametroSeccion);
+				
+				listaGrados = sesionTx.selectList("MapperEducareCatalogos.obtenerGrado", parametroSeccion);	
+				LogHandler.info(uid, this.getClass(), "listaGrados: " + listaGrados);
+				
+				if (listaGrados != null && listaGrados.size() > 0) {
+					parametrosUpdate.put( "idSeccion", listaGrados.get(0).getIdSeccion());
+				}	
+			}		
+			if(grado.getDescripcionUltimoGrado() != null && !grado.getDescripcionUltimoGrado().trim().isEmpty()) {
+				parametrosUpdate.put( "ultimoGrado", ValidadorReglas.convertirUltimoGradoEntero(uid, grado.getDescripcionUltimoGrado().trim()));
+			}
+
 			actualizar = sesionTx.update("MapperEducareCatalogos.actualizarGrado", parametrosUpdate);
+			LogHandler.info(uid, this.getClass(), "actualizar: " + actualizar);
 
 			if ( actualizar == 0) {
 				throw new Exception("No fue posible actualizar el grado " + grado);
 			}
 
 			sesionTx.commit();
-			respuesta.getHeader().setMensaje("Se actualizo correctamente");
+			respuesta.getHeader().setMensaje("Se actualizo correctamente el grado");
 		} catch (Exception e) {
 			FabricaDeConexiones.rollBack(sesionTx);
 			LogHandler.info(uid, this.getClass(), e.getMessage());
@@ -185,9 +204,9 @@ public class EducareDAOImpl implements EducareDAO {
 				sesionNTx = FabricaDeConexiones.obtenerSesionNTx();
 	
 				final java.util.HashMap<String, Object> parametros = new HashMap<String, Object>();
-				parametros.put("descripcion", grado.getDescripcion());
+				parametros.put("descripcion", grado.getDescripcionSeccion());
 				parametros.put("numGrado", grado.getNumGrado());
-				parametros.put("ultimoGrado", grado.getUltimoGrado());
+				parametros.put("ultimoGrado", grado.getUltimoGrado());  //se teien que mandar el valor numerico no la descripcion
 				LogHandler.info(uid, this.getClass(), "parametros enviados: " + parametros);
 				
 				listaGrados = sesionNTx.selectList("MapperEducareCatalogos.obtenerGrado", parametros);
