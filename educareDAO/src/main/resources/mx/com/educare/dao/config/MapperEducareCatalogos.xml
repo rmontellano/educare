@@ -155,8 +155,6 @@
 		<result column="tipocat" property="tipoCategoria" />
 		<result column="desctipocat" property="descTipoCat" />
 	</resultMap>
-
-	<!-- Comienza Grado  -->
 	
 	<select id="llenarComboSeccion"  resultMap="gradoMap">
 	   SELECT distinct  o.descripcion AS descripcionSeccion
@@ -194,6 +192,21 @@
 		ORDER BY g.idseccion, g.numgrado
 	</select>
 	
+	<select id="obtenerGradoAlta" parameterType="java.util.HashMap" resultMap="gradoMap">
+		 SELECT g.idgrado, g.idseccion, g.numgrado, g.ultimogrado, o.descripcion AS descripcionSeccion, g.status 
+		 FROM grado g
+         INNER JOIN opcioncat o ON g.idseccion = o.idopcioncat  
+			<if test="numGrado != null">
+				WHERE g.numgrado = #{numGrado}
+			</if>
+			<if test="ultimoGrado != null">
+				AND g.ultimogrado = #{ultimoGrado}
+			</if>
+			<if test="idSeccion != null">
+				AND g.idseccion = #{idSeccion}
+			</if>
+		ORDER BY g.idseccion, g.numgrado
+	</select>
 	
 	<update id="actualizarGrado" parameterType="java.util.HashMap">
 		UPDATE grado
@@ -204,36 +217,76 @@
 		WHERE
 			idgrado = #{idGrado};
 	</update>
+	
+	<update id="actualizarStatus" parameterType="java.util.HashMap">
+		UPDATE grado
+		SET
+			status = 1
+		WHERE
+			idgrado = #{idGrado};
+	</update>
 
 	<insert id="insertarGrado" parameterType="java.util.HashMap"
 		keyProperty="idgrado">
-
-		INSERT INTO grado
-		(idseccion,
-		numgrado,
-		ultimogrado,
-		status)
-		VALUES
-		(#{idSeccion},
-		#{numGrado},
-		#{ultimoGrado},
-		#{status})
+		INSERT INTO grado (idseccion, numgrado, ultimogrado,status)
+		VALUES (#{idSeccion}, #{numGrado}, #{ultimoGrado}, 1)		
 	</insert>
 
-	<select id="GradoPorId" parameterType="int" resultMap="gradoMap">
-		SELECT * FROM
-		grado WHERE idgrado = #{idGrado}  and status != 0
-	</select>
-
-	
-
-	<update id="EliminarGrado" parameterType="java.util.HashMap">
+	<update id="eliminarGrado" parameterType="java.util.HashMap">
 		UPDATE grado
 		SET
 			status = 0
 		WHERE
 			idgrado = #{idGrado};
 	</update>
+	
+	<select id="llenarComboSeccionCiclo"  resultType="mx.com.educare.dto.Ciclo">
+	   SELECT distinct o.descripcion AS descripcionSeccion
+	   FROM ciclo c
+	   INNER JOIN opcioncat o ON c.idseccion = o.idopcioncat
+	   WHERE c.status != 0
+	</select>
+	
+	<select id="llenarComboFechaInicioCiclo"  resultType="mx.com.educare.dto.Ciclo">
+	   SELECT distinct fechaini AS fechaInicio
+	   FROM ciclo
+	   WHERE status != 0
+	</select>
+
+	<select id="llenarComboFechaFinCiclo"  resultType="mx.com.educare.dto.Ciclo">
+	   SELECT distinct fechafin AS fechaFin
+	   FROM ciclo
+	   WHERE status != 0
+	</select>
+	
+	<select id="llenarComboActualCiclo"  resultType="mx.com.educare.dto.Ciclo">
+	  SELECT distinct  actual
+	   FROM ciclo
+	   WHERE status != 0
+	</select>
+	
+	<select id="buscarCiclo" parameterType="java.util.HashMap" resultType="mx.com.educare.dto.Ciclo">
+	  SELECT c.idciclo AS idCiclo, c.idseccion AS idSeccion, c.nombre,
+	         c.fechaini AS fechaInicio, c.fechafin AS fechaFin, c.actual,
+	         c.status, o.descripcion AS descripcionSeccion
+			FROM ciclo c
+			INNER JOIN opcioncat o ON c.idseccion = o.idopcioncat
+			WHERE c.status != 0
+			<if test="descripcionSeccion != null">
+				AND o.descripcion = #{descripcionSeccion}
+			</if>
+			<if test="actual != null">
+				AND c.actual = #{actual}
+			</if>
+			<if test="fechaIni != null">
+				AND c.fechaini  <![CDATA[>=]]> #{fechaini}
+			</if>
+			<if test="fechaFin != null">
+				AND c.fechafin <![CDATA[<=]]> #{fechaFin}
+			</if>
+	</select>
+
+
 
 	<select id="ListaGradoSeccion" resultMap="gradoMap">
 		SELECT g.idgrado,

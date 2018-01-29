@@ -6,6 +6,7 @@ package mx.com.educare.dao.interfacedao;
 import java.util.List;
 
 import mx.com.educare.dto.Catalogo;
+import mx.com.educare.dto.Ciclo;
 import mx.com.educare.dto.Criterio;
 import mx.com.educare.dto.CriterioRespuesta;
 import mx.com.educare.dto.Empleado;
@@ -53,7 +54,7 @@ public interface EducareDAO {
 	 * @param idGrado Es el Id a buscar
 	 * @return Objeto de tipo grado
 	 */
-	RespuestaGrado eliminarGrado(String uid, int idGrado) throws EducareException;
+	RespuestaGrado eliminarGrado(String uid, Grado idGrado) throws EducareException;
 	
 	/**
 	 * Metodo de realizar la busqueda de secciones
@@ -85,7 +86,35 @@ public interface EducareDAO {
 	 * @param grado Objeto de tipo grado
 	 * @return Lista de tipo grado
 	 */
-	public List<Grado> buscarGrado(String uid, Grado grado)  throws EducareException;
+	List<Grado> buscarGrado(String uid, Grado grado)  throws EducareException;
+	
+	/**
+	 * Metodo de realizar la busqueda de ciclos
+	 * @param uid Identificador Unico
+	 * @return Lista de tipo ciclo
+	 */
+	List<Ciclo> llenarComboSeccionCiclo(String uid) throws Exception;
+
+	/**
+	 * Metodo de realizar la busqueda de la fecha inicio
+	 * @param uid Identificador Unico
+	 * @return Lista de tipo ciclo
+	 */
+	List<Ciclo> llenarComboFechaInicioCiclo(String uid) throws Exception;
+	
+	/**
+	 * Metodo de realizar la busqueda de la fecha fin
+	 * @param uid Identificador Unico
+	 * @return Lista de tipo ciclo
+	 */
+	List<Ciclo> llenarComboFechaFinCiclo(String uid) throws Exception;
+	
+	/**
+	 * Metodo de realizar la busqueda actual
+	 * @param uid Identificador Unico
+	 * @return Lista de tipo ciclo
+	 */
+	List<Ciclo> llenarComboActualCiclo(String uid) throws Exception;
 
 	/**
 	 * Metodo que se utilizar para buscar todos los Grupos

@@ -10,6 +10,7 @@ import java.util.List;
 import mx.com.educare.dao.conexion.FabricaDeConexiones;
 import mx.com.educare.dao.interfacedao.EducareDAO;
 import mx.com.educare.dto.Catalogo;
+import mx.com.educare.dto.Ciclo;
 import mx.com.educare.dto.Criterio;
 import mx.com.educare.dto.CriterioRespuesta;
 import mx.com.educare.dto.Empleado;
@@ -54,30 +55,48 @@ public class EducareDAOImpl implements EducareDAO {
 	 * @return GradoRespuesta
 	 */
 	public RespuestaGrado insertarGrado(String uid, Grado grado) throws EducareException {
-		LogHandler.info(uid, this.getClass(), "Entro a insertar grado ");
+		LogHandler.info(uid, this.getClass(), "Entro a insertar grado: " + grado);
 		SqlSession sesionTx = null;
 		RespuestaGrado respuesta = new RespuestaGrado();
 		respuesta.setHeader(new EncabezadoRespuesta());
 		respuesta.getHeader().setUid(uid);
 		respuesta.getHeader().setStatus(true);
-		int insertar;
+		List<Grado> listaGrados = null;
+		int insertar = 0;
+		int actualizar = 0;
 		try {
+			
+			if(grado == null || grado.getIdSeccion() == null 
+					|| grado.getNumGrado() == null || grado.getUltimoGrado() == null) {
+				throw new Exception("Alguno de los siguientes parametros viene nulo (idSeccion, numGrado, ultimoGrado), favor de validarlo");
+			}
 
-			final java.util.HashMap<String, Object> parametrosInsert = new HashMap<String, Object>();
+			HashMap<String, Object> parametrosInsert = new HashMap<String, Object>();
 			parametrosInsert.put( "idSeccion", grado.getIdSeccion());
 			parametrosInsert.put( "numGrado", grado.getNumGrado());
 			parametrosInsert.put( "ultimoGrado", grado.getUltimoGrado());
-			
+			LogHandler.info(uid, this.getClass(), "Entro a insertar parametros busqueda: " + parametrosInsert);
 
-			sesionTx = FabricaDeConexiones.obtenerSesionTx();
-			insertar = sesionTx.insert("insertarGrado", parametrosInsert);
-
+			sesionTx = FabricaDeConexiones.obtenerSesionTx();	
+			listaGrados = sesionTx.selectList("MapperEducareCatalogos.obtenerGradoAlta", parametrosInsert);
+			LogHandler.info(uid, this.getClass(), "listaGrados: " + listaGrados);		
+			if (listaGrados != null && listaGrados.size() > 0) {
+				parametrosInsert.put( "idGrado", listaGrados.get(0).getIdGrado());
+				LogHandler.info(uid, this.getClass(), "Entro a insertar parametros update: " + parametrosInsert);
+				actualizar = sesionTx.update("MapperEducareCatalogos.actualizarStatus", parametrosInsert);
+				LogHandler.info(uid, this.getClass(), "respuesta actualizar: " + actualizar);
+				if ( actualizar == 0) {
+					throw new Exception("No fue posible activar el grado");
+				}
+			}		
+			insertar = sesionTx.insert("MapperEducareCatalogos.insertarGrado", parametrosInsert);	
+			LogHandler.info(uid, this.getClass(), "respuesta: " + insertar);
 			if ( insertar == 0) {
 				throw new Exception("No fue posible insertar el grado");
 			}
 
 			sesionTx.commit();
-			respuesta.getHeader().setMensaje("Se inserto correctamente");
+			respuesta.getHeader().setMensaje("Se inserto correctamente el grado");
 		} catch (Exception e) {
 			FabricaDeConexiones.rollBack(sesionTx);
 			LogHandler.info(uid, this.getClass(), e.getMessage());
@@ -95,8 +114,8 @@ public class EducareDAOImpl implements EducareDAO {
 	 * @param idGrado Es el Id a buscar
 	 * @return Objeto de tipo grado
 	 */
-	public RespuestaGrado eliminarGrado(String uid, int idGrado) throws EducareException {
-		LogHandler.info(uid, this.getClass(), "Entro a eliminar grado ");
+	public RespuestaGrado eliminarGrado(String uid, Grado grado) throws EducareException {
+		LogHandler.info(uid, this.getClass(), "Entro a eliminar grado: " + grado);
 		SqlSession sesionTx = null;
 		RespuestaGrado respuesta = new RespuestaGrado();
 		respuesta.setHeader(new EncabezadoRespuesta());
@@ -106,18 +125,24 @@ public class EducareDAOImpl implements EducareDAO {
 
 		try {
 
-			sesionTx = FabricaDeConexiones.obtenerSesionTx();
-			actualizar = sesionTx.update("MapperEducareCatalogos.EliminarGrado", idGrado);
+			if (grado != null && grado.getIdGrado() != null) {
+				sesionTx = FabricaDeConexiones.obtenerSesionTx();
+				actualizar = sesionTx.update("MapperEducareCatalogos.eliminarGrado", grado.getIdGrado());
+			} else {
+				throw new Exception("Falta el IdGrado en la peticion: " + grado);
+			}
 
 			if ( actualizar == 0) {
 				throw new Exception("No fue posible eliminar el grado");
 			}
 
 			sesionTx.commit();
-			respuesta.getHeader().setMensaje("Se actualizo correctamente");
+			respuesta.getHeader().setMensaje("Se elimino correctamente el grado: " + grado);
 		} catch (Exception ex) {
+			FabricaDeConexiones.rollBack(sesionTx);
 			LogHandler.info(uid, this.getClass(), ex.getMessage());
-			ex.printStackTrace();
+			respuesta.getHeader().setStatus(false);
+			respuesta.getHeader().setMensaje(ex.getMessage());
 	    } finally {
 	    	FabricaDeConexiones.close(sesionTx);
 	    }
@@ -301,7 +326,141 @@ public class EducareDAOImpl implements EducareDAO {
 
 /***************************************TERMINAN OPERACIONES DEL CATALOGO DE GRADO *******************************************/
 	
+/***************************************INICIAN OPERACIONES DEL CATALOGO DE CICLO *******************************************/
+	/**
+	 * Metodo de realizar la busqueda de ciclos
+	 * @param uid Identificador Unico
+	 * @return Lista de tipo ciclo
+	 */
+	public List<Ciclo> llenarComboSeccionCiclo(String uid) throws Exception {
+		LogHandler.info(uid, this.getClass(), "Entro a llenarComboSeccionCiclo ");
+		SqlSession sesionNTx = null;
+		List<Ciclo> listaCiclo = null;
+		try {		
+				sesionNTx = FabricaDeConexiones.obtenerSesionNTx();			
+				listaCiclo = sesionNTx.selectList("MapperEducareCatalogos.llenarComboSeccionCiclo");
+				LogHandler.info(uid, this.getClass(), "listaSecciones: " + listaCiclo);
+				if (listaCiclo.isEmpty()) {
+					throw new EducareException("No hay ciclos a mostrar");
+				}		
+		} finally {
+	    	FabricaDeConexiones.close(sesionNTx);
+	    }
+		return listaCiclo;
+	}
 	
+	/**
+	 * Metodo de realizar la busqueda de la fecha inicio
+	 * @param uid Identificador Unico
+	 * @return Lista de tipo ciclo
+	 */
+	public List<Ciclo> llenarComboFechaInicioCiclo(String uid) throws Exception {
+		LogHandler.info(uid, this.getClass(), "Entro a llenarComboFechaInicioCiclo ");
+		SqlSession sesionNTx = null;
+		List<Ciclo> listaCiclo = null;
+		try {		
+				sesionNTx = FabricaDeConexiones.obtenerSesionNTx();			
+				listaCiclo = sesionNTx.selectList("MapperEducareCatalogos.llenarComboFechaInicioCiclo");
+				LogHandler.info(uid, this.getClass(), "listaCiclo: " + listaCiclo);
+				if (listaCiclo.isEmpty()) {
+					throw new EducareException("No hay fechas inicio a mostrar");
+				}		
+		} finally {
+	    	FabricaDeConexiones.close(sesionNTx);
+	    }
+		return listaCiclo;
+	}
+	
+	/**
+	 * Metodo de realizar la busqueda de la fecha fin
+	 * @param uid Identificador Unico
+	 * @return Lista de tipo ciclo
+	 */
+	public List<Ciclo> llenarComboFechaFinCiclo(String uid) throws Exception {
+		LogHandler.info(uid, this.getClass(), "Entro a llenarComboFechaFinCiclo ");
+		SqlSession sesionNTx = null;
+		List<Ciclo> listaCiclo = null;
+		try {		
+				sesionNTx = FabricaDeConexiones.obtenerSesionNTx();			
+				listaCiclo = sesionNTx.selectList("MapperEducareCatalogos.llenarComboFechaFinCiclo");
+				LogHandler.info(uid, this.getClass(), "listaCiclo: " + listaCiclo);
+				if (listaCiclo.isEmpty()) {
+					throw new EducareException("No hay fechas fin a mostrar");
+				}		
+		} finally {
+	    	FabricaDeConexiones.close(sesionNTx);
+	    }
+		return listaCiclo;
+	}
+	
+	/**
+	 * Metodo de realizar la busqueda actual
+	 * @param uid Identificador Unico
+	 * @return Lista de tipo ciclo
+	 */
+	public List<Ciclo> llenarComboActualCiclo(String uid) throws Exception {
+		LogHandler.info(uid, this.getClass(), "Entro a llenarComboActualCiclo ");
+		SqlSession sesionNTx = null;
+		List<Ciclo> listaCiclo = null;
+		try {		
+				sesionNTx = FabricaDeConexiones.obtenerSesionNTx();			
+				listaCiclo = sesionNTx.selectList("MapperEducareCatalogos.llenarComboActualCiclo");
+				LogHandler.info(uid, this.getClass(), "listaCiclo: " + listaCiclo);
+				if (listaCiclo.isEmpty()) {
+					throw new EducareException("No hay nada de actual a mostrar");
+				}		
+		} finally {
+	    	FabricaDeConexiones.close(sesionNTx);
+	    }
+		return listaCiclo;
+	}
+	
+	/**
+	 * Metodo que se utilizar para obtener todos los ciclos por columna
+	 * @param uid Identificador Unico
+	 * @param ciclo Objeto de tipo Ciclo
+	 * @return Lista de tipo Ciclo
+	 */
+	public List<Ciclo> buscarCiclo(String uid, Ciclo ciclo) throws EducareException {
+		LogHandler.info(uid, this.getClass(), "Entro a buscarCiclo ");
+		SqlSession sesionNTx = null;
+		List<Ciclo> listaCiclos = null;
+
+		try {
+			if (ciclo != null) {
+				sesionNTx = FabricaDeConexiones.obtenerSesionNTx();
+	
+				final java.util.HashMap<String, Object> parametros = new HashMap<String, Object>();
+				parametros.put("descripcionSeccion", ciclo.getDescripcionSeccion());
+				parametros.put("periodo","");
+				parametros.put("fechaInicio", ciclo.getFechaInicio());  
+				parametros.put("fechaFin", ciclo.getFechaFin());
+				parametros.put("actual", "");
+				LogHandler.info(uid, this.getClass(), "parametros enviados: " + parametros);
+				
+				listaGrados = sesionNTx.selectList("MapperEducareCatalogos.obtenerGrado", parametros);
+				LogHandler.info(uid, this.getClass(), "listaGrados: " + listaGrados);
+	
+				if (listaGrados == null || listaGrados.isEmpty()) {
+					throw new Exception("No hay registros a mostrar");
+				}
+			} else {
+				throw new Exception("La petición viene nula");
+			}		
+
+		} catch (Exception ex) {
+			LogHandler.error(uid, this.getClass(), ex.getMessage(), ex);
+	    } finally {
+	    	FabricaDeConexiones.close(sesionNTx);
+	    }
+
+		return listaGrados;
+	}
+	
+	
+	
+	
+	/***************************************TERMINAN OPERACIONES DEL CATALOGO DE CICLO *******************************************/
 
 	
 

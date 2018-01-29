@@ -3,6 +3,7 @@ package mx.com.educare.util;
 import java.util.List;
 
 import mx.com.educare.constantes.Constantes;
+import mx.com.educare.dto.Ciclo;
 import mx.com.educare.dto.Grado;
 
 /**
@@ -50,5 +51,24 @@ public class ValidadorReglas {
 			}
 		}	
 		return listGradoPet;
+	}
+	
+	/**
+	 * metodo que extrae los valores distintos de una colleccion segun su valor entero
+	 * @param uid id unico de transaccion
+	 * @param grado collecion
+	 * @return List<Ciclo> regresa una lista de secciones
+	 */
+	public static List<Ciclo> comboActual (String uid, List<Ciclo> listCicloPet) {	
+		if (listCicloPet != null && listCicloPet.size() > 0) {
+			for (Ciclo ciclo : listCicloPet) {
+				if (ciclo != null && ciclo.getActual() == 0) {
+					ciclo.setDescripcionActual(Constantes.NO.getString());
+				} else {
+					ciclo.setDescripcionActual(Constantes.SI.getString());
+				}
+			}
+		}	
+		return listCicloPet;
 	}
 }

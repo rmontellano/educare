@@ -12,6 +12,7 @@ import mx.com.educare.dao.factory.EducareDAOFactory;
 import mx.com.educare.dao.interfacedao.EducareDAO;
 import mx.com.educare.dto.Catalogo;
 import mx.com.educare.dto.CatalogoRespuesta;
+import mx.com.educare.dto.Ciclo;
 import mx.com.educare.dto.Criterio;
 import mx.com.educare.dto.CriterioRespuesta;
 import mx.com.educare.dto.Empleado;
@@ -27,6 +28,7 @@ import mx.com.educare.dto.MenuRespuesta;
 import mx.com.educare.dto.Puesto;
 import mx.com.educare.dto.PuestoRespuesta;
 import mx.com.educare.dto.util.EncabezadoRespuesta;
+import mx.com.educare.dto.util.RespuestaCiclo;
 import mx.com.educare.dto.util.RespuestaGrado;
 import mx.com.educare.log.LogHandler;
 import mx.com.educare.util.ValidadorReglas;
@@ -43,6 +45,8 @@ public class EducareCatalogosNegocio {
 	Gson gson = new Gson();
 	/**conectarse con el negocio*/
 	EducareDAOFactory dao = new EducareDAOFactory();
+
+	/***************************************INICIA OPERACIONES DEL CATALOGO DE GRADO *******************************************/
 	
 	/**
 	 * Metodo de realizar la busqueda de secciones
@@ -55,6 +59,7 @@ public class EducareCatalogosNegocio {
 		RespuestaGrado respuestaGrado = new RespuestaGrado();
 		respuestaGrado.setHeader(new EncabezadoRespuesta());
 		respuestaGrado.getHeader().setStatus(true);
+		respuestaGrado.getHeader().setUid(uid);
 		String respuesta = null;
 		EducareDAO core = null;
 		List<Grado> listSeccion = null;
@@ -90,6 +95,7 @@ public class EducareCatalogosNegocio {
 		RespuestaGrado respuestaGrado = new RespuestaGrado();
 		respuestaGrado.setHeader(new EncabezadoRespuesta());
 		respuestaGrado.getHeader().setStatus(true);
+		respuestaGrado.getHeader().setUid(uid);
 		String respuesta = null;
 		EducareDAO core = null;
 		List<Grado> listGrado = null;
@@ -125,6 +131,7 @@ public class EducareCatalogosNegocio {
 		RespuestaGrado respuestaGrado = new RespuestaGrado();
 		respuestaGrado.setHeader(new EncabezadoRespuesta());
 		respuestaGrado.getHeader().setStatus(true);
+		respuestaGrado.getHeader().setUid(uid);
 		String respuesta = null;
 		EducareDAO core = null;
 		List<Grado> listUltimoGrado = null;
@@ -162,6 +169,7 @@ public class EducareCatalogosNegocio {
 		RespuestaGrado respuestaGrado = new RespuestaGrado();
 		respuestaGrado.setHeader(new EncabezadoRespuesta());
 		respuestaGrado.getHeader().setStatus(true);
+		respuestaGrado.getHeader().setUid(uid);
 		String respuesta = null;
 		EducareDAO core = null;
 		List<Grado> listGrado = null;
@@ -203,7 +211,9 @@ public class EducareCatalogosNegocio {
 			LogHandler.info(uid, getClass(), "Entrada actualizarGrado: " + uid);
 			core = dao.obtenerInstanciaDao();
 			respuestaGrado = core.actualizarGrado(uid, grado);
-			if (respuestaGrado == null || !respuestaGrado.getHeader().isStatus()) {
+			if (respuestaGrado == null) {
+				throw new Exception("Ocurrio un error al actualizar el grado");
+			} else if (respuestaGrado.getHeader() != null && !respuestaGrado.getHeader().isStatus()) {
 				throw new Exception("Ocurrio un error al actualizar el grado: " + respuestaGrado.getHeader().getMensaje());
 			}
 		}
@@ -213,62 +223,228 @@ public class EducareCatalogosNegocio {
 				respuestaGrado = new RespuestaGrado();
 			}
 			respuestaGrado.setHeader(new EncabezadoRespuesta(ex.getMessage(), false));
+			respuestaGrado.getHeader().setUid(uid);
 		}
 		respuesta = gson.toJson(respuestaGrado);
 		LogHandler.info(uid, getClass(), "Salida del  metodo actualizarGradok: " + respuesta);
 		return respuesta;
 	}
-//
-//	/**
-//	 * Metodo que sirve para insertar grado
-//	 * @param uid Identificador Unico
-//	 * @param grado Objeto de tipo grado
-//	 * @return GradoRespuesta
-//	 */
-//	public GradoRespuesta insertarGrado(String uid, Grado grado) {
-//
-//		EducareDAOFactory dao = new EducareDAOFactory();
-//		GradoRespuesta respuesta = null;
-//
-//		try {
-//			LogHandler.info(uid, getClass(), "Entrada: " + uid);
-//
-//			respuesta = dao.obtenerInstanciaDao().insertarGrado(uid, grado);
-//			if (respuesta.getGrados() == null) {
-//				respuesta.setGrados(new ArrayList<Grado>());
-//			}
-//			respuesta.setHeader(new EncabezadoRespuesta(uid));
-//		}
-//		catch (Exception ex) {
-//			LogHandler.error(uid, getClass(), "Error al insertarGrado : " + ex.getMessage(), ex);
-//			respuesta.setHeader(new EncabezadoRespuesta(ex.getMessage(), false));
-//		}
-//		return respuesta;
-//	}
-//
-//
-//	/**
-//	 * Metodo que se utiliza para eliminar un grado
-//	 * @param uid Identificador Unico
-//	 * @param idGrado Es el Id a buscar
-//	 * @return Objeto de tipo grado
-//	 */
-//	public GradoRespuesta eliminarGrado(String uid, int idGrado) {
-//
-//		EducareDAOFactory dao = new EducareDAOFactory();
-//		GradoRespuesta respuesta = null;
-//
-//		try {
-//			LogHandler.info(uid, getClass(), "Entrada: eliminarGrado " + uid);
-//
-//			respuesta = dao.obtenerInstanciaDao().eliminarGrado(uid, idGrado);
-//		} catch (Exception ex) {
-//			LogHandler.error(uid, getClass(), "Error al consultar : " + ex.getMessage(), ex);
-//			respuesta.setHeader(new EncabezadoRespuesta(ex.getMessage(), false));
-//		}
-//
-//		return respuesta;
-//	}
+	
+	/**
+	 * Metodo que se utiliza para eliminar un grado
+	 * @param uid Identificador Unico
+	 * @param idGrado Es el Id a buscar
+	 * @return Objeto de tipo grado
+	 */
+	public String eliminarGrado(String uid, Grado grado) {
+
+		EducareDAOFactory dao = new EducareDAOFactory();
+		String  respuesta = null;
+		RespuestaGrado respuestaGrado = null;
+		EducareDAO core = null;
+
+		try {
+			LogHandler.info(uid, getClass(), "Entrada: eliminarGrado " + uid);		
+			core = dao.obtenerInstanciaDao();
+			respuestaGrado = core.eliminarGrado(uid, grado);
+			if (respuestaGrado == null) {
+				throw new Exception("Ocurrio un error al eliminar el grado");
+			} else if (respuestaGrado.getHeader() != null && !respuestaGrado.getHeader().isStatus()) {
+				throw new Exception("Ocurrio un error al eliminar el grado: " + respuestaGrado.getHeader().getMensaje());
+			}
+		} catch (Exception ex) {
+			LogHandler.error(uid, getClass(), "Error al eliminarGrado : " + ex.getMessage(), ex);
+			if (respuestaGrado == null) {
+				respuestaGrado = new RespuestaGrado();
+			}
+			respuestaGrado.setHeader(new EncabezadoRespuesta(ex.getMessage(), false));
+			respuestaGrado.getHeader().setUid(uid);
+		}
+		respuesta = gson.toJson(respuestaGrado);
+		LogHandler.info(uid, getClass(), "Salida del  metodo eliminarGrado: " + respuesta);
+		return respuesta;
+	}
+
+	/**
+	 * Metodo que sirve para insertar grado
+	 * @param uid Identificador Unico
+	 * @param grado Objeto de tipo grado
+	 * @return GradoRespuesta
+	 */
+	public String insertarGrado(String uid, Grado grado) {
+
+		EducareDAOFactory dao = new EducareDAOFactory();
+		RespuestaGrado respuestaGrado = null;
+		EducareDAO core = null;
+		String respuesta = null; 
+
+		try {
+			LogHandler.info(uid, getClass(), "Entrada insertarGrado: " + grado);
+			core = dao.obtenerInstanciaDao();
+			respuestaGrado = core.insertarGrado(uid, grado);
+			
+			if (respuestaGrado == null) {
+				throw new Exception("Ocurrio un error al insertar el grado");
+			} else if (respuestaGrado.getHeader() != null && !respuestaGrado.getHeader().isStatus()) {
+				throw new Exception("Ocurrio un error al insertar el grado: " + respuestaGrado.getHeader().getMensaje());
+			}
+		} catch (Exception ex) {
+			LogHandler.error(uid, getClass(), "Error al insertarGrado : " + ex.getMessage(), ex);
+			if (respuestaGrado == null) {
+				respuestaGrado = new RespuestaGrado();
+			}
+			respuestaGrado.setHeader(new EncabezadoRespuesta(ex.getMessage(), false));
+			respuestaGrado.getHeader().setUid(uid);
+		}
+		respuesta = gson.toJson(respuestaGrado);
+		LogHandler.info(uid, getClass(), "Salida del  metodo insertarGrado: " + respuesta);
+		return respuesta;
+	}
+
+	/***************************************TERMINAN OPERACIONES DEL CATALOGO DE GRADO *******************************************/
+	/***************************************INICIA OPERACIONES DEL CATALOGO DE CICLO *******************************************/
+	/**
+	 * Metodo que realizar la busqueda de ciclos
+	 * @param uid Identificador Unico
+	 * @return Lista de tipo grado
+	 */
+	public String llenarComboSeccionCiclo(String uid) {
+		LogHandler.info(uid, getClass(), "Entrada al metodo llenarComboSeccionCiclo: " + uid);
+		RespuestaCiclo respuestaCiclo = new RespuestaCiclo();
+		respuestaCiclo.setHeader(new EncabezadoRespuesta());
+		respuestaCiclo.getHeader().setStatus(true);
+		respuestaCiclo.getHeader().setUid(uid);
+		String respuesta = null;
+		EducareDAO core = null;
+		List<Ciclo> listCiclo = null;
+		try {
+			core = dao.obtenerInstanciaDao();
+			listCiclo = core.llenarComboSeccionCiclo(uid);
+			LogHandler.info(uid, getClass(), "listCiclo: " + listCiclo);
+			if (listCiclo != null && listCiclo.size() > 0) {			
+				respuestaCiclo.setListCiclo(listCiclo);		
+			} else {
+				LogHandler.info(uid, getClass(), "la consulta no arrojo ciclos");
+				respuestaCiclo.getHeader().setStatus(false);
+				respuestaCiclo.getHeader().setMensaje("La consulta no arrojo ciclos");
+			}
+		} catch (Exception ex) {
+			LogHandler.error(uid, getClass(), "Error al llenarComboSeccionCiclo : " + ex.getMessage(), ex);
+			respuestaCiclo.getHeader().setStatus(false);
+			respuestaCiclo.getHeader().setMensaje(ex.getMessage());
+		}
+		respuesta = gson.toJson(respuestaCiclo);
+		LogHandler.info(uid, getClass(), "Salida del  metodo llenarComboSeccionCiclo: " + respuesta);
+		return respuesta;	
+	}
+	
+	/**
+	 * Metodo de realizar la busqueda de la fecha inicio
+	 * @param uid Identificador Unico
+	 * @return Lista de tipo ciclo
+	 */
+	public String llenarComboFechaInicioCiclo(String uid) {
+		LogHandler.info(uid, getClass(), "Entrada al metodo llenarComboFechaInicioCiclo: " + uid);
+		RespuestaCiclo respuestaCiclo = new RespuestaCiclo();
+		respuestaCiclo.setHeader(new EncabezadoRespuesta());
+		respuestaCiclo.getHeader().setStatus(true);
+		respuestaCiclo.getHeader().setUid(uid);
+		String respuesta = null;
+		EducareDAO core = null;
+		List<Ciclo> listCiclo = null;
+		try {
+			core = dao.obtenerInstanciaDao();
+			listCiclo = core.llenarComboFechaInicioCiclo(uid);
+			LogHandler.info(uid, getClass(), "listCiclo: " + listCiclo);
+			if (listCiclo != null && listCiclo.size() > 0) {			
+				respuestaCiclo.setListCiclo(listCiclo);		
+			} else {
+				LogHandler.info(uid, getClass(), "la consulta no arrojo fechas inicio para este ciclo");
+				respuestaCiclo.getHeader().setStatus(false);
+				respuestaCiclo.getHeader().setMensaje("la consulta no arrojo fechas inicio para este ciclo");
+			}
+		} catch (Exception ex) {
+			LogHandler.error(uid, getClass(), "Error al llenarComboFechaInicioCiclo : " + ex.getMessage(), ex);
+			respuestaCiclo.getHeader().setStatus(false);
+			respuestaCiclo.getHeader().setMensaje(ex.getMessage());
+		}
+		respuesta = gson.toJson(respuestaCiclo);
+		LogHandler.info(uid, getClass(), "Salida del  metodo llenarComboFechaInicioCiclo: " + respuesta);
+		return respuesta;	
+	}
+	
+	/**
+	 * Metodo de realizar la busqueda de la fecha fin
+	 * @param uid Identificador Unico
+	 * @return Lista de tipo ciclo
+	 */
+	public String llenarComboFechaFinCiclo(String uid) {
+		LogHandler.info(uid, getClass(), "Entrada al metodo llenarComboFechaFinCiclo: " + uid);
+		RespuestaCiclo respuestaCiclo = new RespuestaCiclo();
+		respuestaCiclo.setHeader(new EncabezadoRespuesta());
+		respuestaCiclo.getHeader().setStatus(true);
+		respuestaCiclo.getHeader().setUid(uid);
+		String respuesta = null;
+		EducareDAO core = null;
+		List<Ciclo> listCiclo = null;
+		try {
+			core = dao.obtenerInstanciaDao();
+			listCiclo = core.llenarComboFechaFinCiclo(uid);
+			LogHandler.info(uid, getClass(), "listCiclo: " + listCiclo);
+			if (listCiclo != null && listCiclo.size() > 0) {			
+				respuestaCiclo.setListCiclo(listCiclo);		
+			} else {
+				LogHandler.info(uid, getClass(), "la consulta no arrojo fechas fin para este ciclo");
+				respuestaCiclo.getHeader().setStatus(false);
+				respuestaCiclo.getHeader().setMensaje("la consulta no arrojo fechas fin para este ciclo");
+			}
+		} catch (Exception ex) {
+			LogHandler.error(uid, getClass(), "Error al llenarComboFechaFinCiclo : " + ex.getMessage(), ex);
+			respuestaCiclo.getHeader().setStatus(false);
+			respuestaCiclo.getHeader().setMensaje(ex.getMessage());
+		}
+		respuesta = gson.toJson(respuestaCiclo);
+		LogHandler.info(uid, getClass(), "Salida del  metodo llenarComboFechaFinCiclo: " + respuesta);
+		return respuesta;	
+	}
+	
+	/**
+	 * Metodo que se utilizar para obtener todos los actuales
+	 * @param uid Identificador Unico
+	 * @return Lista de tipo grado
+	 */
+	public String llenarComboActualCiclo(String uid) {
+		LogHandler.info(uid, getClass(), "Entrada al metodo llenarComboActualCiclo: " + uid);
+		RespuestaCiclo respuestaCiclo = new RespuestaCiclo();
+		respuestaCiclo.setHeader(new EncabezadoRespuesta());
+		respuestaCiclo.getHeader().setStatus(true);
+		respuestaCiclo.getHeader().setUid(uid);
+		String respuesta = null;
+		EducareDAO core = null;
+		List<Ciclo> listCiclo = null;
+
+		try {
+			core = dao.obtenerInstanciaDao();
+			listCiclo = core.llenarComboActualCiclo(uid);
+			if (listCiclo != null && listCiclo.size() > 0) {
+				listCiclo = ValidadorReglas.comboActual(uid, listCiclo);
+				LogHandler.info(uid, getClass(), "listCiclo: " + listCiclo);
+				respuestaCiclo.setListCiclo(listCiclo);	
+			} else {
+				LogHandler.info(uid, getClass(), "la consulta no arrojo actual ciclo  ");
+				respuestaCiclo.getHeader().setStatus(false);
+				respuestaCiclo.getHeader().setMensaje("La consulta no arrojo actual ciclo");
+			}
+		} catch (Exception ex) {
+			LogHandler.error(uid, getClass(), "Error al consultar : " + ex.getMessage(), ex);
+			respuestaCiclo.getHeader().setStatus(false);
+			respuestaCiclo.getHeader().setMensaje(ex.getMessage());
+		}
+		respuesta = gson.toJson(respuestaCiclo);
+		LogHandler.info(uid, getClass(), "Salida del  metodo llenarComboActualCiclo: " + respuesta);
+		return respuesta;
+	}
+	/***************************************TERMINAN OPERACIONES DEL CATALOGO DE CICLO *******************************************/
 
 	/**
 	 * Metodo que se utilizar para buscar todos los grados
