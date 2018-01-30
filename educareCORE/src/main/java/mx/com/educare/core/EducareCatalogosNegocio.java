@@ -444,6 +444,42 @@ public class EducareCatalogosNegocio {
 		LogHandler.info(uid, getClass(), "Salida del  metodo llenarComboActualCiclo: " + respuesta);
 		return respuesta;
 	}
+	
+	/**
+	 * Metodo que se utilizar para obtener todos los ciclos por columna
+	 * @param uid Identificador Unico
+	 * @param ciclo Objeto de tipo Ciclo
+	 * @return Lista de tipo Ciclo
+	 */
+	public String buscarCiclo(String uid, Ciclo ciclo) {
+		LogHandler.info(uid, getClass(), "Entrada al metodo buscarCiclo: " + ciclo);
+		RespuestaCiclo respuestaCiclo = new RespuestaCiclo();
+		respuestaCiclo.setHeader(new EncabezadoRespuesta());
+		respuestaCiclo.getHeader().setStatus(true);
+		respuestaCiclo.getHeader().setUid(uid);
+		String respuesta = null;
+		EducareDAO core = null;
+		List<Ciclo> listCiclo = null;
+
+		try {
+			core = dao.obtenerInstanciaDao();
+			listCiclo = core.buscarCiclo(uid, ciclo);
+			if (listCiclo != null && listCiclo.size() > 0) {
+				listCiclo = ValidadorReglas.comboActual(uid, listCiclo);
+				respuestaCiclo.setListCiclo(listCiclo);
+			} else {
+				respuestaCiclo.getHeader().setStatus(false);
+				respuestaCiclo.getHeader().setMensaje("No se encontraron resultados");
+			}
+		} catch (Exception ex) {
+			LogHandler.error(uid, getClass(), "Error al consultar : " + ex.getMessage(), ex);
+			respuestaCiclo.getHeader().setStatus(false);
+			respuestaCiclo.getHeader().setMensaje(ex.getMessage());
+		}
+		respuesta = gson.toJson(respuestaCiclo);
+		LogHandler.info(uid, getClass(), "Salida del  metodo buscarCiclo: " + respuesta);
+		return respuesta;
+	}
 	/***************************************TERMINAN OPERACIONES DEL CATALOGO DE CICLO *******************************************/
 
 	/**

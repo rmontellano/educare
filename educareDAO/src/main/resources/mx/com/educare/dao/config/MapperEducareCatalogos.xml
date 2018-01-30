@@ -278,13 +278,24 @@
 			<if test="actual != null">
 				AND c.actual = #{actual}
 			</if>
-			<if test="fechaIni != null">
-				AND c.fechaini  <![CDATA[>=]]> #{fechaini}
+			<if test="fechaInicio != null">
+				AND c.fechaini  <![CDATA[>=]]> #{fechaInicio}
 			</if>
 			<if test="fechaFin != null">
 				AND c.fechafin <![CDATA[<=]]> #{fechaFin}
 			</if>
 	</select>
+	<update id="actualizarCiclo" parameterType="java.util.HashMap">
+	  UPDATE ciclo
+		SET
+			idseccion = #{idSeccion},
+			nombre = #{nombre},
+			actual = #{actual},
+            fechaini = #{fechaInicio},
+            fechafin = #{fechaFin}
+		WHERE
+			idgrado = #{idCiclo}
+	</update>
 
 
 

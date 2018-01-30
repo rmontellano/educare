@@ -3,6 +3,7 @@ package mx.com.educare;
 import org.junit.Test;
 
 import mx.com.educare.core.EducareCatalogosNegocio;
+import mx.com.educare.dto.Ciclo;
 
 public class TestCiclo {
 	EducareCatalogosNegocio negocio = new EducareCatalogosNegocio();
@@ -11,8 +12,9 @@ public class TestCiclo {
 	public void test() {
 //		llenarComboSeccionCiclo();
 //		llenarComboFechaInicioCiclo();
-		llenarComboFechaFinCiclo();
+//		llenarComboFechaFinCiclo();
 //		llenarComboActualCiclo();
+		buscarCiclo();
 	}
 	
 	/**
@@ -44,6 +46,20 @@ public class TestCiclo {
 	 */
 	public void llenarComboActualCiclo() {		
 		String respuesta = negocio.llenarComboActualCiclo("");
+		System.out.println(respuesta);		
+	}
+	
+	/**
+	 * test para probar el metodo  de buscar ciclo
+	 */
+	public void buscarCiclo() {	
+		Ciclo ciclo = new Ciclo();
+		ciclo.setDescripcionSeccion("Primaria");
+		//ciclo.setPeriodo("2015-2016");  se utiliza periodo o fecha inicio y fin , no las dos
+		ciclo.setFechaInicio("2015-11-03");
+		ciclo.setFechaFin("2016-12-12");
+		ciclo.setDescripcionActual("NO");
+		String respuesta = negocio.buscarCiclo("", ciclo);
 		System.out.println(respuesta);		
 	}
 

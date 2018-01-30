@@ -14,10 +14,10 @@ public class TestGrado {
 //		llenarComboSeccion();
 //		llenarComboGrado();
 //		llenarComboUltimoGrado();
-//		buscarGrado();
+		buscarGrado();
 //		actualizarGrado();
 //		eliminarGrado();
-		insertarGrado();
+//		insertarGrado();
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class TestGrado {
     	Grado grado = new Grado();
     	grado.setDescripcionSeccion("Primaria");
     	grado.setNumGrado(4);
-    	grado.setUltimoGrado(0);
+    	grado.setDescripcionUltimoGrado("NO");
     	String respuesta = negocio.buscarGrado("", grado);
     	System.out.println(respuesta);
     }

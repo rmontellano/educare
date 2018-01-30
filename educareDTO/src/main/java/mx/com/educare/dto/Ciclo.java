@@ -52,6 +52,10 @@ public class Ciclo  implements Serializable {
 	 */
 	private String fechaFin;
 	/**
+	 * periodo
+	 */
+	private String periodo;
+	/**
 	 * @return the idCiclo
 	 */
 	public Integer getIdCiclo() {
@@ -159,16 +163,29 @@ public class Ciclo  implements Serializable {
 	public void setFechaFin(String fechaFin) {
 		this.fechaFin = formatoFecha(fechaFin);
 	}
+	/**
+	 * @return the periodo
+	 */
+	public String getPeriodo() {
+		return periodo;
+	}
+	/**
+	 * @param periodo the periodo to set
+	 */
+	public void setPeriodo(String periodo) {
+		this.periodo = periodo;
+	}
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "Ciclo [idCiclo=" + idCiclo + ", idSeccion=" + idSeccion + ", nombre=" + nombre + ", actual=" + actual
-				+ ", status=" + status + ", descripcionSeccion=" + descripcionSeccion + ", descripcionActual="
-				+ descripcionActual + ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + "]";
+		return "Ciclo [idCiclo=" + idCiclo + ", idSeccion=" + idSeccion + ", actual=" + actual + ", status=" + status
+				+ ", nombre=" + nombre + ", descripcionSeccion=" + descripcionSeccion + ", descripcionActual="
+				+ descripcionActual + ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + ", periodo=" + periodo
+				+ "]";
 	}
-	
 	/**
 	 * 
 	 * @param fecha 

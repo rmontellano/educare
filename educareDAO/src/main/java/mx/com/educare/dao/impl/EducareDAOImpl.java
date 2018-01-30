@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import mx.com.educare.constantes.Constantes;
 import mx.com.educare.dao.conexion.FabricaDeConexiones;
 import mx.com.educare.dao.interfacedao.EducareDAO;
 import mx.com.educare.dto.Catalogo;
@@ -26,6 +27,7 @@ import mx.com.educare.dto.Puesto;
 import mx.com.educare.dto.PuestoRespuesta;
 import mx.com.educare.dto.auth.Usuario;
 import mx.com.educare.dto.util.EncabezadoRespuesta;
+import mx.com.educare.dto.util.RespuestaCiclo;
 import mx.com.educare.dto.util.RespuestaGrado;
 import mx.com.educare.log.LogHandler;
 import mx.com.educare.util.ValidadorReglas;
@@ -227,6 +229,13 @@ public class EducareDAOImpl implements EducareDAO {
 		try {
 			if (grado != null) {
 				sesionNTx = FabricaDeConexiones.obtenerSesionNTx();
+				
+				if (grado.getDescripcionUltimoGrado() != null 
+						&& grado.getDescripcionUltimoGrado().equals(Constantes.SI.getString())) {
+					grado.setUltimoGrado(1);
+				} else {
+					grado.setUltimoGrado(0);
+				}
 	
 				final java.util.HashMap<String, Object> parametros = new HashMap<String, Object>();
 				parametros.put("descripcion", grado.getDescripcionSeccion());
@@ -422,31 +431,40 @@ public class EducareDAOImpl implements EducareDAO {
 	 * @return Lista de tipo Ciclo
 	 */
 	public List<Ciclo> buscarCiclo(String uid, Ciclo ciclo) throws EducareException {
-		LogHandler.info(uid, this.getClass(), "Entro a buscarCiclo ");
+		LogHandler.info(uid, this.getClass(), "Entro a buscarCiclo: " + ciclo);
 		SqlSession sesionNTx = null;
 		List<Ciclo> listaCiclos = null;
 
 		try {
-			if (ciclo != null) {
+			if (ciclo == null) {
+				throw new EducareException("La petición viene nula, favor de verificarla");
+			}
+			 if (ciclo.getDescripcionActual() != null && ciclo.getDescripcionActual().equals(Constantes.SI.getString())) {
+					 ciclo.setActual(1);	 
+			 } else {
+				 ciclo.setActual(0);
+			 }
 				sesionNTx = FabricaDeConexiones.obtenerSesionNTx();
 	
 				final java.util.HashMap<String, Object> parametros = new HashMap<String, Object>();
 				parametros.put("descripcionSeccion", ciclo.getDescripcionSeccion());
-				parametros.put("periodo","");
-				parametros.put("fechaInicio", ciclo.getFechaInicio());  
-				parametros.put("fechaFin", ciclo.getFechaFin());
-				parametros.put("actual", "");
-				LogHandler.info(uid, this.getClass(), "parametros enviados: " + parametros);
-				
-				listaGrados = sesionNTx.selectList("MapperEducareCatalogos.obtenerGrado", parametros);
-				LogHandler.info(uid, this.getClass(), "listaGrados: " + listaGrados);
-	
-				if (listaGrados == null || listaGrados.isEmpty()) {
-					throw new Exception("No hay registros a mostrar");
+				parametros.put("actual", ciclo.getActual());
+				if (ciclo.getPeriodo() != null) {
+					String [] periodos = ciclo.getPeriodo().trim().split("-");
+					parametros.put("fechaInicio", periodos[0] + "/01/01");  
+					parametros.put("fechaFin", periodos[1] + "/01/01");	
+				} else {
+					parametros.put("fechaInicio", ciclo.getFechaInicio());  
+					parametros.put("fechaFin", ciclo.getFechaFin());
 				}
-			} else {
-				throw new Exception("La petición viene nula");
-			}		
+				LogHandler.info(uid, this.getClass(), "buscarCiclo_parametros enviados: " + parametros);
+				
+				listaCiclos = sesionNTx.selectList("MapperEducareCatalogos.buscarCiclo", parametros);
+				LogHandler.info(uid, this.getClass(), "listaCiclos: " + listaCiclos);
+	
+				if (listaCiclos == null || listaCiclos.isEmpty()) {
+					throw new EducareException("No hay registros a mostrar para este ciclo");
+				}		
 
 		} catch (Exception ex) {
 			LogHandler.error(uid, this.getClass(), ex.getMessage(), ex);
@@ -454,7 +472,74 @@ public class EducareDAOImpl implements EducareDAO {
 	    	FabricaDeConexiones.close(sesionNTx);
 	    }
 
-		return listaGrados;
+		return listaCiclos;
+	}
+	
+	/**
+	 * Metodo que sirve para actualizar grado
+	 * @param uid Identificador Unico
+	 * @param grado Es el Id a buscar
+	 * @return Objeto de tipo grado
+	 */
+	public RespuestaCiclo actualizarCiclo(String uid, Ciclo ciclo) throws EducareException {
+		LogHandler.info(uid, this.getClass(), "Entro a actualizar ciclo:  " + ciclo);
+		SqlSession sesionTx = null;
+		RespuestaCiclo respuesta = new RespuestaCiclo();
+		respuesta.setHeader(new EncabezadoRespuesta());
+		respuesta.getHeader().setUid(uid);
+		respuesta.getHeader().setStatus(true);
+		List<Grado> listaGrados = null;
+		int actualizar;
+		try {
+			
+			if (ciclo == null || ciclo.getIdCiclo() == null || ciclo.getIdSeccion() == null
+					|| ciclo.getNombre() == null || ciclo.getDescripcionActual() == null
+					|| ciclo.getFechaInicio() == null || ciclo.getFechaFin() == null) {
+				throw new Exception("Revisar la peticion alguno de los campos viene nulo: " + ciclo);
+			}
+
+			final java.util.HashMap<String, Object> parametrosUpdate = new HashMap<String, Object>();
+			parametrosUpdate.put( "idCiclo", ciclo.getIdCiclo());
+			parametrosUpdate.put( "nombre", ciclo.getNombre());
+			parametrosUpdate.put( "fechaInicio", ciclo.getFechaInicio());
+			parametrosUpdate.put( "fechaFin", ciclo.getFechaFin());
+			
+			sesionTx = FabricaDeConexiones.obtenerSesionTx();
+			
+			if(ciclo.getDescripcionSeccion() != null && !ciclo.getDescripcionSeccion().trim().isEmpty()) {
+				final java.util.HashMap<String, Object> parametroSeccion = new HashMap<String, Object>();
+				parametroSeccion.put("descripcionSeccion", ciclo.getDescripcionSeccion());
+				LogHandler.info(uid, this.getClass(), "parametros enviados: " + parametroSeccion);
+				
+				listaGrados = sesionTx.selectList("MapperEducareCatalogos.buscarCiclo", parametroSeccion);	
+				LogHandler.info(uid, this.getClass(), "listaGrados: " + listaGrados);
+				
+				if (listaGrados != null && listaGrados.size() > 0) {
+					parametrosUpdate.put( "idSeccion", listaGrados.get(0).getIdSeccion());
+				}	
+			}		
+			if(ciclo.getDescripcionActual() != null && !ciclo.getDescripcionActual().trim().isEmpty()) {
+				parametrosUpdate.put( "actual", ValidadorReglas.convertirUltimoGradoEntero(uid, ciclo.getDescripcionActual().trim()));
+			}
+
+			actualizar = sesionTx.update("MapperEducareCatalogos.actualizarCiclo", parametrosUpdate);
+			LogHandler.info(uid, this.getClass(), "actualizar: " + actualizar);
+
+			if ( actualizar == 0) {
+				throw new Exception("No fue posible actualizar el ciclo " + ciclo);
+			}
+
+			sesionTx.commit();
+			respuesta.getHeader().setMensaje("Se actualizo correctamente el ciclo");
+		} catch (Exception e) {
+			FabricaDeConexiones.rollBack(sesionTx);
+			LogHandler.info(uid, this.getClass(), e.getMessage());
+			respuesta.getHeader().setStatus(false);
+			respuesta.getHeader().setMensaje(e.getMessage());
+	    } finally {
+	    	FabricaDeConexiones.close(sesionTx);
+	    }
+		return respuesta;
 	}
 	
 	

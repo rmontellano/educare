@@ -22,6 +22,7 @@ import mx.com.educare.dto.MenuRespuesta;
 import mx.com.educare.dto.Puesto;
 import mx.com.educare.dto.PuestoRespuesta;
 import mx.com.educare.dto.auth.Usuario;
+import mx.com.educare.dto.util.RespuestaCiclo;
 import mx.com.educare.dto.util.RespuestaGrado;
 import mx.com.educare.util.excepciones.EducareException;
 
@@ -115,6 +116,22 @@ public interface EducareDAO {
 	 * @return Lista de tipo ciclo
 	 */
 	List<Ciclo> llenarComboActualCiclo(String uid) throws Exception;
+
+	/**
+	 * Metodo que se utilizar para obtener todos los ciclos por columna
+	 * @param uid Identificador Unico
+	 * @param ciclo Objeto de tipo Ciclo
+	 * @return Lista de tipo Ciclo
+	 */
+	List<Ciclo> buscarCiclo(String uid, Ciclo ciclo) throws EducareException;
+
+	/**
+	 * Metodo que sirve para actualizar grado
+	 * @param uid Identificador Unico
+	 * @param grado Es el Id a buscar
+	 * @return Objeto de tipo grado
+	 */
+	RespuestaCiclo actualizarCiclo(String uid, Ciclo ciclo) throws EducareException;
 
 	/**
 	 * Metodo que se utilizar para buscar todos los Grupos
