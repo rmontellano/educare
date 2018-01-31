@@ -14,7 +14,8 @@ public class TestCiclo {
 //		llenarComboFechaInicioCiclo();
 //		llenarComboFechaFinCiclo();
 //		llenarComboActualCiclo();
-		buscarCiclo();
+//		buscarCiclo();
+		actualizarCiclo();
 	}
 	
 	/**
@@ -61,6 +62,23 @@ public class TestCiclo {
 		ciclo.setDescripcionActual("NO");
 		String respuesta = negocio.buscarCiclo("", ciclo);
 		System.out.println(respuesta);		
+	}
+	
+	/**
+	 * test para probar la actualizacion del ciclo
+	 */
+	public void actualizarCiclo() {
+		Ciclo ciclo = new Ciclo();
+		ciclo.setIdCiclo(19);
+		ciclo.setIdSeccion(37);
+		ciclo.setDescripcionSeccion("Secundaria");
+		ciclo.setDescripcionActual("NO");
+		ciclo.setFechaInicio("2015-11-03");
+		ciclo.setFechaFin("2016-12-12");
+		ciclo.setNombre("CAFE 2015-2016");
+		
+		String respuesta = negocio.actualizarCiclo("", ciclo);
+		System.out.println(respuesta);
 	}
 
 }

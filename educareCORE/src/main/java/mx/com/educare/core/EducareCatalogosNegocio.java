@@ -480,6 +480,42 @@ public class EducareCatalogosNegocio {
 		LogHandler.info(uid, getClass(), "Salida del  metodo buscarCiclo: " + respuesta);
 		return respuesta;
 	}
+	
+	/**
+	 * Metodo que sirve para actualizar grado
+	 * @param uid Identificador Unico
+	 * @param grado Es el Id a buscar
+	 * @return Objeto de tipo grado
+	 */
+	public String actualizarCiclo(String uid, Ciclo ciclo) {
+
+		EducareDAOFactory dao = new EducareDAOFactory();
+		String respuesta = null;
+		RespuestaCiclo respuestaCiclo = null;
+		EducareDAO core = null;
+
+		try {
+			LogHandler.info(uid, getClass(), "Entrada actualizarCiclo: " + uid);
+			core = dao.obtenerInstanciaDao();
+			respuestaCiclo = core.actualizarCiclo(uid, ciclo);
+			if (respuestaCiclo == null) {
+				throw new Exception("Ocurrio un error al actualizar el ciclo");
+			} else if (respuestaCiclo.getHeader() != null && !respuestaCiclo.getHeader().isStatus()) {
+				throw new Exception("Ocurrio un error al actualizar el ciclo: " + respuestaCiclo.getHeader().getMensaje());
+			}
+		}
+		catch (Exception ex) {
+			LogHandler.error(uid, getClass(), "Error al actualizarCiclo : " + ex.getMessage(), ex);
+			if (respuestaCiclo == null) {
+				respuestaCiclo = new RespuestaCiclo();
+			}
+			respuestaCiclo.setHeader(new EncabezadoRespuesta(ex.getMessage(), false));
+			respuestaCiclo.getHeader().setUid(uid);
+		}
+		respuesta = gson.toJson(respuestaCiclo);
+		LogHandler.info(uid, getClass(), "Salida del  metodo actualizarCiclo: " + respuesta);
+		return respuesta;
+	}
 	/***************************************TERMINAN OPERACIONES DEL CATALOGO DE CICLO *******************************************/
 
 	/**

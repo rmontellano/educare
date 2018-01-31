@@ -294,7 +294,7 @@
             fechaini = #{fechaInicio},
             fechafin = #{fechaFin}
 		WHERE
-			idgrado = #{idCiclo}
+			idciclo = #{idCiclo}
 	</update>
 
 

@@ -488,7 +488,7 @@ public class EducareDAOImpl implements EducareDAO {
 		respuesta.setHeader(new EncabezadoRespuesta());
 		respuesta.getHeader().setUid(uid);
 		respuesta.getHeader().setStatus(true);
-		List<Grado> listaGrados = null;
+		List<Ciclo> listaCiclo = null;
 		int actualizar;
 		try {
 			
@@ -511,11 +511,11 @@ public class EducareDAOImpl implements EducareDAO {
 				parametroSeccion.put("descripcionSeccion", ciclo.getDescripcionSeccion());
 				LogHandler.info(uid, this.getClass(), "parametros enviados: " + parametroSeccion);
 				
-				listaGrados = sesionTx.selectList("MapperEducareCatalogos.buscarCiclo", parametroSeccion);	
-				LogHandler.info(uid, this.getClass(), "listaGrados: " + listaGrados);
+				listaCiclo = sesionTx.selectList("MapperEducareCatalogos.buscarCiclo", parametroSeccion);	
+				LogHandler.info(uid, this.getClass(), "listaCiclo: " + listaCiclo);
 				
-				if (listaGrados != null && listaGrados.size() > 0) {
-					parametrosUpdate.put( "idSeccion", listaGrados.get(0).getIdSeccion());
+				if (listaCiclo != null && listaCiclo.size() > 0) {
+					parametrosUpdate.put( "idSeccion", listaCiclo.get(0).getIdSeccion());
 				}	
 			}		
 			if(ciclo.getDescripcionActual() != null && !ciclo.getDescripcionActual().trim().isEmpty()) {
