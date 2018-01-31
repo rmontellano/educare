@@ -516,6 +516,77 @@ public class EducareCatalogosNegocio {
 		LogHandler.info(uid, getClass(), "Salida del  metodo actualizarCiclo: " + respuesta);
 		return respuesta;
 	}
+
+	/**
+	 * Metodo que se utiliza para eliminar un ciclo
+	 * @param uid Identificador Unico
+	 * @param ciclo Es el Id a buscar
+	 * @return Objeto de tipo ciclo
+	 */
+	public String eliminarCiclo(String uid, Ciclo ciclo) {
+
+		EducareDAOFactory dao = new EducareDAOFactory();
+		String  respuesta = null;
+		RespuestaCiclo respuestaCiclo = null;
+		EducareDAO core = null;
+
+		try {
+			LogHandler.info(uid, getClass(), "Entrada: eliminarCiclo " + uid);		
+			core = dao.obtenerInstanciaDao();
+			respuestaCiclo = core.eliminarCiclo(uid, ciclo);
+			if (respuestaCiclo == null) {
+				throw new Exception("Ocurrio un error al eliminar el ciclo");
+			} else if (respuestaCiclo.getHeader() != null && !respuestaCiclo.getHeader().isStatus()) {
+				throw new Exception("Ocurrio un error al eliminar el ciclo: " + respuestaCiclo.getHeader().getMensaje());
+			}
+		} catch (Exception ex) {
+			LogHandler.error(uid, getClass(), "Error al eliminarCiclo : " + ex.getMessage(), ex);
+			if (respuestaCiclo == null) {
+				respuestaCiclo = new RespuestaCiclo();
+			}
+			respuestaCiclo.setHeader(new EncabezadoRespuesta(ex.getMessage(), false));
+			respuestaCiclo.getHeader().setUid(uid);
+		}
+		respuesta = gson.toJson(respuestaCiclo);
+		LogHandler.info(uid, getClass(), "Salida del  metodo eliminarCiclo: " + respuesta);
+		return respuesta;
+	}
+
+	/**
+	 * Metodo que sirve para insertar ciclo
+	 * @param uid Identificador Unico
+	 * @param ciclo Objeto de tipo ciclo
+	 * @return string respuesta
+	 */
+	public String insertarCiclo(String uid, Ciclo ciclo) {
+
+		EducareDAOFactory dao = new EducareDAOFactory();
+		RespuestaCiclo respuestaCiclo = null;
+		EducareDAO core = null;
+		String respuesta = null; 
+
+		try {
+			LogHandler.info(uid, getClass(), "Entrada insertarCiclo: " + ciclo);
+			core = dao.obtenerInstanciaDao();
+			respuestaCiclo = core.insertarCiclo(uid, ciclo);
+			
+			if (respuestaCiclo == null) {
+				throw new Exception("Ocurrio un error al insertar el ciclo");
+			} else if (respuestaCiclo.getHeader() != null && !respuestaCiclo.getHeader().isStatus()) {
+				throw new Exception("Ocurrio un error al insertar el ciclo: " + respuestaCiclo.getHeader().getMensaje());
+			}
+		} catch (Exception ex) {
+			LogHandler.error(uid, getClass(), "Error al insertarCiclo : " + ex.getMessage(), ex);
+			if (respuestaCiclo == null) {
+				respuestaCiclo = new RespuestaCiclo();
+			}
+			respuestaCiclo.setHeader(new EncabezadoRespuesta(ex.getMessage(), false));
+			respuestaCiclo.getHeader().setUid(uid);
+		}
+		respuesta = gson.toJson(respuestaCiclo);
+		LogHandler.info(uid, getClass(), "Salida del  metodo insertarCiclo: " + respuesta);
+		return respuesta;
+	}
 	/***************************************TERMINAN OPERACIONES DEL CATALOGO DE CICLO *******************************************/
 
 	/**

@@ -132,6 +132,22 @@ public interface EducareDAO {
 	 * @return Objeto de tipo grado
 	 */
 	RespuestaCiclo actualizarCiclo(String uid, Ciclo ciclo) throws EducareException;
+	
+	/**
+	 * Metodo que se utiliza para eliminar un ciclo
+	 * @param uid Identificador Unico
+	 * @param ciclo Es el Id a buscar
+	 * @return Objeto de tipo ciclo
+	 */
+	RespuestaCiclo eliminarCiclo(String uid, Ciclo ciclo) throws EducareException;
+	
+	/**
+	 * Metodo que sirve para insertar ciclo
+	 * @param uid Identificador Unico
+	 * @param ciclo Objeto de tipo ciclo
+	 * @return RespuestaCiclo
+	 */
+	RespuestaCiclo insertarCiclo(String uid, Ciclo ciclo) throws EducareException;
 
 	/**
 	 * Metodo que se utilizar para buscar todos los Grupos

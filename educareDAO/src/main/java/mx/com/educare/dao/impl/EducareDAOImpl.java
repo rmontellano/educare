@@ -17,7 +17,6 @@ import mx.com.educare.dto.CriterioRespuesta;
 import mx.com.educare.dto.Empleado;
 import mx.com.educare.dto.EmpleadoRespuesta;
 import mx.com.educare.dto.Grado;
-import mx.com.educare.dto.GradoRespuesta;
 import mx.com.educare.dto.Grupo;
 import mx.com.educare.dto.GrupoRespuesta;
 import mx.com.educare.dto.Materia;
@@ -89,6 +88,9 @@ public class EducareDAOImpl implements EducareDAO {
 				LogHandler.info(uid, this.getClass(), "respuesta actualizar: " + actualizar);
 				if ( actualizar == 0) {
 					throw new Exception("No fue posible activar el grado");
+				} else {
+					respuesta.getHeader().setMensaje("Se activo correctamente el grado");
+					return respuesta;
 				}
 			}		
 			insertar = sesionTx.insert("MapperEducareCatalogos.insertarGrado", parametrosInsert);	
@@ -542,10 +544,117 @@ public class EducareDAOImpl implements EducareDAO {
 		return respuesta;
 	}
 	
+	/**
+	 * Metodo que se utiliza para eliminar un ciclo
+	 * @param uid Identificador Unico
+	 * @param ciclo Es el Id a buscar
+	 * @return Objeto de tipo ciclo
+	 */
+	public RespuestaCiclo eliminarCiclo(String uid, Ciclo ciclo) throws EducareException {
+		LogHandler.info(uid, this.getClass(), "Entro a eliminarCiclo: " + ciclo);
+		SqlSession sesionTx = null;
+		RespuestaCiclo respuesta = new RespuestaCiclo();
+		respuesta.setHeader(new EncabezadoRespuesta());
+		respuesta.getHeader().setUid(uid);
+		respuesta.getHeader().setStatus(true);
+		int actualizar;
+
+		try {
+
+			if (ciclo != null && ciclo.getIdCiclo()!= null) {
+				sesionTx = FabricaDeConexiones.obtenerSesionTx();
+				actualizar = sesionTx.update("MapperEducareCatalogos.eliminarCiclo", ciclo.getIdCiclo());
+			} else {
+				throw new Exception("Falta el IdCiclo en la peticion: " + ciclo);
+			}
+
+			if ( actualizar == 0) {
+				throw new Exception("No fue posible eliminar el ciclo");
+			}
+
+			sesionTx.commit();
+			respuesta.getHeader().setMensaje("Se elimino correctamente el ciclo: " + ciclo);
+		} catch (Exception ex) {
+			FabricaDeConexiones.rollBack(sesionTx);
+			LogHandler.info(uid, this.getClass(), ex.getMessage());
+			respuesta.getHeader().setStatus(false);
+			respuesta.getHeader().setMensaje(ex.getMessage());
+	    } finally {
+	    	FabricaDeConexiones.close(sesionTx);
+	    }
+		return respuesta;
+	}
 	
-	
-	
+	/**
+	 * Metodo que sirve para insertar ciclo
+	 * @param uid Identificador Unico
+	 * @param ciclo Objeto de tipo ciclo
+	 * @return RespuestaCiclo
+	 */
+	public RespuestaCiclo insertarCiclo(String uid, Ciclo ciclo) throws EducareException {
+		LogHandler.info(uid, this.getClass(), "Entro a insertarCiclo: " + ciclo);
+		SqlSession sesionTx = null;
+		RespuestaCiclo respuesta = new RespuestaCiclo();
+		respuesta.setHeader(new EncabezadoRespuesta());
+		respuesta.getHeader().setUid(uid);
+		respuesta.getHeader().setStatus(true);
+		List<Ciclo> listaCiclo = null;
+		int insertar = 0;
+		int actualizar = 0;
+		try {
+			
+			if(ciclo == null || ciclo.getIdSeccion() == null 
+					|| ciclo.getNombre() == null || ciclo.getFechaInicio() == null
+					|| ciclo.getFechaFin() == null || ciclo.getActual() == null) {
+				throw new Exception("Alguno de los siguientes parametros viene nulo (idSeccion, nombre, fecha inicio, fecha fin o actual),"
+						+ " favor de validarlo");
+			}
+
+			HashMap<String, Object> parametrosInsert = new HashMap<String, Object>();
+			parametrosInsert.put( "idSeccion", ciclo.getIdSeccion());
+			parametrosInsert.put( "nombre", ciclo.getNombre());
+			parametrosInsert.put( "fechaInicio", ciclo.getFechaInicio());
+			parametrosInsert.put( "fechaFin", ciclo.getFechaFin());
+			parametrosInsert.put( "actual", ciclo.getActual());
+			LogHandler.info(uid, this.getClass(), "Entro a insertar parametros busqueda: " + parametrosInsert);
+
+			sesionTx = FabricaDeConexiones.obtenerSesionTx();	
+			listaCiclo = sesionTx.selectList("MapperEducareCatalogos.buscarCicloAlta", parametrosInsert);
+			LogHandler.info(uid, this.getClass(), "listaCiclo: " + listaCiclo);		
+			if (listaCiclo != null && listaCiclo.size() > 0) {
+				parametrosInsert.put( "idCiclo", listaCiclo.get(0).getIdCiclo());
+				LogHandler.info(uid, this.getClass(), "Entro a insertar parametros update: " + parametrosInsert);
+				actualizar = sesionTx.update("MapperEducareCatalogos.actualizarStatusCiclo", parametrosInsert);
+				LogHandler.info(uid, this.getClass(), "respuesta actualizar: " + actualizar);
+				if ( actualizar == 0) {
+					throw new Exception("No fue posible activar el ciclo");
+				} else {
+					respuesta.getHeader().setMensaje("Se activo correctamente el ciclo");
+					return respuesta;
+				}
+			}		
+			insertar = sesionTx.insert("MapperEducareCatalogos.insertarCiclo", parametrosInsert);	
+			LogHandler.info(uid, this.getClass(), "respuesta: " + insertar);
+			if ( insertar == 0) {
+				throw new Exception("No fue posible insertar el ciclo");
+			}
+
+			sesionTx.commit();
+			respuesta.getHeader().setMensaje("Se inserto correctamente el ciclo");
+		} catch (Exception e) {
+			FabricaDeConexiones.rollBack(sesionTx);
+			LogHandler.info(uid, this.getClass(), e.getMessage());
+			respuesta.getHeader().setStatus(false);
+			respuesta.getHeader().setMensaje(e.getMessage());
+	    } finally {
+	    	FabricaDeConexiones.close(sesionTx);
+	    }
+		return respuesta;
+	}
 	/***************************************TERMINAN OPERACIONES DEL CATALOGO DE CICLO *******************************************/
+	/***************************************INICIA OPERACIONES DEL CATALOGO DE GRUPO *******************************************/
+	
+	/***************************************TERMINAN OPERACIONES DEL CATALOGO DE GRUPO *******************************************/
 
 	
 

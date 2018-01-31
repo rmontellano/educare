@@ -232,7 +232,7 @@
 		VALUES (#{idSeccion}, #{numGrado}, #{ultimoGrado}, 1)		
 	</insert>
 
-	<update id="eliminarGrado" parameterType="java.util.HashMap">
+	<update id="eliminarGrado" parameterType="Integer">
 		UPDATE grado
 		SET
 			status = 0
@@ -296,46 +296,49 @@
 		WHERE
 			idciclo = #{idCiclo}
 	</update>
-
-
-
-	<select id="ListaGradoSeccion" resultMap="gradoMap">
-		SELECT g.idgrado,
-			concat(g.numgrado,' ',s.descripcion) as descripcion
-		FROM grado g INNER JOIN opcioncat s on g.idseccion=s.idopcioncat
-		WHERE s.desctipocat = 'Seccion'
-		ORDER BY g.idseccion, g.numgrado ASC
-	</select>
-
-	<select id="ObtieneTodosGrados" resultMap="gradoMap">
-		SELECT g.*,o.descripcion
-		FROM grado g
-        INNER JOIN opcioncat o on
-		g.idseccion=o.idopcioncat
-        ORDER BY g.idseccion, numgrado
-	</select>
-
-
-	<select id="ObtieneTodoPorColumna" parameterType="java.util.HashMap" resultMap="gradoMap">
-		SELECT g.*, o.descripcion
-		FROM grado g
-		INNER JOIN opcioncat o ON
-		g.idseccion = o.idopcioncat
-		WHERE idgrado = #{idGrado}
-			<if test="idSeccion != 0">
-				AND idseccion = #{idSeccion}
+	<update id="eliminarCiclo" parameterType="Integer">
+		UPDATE ciclo
+		SET
+			status = 0
+		WHERE
+			idciclo = #{idCiclo}
+	</update>
+	<select id="buscarCicloAlta" parameterType="java.util.HashMap" resultType="mx.com.educare.dto.Ciclo">
+	  SELECT c.idciclo AS idCiclo, c.idseccion AS idSeccion, c.nombre,
+	         c.fechaini AS fechaInicio, c.fechafin AS fechaFin, c.actual,
+	         c.status, o.descripcion AS descripcionSeccion
+			FROM ciclo c
+			INNER JOIN opcioncat o ON c.idseccion = o.idopcioncat
+			<if test="idSeccion != null">
+				AND c.idseccion = #{idSeccion}
 			</if>
-			<if test="numGrado != 0">
-				AND numgrado = #{numGrado}
+			<if test="nombre != null">
+				AND c.nombre = #{nombre}
 			</if>
-			<if test="ultimoGrado != 0">
-				AND ultimogrado = #{ultimoGrado}
+			<if test="actual != null">
+				AND c.actual = #{actual}
 			</if>
-		ORDER BY o.idopcioncat, g.numgrado
+			<if test="fechaInicio != null">
+				AND c.fechaini = #{fechaInicio}
+			</if>
+			<if test="fechaFin != null">
+				AND c.fechafin = #{fechaFin}
+			</if>
 	</select>
-	<!-- Termina Grado -->
-
-	<!-- Comienza Grupo  -->
+	<update id="actualizarStatusCiclo" parameterType="java.util.HashMap">
+		UPDATE ciclo
+		SET
+			status = 1
+		WHERE
+			idciclo = #{idCiclo};
+	</update>
+	<insert id="insertarCiclo" parameterType="java.util.HashMap"
+		keyProperty="idCiclo">
+		INSERT INTO ciclo (idseccion, nombre, fechaini, fechafin, actual, status )
+		VALUES (#{idSeccion}, #{nombre}, #{fechaInicio}, #{fechaFin}, #{actual}, 1)		
+	</insert>
+	
+		<!-- Comienza Grupo  -->
 	<select id="obtieneTodosGrupos" resultMap="grupoMap">
 		SELECT gru.idgrupo as idgrupo,
 			concat(g.numgrado,' ',gru.nomgrupo,' ',s.descripcion) as descripcion
@@ -463,6 +466,48 @@
 	</select>
 
 	<!-- Termina Grupo -->
+
+
+
+
+
+	<select id="ListaGradoSeccion" resultMap="gradoMap">
+		SELECT g.idgrado,
+			concat(g.numgrado,' ',s.descripcion) as descripcion
+		FROM grado g INNER JOIN opcioncat s on g.idseccion=s.idopcioncat
+		WHERE s.desctipocat = 'Seccion'
+		ORDER BY g.idseccion, g.numgrado ASC
+	</select>
+
+	<select id="ObtieneTodosGrados" resultMap="gradoMap">
+		SELECT g.*,o.descripcion
+		FROM grado g
+        INNER JOIN opcioncat o on
+		g.idseccion=o.idopcioncat
+        ORDER BY g.idseccion, numgrado
+	</select>
+
+
+	<select id="ObtieneTodoPorColumna" parameterType="java.util.HashMap" resultMap="gradoMap">
+		SELECT g.*, o.descripcion
+		FROM grado g
+		INNER JOIN opcioncat o ON
+		g.idseccion = o.idopcioncat
+		WHERE idgrado = #{idGrado}
+			<if test="idSeccion != 0">
+				AND idseccion = #{idSeccion}
+			</if>
+			<if test="numGrado != 0">
+				AND numgrado = #{numGrado}
+			</if>
+			<if test="ultimoGrado != 0">
+				AND ultimogrado = #{ultimoGrado}
+			</if>
+		ORDER BY o.idopcioncat, g.numgrado
+	</select>
+	<!-- Termina Grado -->
+
+
 
 	<!-- Inicia Criterio -->
 	<select id="obtieneTodosCriterios" resultMap="criterioMap">

@@ -15,7 +15,9 @@ public class TestCiclo {
 //		llenarComboFechaFinCiclo();
 //		llenarComboActualCiclo();
 //		buscarCiclo();
-		actualizarCiclo();
+//		actualizarCiclo();
+//		eliminarCiclo();
+		insertarCiclo();
 	}
 	
 	/**
@@ -80,5 +82,31 @@ public class TestCiclo {
 		String respuesta = negocio.actualizarCiclo("", ciclo);
 		System.out.println(respuesta);
 	}
+	
+	/**
+	 * test para probar la eliminar el ciclo
+	 */
+	public void eliminarCiclo() {
+		Ciclo ciclo = new Ciclo();
+		ciclo.setIdCiclo(19);	
+		String respuesta = negocio.eliminarCiclo("", ciclo);
+		System.out.println(respuesta);
+	}
+	
+	/**
+	 * test para probar la eliminar el ciclo
+	 */
+	public void insertarCiclo() {
+		Ciclo ciclo = new Ciclo();
+		ciclo.setIdSeccion(37);
+		ciclo.setActual(1);
+		ciclo.setFechaInicio("2016-07-15");
+		ciclo.setFechaFin("2016-07-15");
+		ciclo.setNombre("PRI 2015-2016");	
+		String respuesta = negocio.insertarCiclo("", ciclo);
+		System.out.println(respuesta);
+	}
+	
+	
 
 }
