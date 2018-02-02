@@ -30,6 +30,7 @@ import mx.com.educare.dto.PuestoRespuesta;
 import mx.com.educare.dto.util.EncabezadoRespuesta;
 import mx.com.educare.dto.util.RespuestaCiclo;
 import mx.com.educare.dto.util.RespuestaGrado;
+import mx.com.educare.dto.util.RespuestaGrupo;
 import mx.com.educare.log.LogHandler;
 import mx.com.educare.util.ValidadorReglas;
 import mx.com.educare.util.excepciones.EducareException;
@@ -588,6 +589,197 @@ public class EducareCatalogosNegocio {
 		return respuesta;
 	}
 	/***************************************TERMINAN OPERACIONES DEL CATALOGO DE CICLO *******************************************/
+	/***************************************INICIA OPERACIONES DEL CATALOGO DE GRUPO *******************************************/
+	/**
+	 * Metodo que realiza el llenado del combo descripcion de grupo
+	 * @param uid Identificador Unico
+	 * @return Lista de tipo grupo
+	 */
+	public String llenarComboDescripcionGrupo(String uid) {
+		LogHandler.info(uid, getClass(), "Entrada al metodo llenarComboDescripcionGrupo: " + uid);
+		RespuestaGrupo respuestaGrupo = new RespuestaGrupo();
+		respuestaGrupo.setHeader(new EncabezadoRespuesta());
+		respuestaGrupo.getHeader().setStatus(true);
+		respuestaGrupo.getHeader().setUid(uid);
+		String respuesta = null;
+		EducareDAO core = null;
+		List<Grupo> listGrupo = null;
+
+		try {
+			core = dao.obtenerInstanciaDao();
+			listGrupo = core.llenarComboDescripcionGrupo(uid);
+			if (listGrupo != null && listGrupo.size() > 0) {
+				LogHandler.info(uid, getClass(), "listGrupo: " + listGrupo);
+				respuestaGrupo.setListGrupo(listGrupo);	
+			} else {
+				LogHandler.info(uid, getClass(), "la consulta no arrojo resultados.");
+				respuestaGrupo.getHeader().setStatus(false);
+				respuestaGrupo.getHeader().setMensaje("La consulta no arrojo resultados.");
+			}
+		} catch (Exception ex) {
+			LogHandler.error(uid, getClass(), "Error al consultar : " + ex.getMessage(), ex);
+			respuestaGrupo.getHeader().setStatus(false);
+			respuestaGrupo.getHeader().setMensaje(ex.getMessage());
+		}
+		respuesta = gson.toJson(respuestaGrupo);
+		LogHandler.info(uid, getClass(), "Salida del  metodo llenarComboDescripcionGrupo: " + respuesta);
+		return respuesta;
+	}
+	
+	/**
+	 * Metodo que realiza el llenado del combo grado de grupo
+	 * @param uid Identificador Unico
+	 * @return Lista de tipo grupo
+	 */
+	public String llenarComboDescripcionGradoGrupo(String uid) {
+		LogHandler.info(uid, getClass(), "Entrada al metodo llenarComboDescripcionGradoGrupo: " + uid);
+		RespuestaGrupo respuestaGrupo = new RespuestaGrupo();
+		respuestaGrupo.setHeader(new EncabezadoRespuesta());
+		respuestaGrupo.getHeader().setStatus(true);
+		respuestaGrupo.getHeader().setUid(uid);
+		String respuesta = null;
+		EducareDAO core = null;
+		List<Grupo> listGrupo = null;
+
+		try {
+			core = dao.obtenerInstanciaDao();
+			listGrupo = core.llenarComboDescripcionGradoGrupo(uid);
+			if (listGrupo != null && listGrupo.size() > 0) {
+				LogHandler.info(uid, getClass(), "listGrupo: " + listGrupo);
+				for (Grupo grupo : listGrupo) {
+					if (grupo != null) {
+						grupo.setDescripcionGrado(grupo.getNumeroGrado() + " " + grupo.getDescripcionSeccion());
+					}
+				}
+				respuestaGrupo.setListGrupo(listGrupo);	
+			} else {
+				LogHandler.info(uid, getClass(), "la consulta no arrojo resultados.");
+				respuestaGrupo.getHeader().setStatus(false);
+				respuestaGrupo.getHeader().setMensaje("La consulta no arrojo resultados.");
+			}
+		} catch (Exception ex) {
+			LogHandler.error(uid, getClass(), "Error al consultar : " + ex.getMessage(), ex);
+			respuestaGrupo.getHeader().setStatus(false);
+			respuestaGrupo.getHeader().setMensaje(ex.getMessage());
+		}
+		respuesta = gson.toJson(respuestaGrupo);
+		LogHandler.info(uid, getClass(), "Salida del  metodo llenarComboDescripcionGradoGrupo: " + respuesta);
+		return respuesta;
+	}
+	
+	/**
+	 * Metodo que realiza el llenado del combo nombre de grupo
+	 * @param uid Identificador Unico
+	 * @return Lista de tipo grupo
+	 */
+	public String llenarComboNombreGrupo(String uid) {
+		LogHandler.info(uid, getClass(), "Entrada al metodo llenarComboNombreGrupo: " + uid);
+		RespuestaGrupo respuestaGrupo = new RespuestaGrupo();
+		respuestaGrupo.setHeader(new EncabezadoRespuesta());
+		respuestaGrupo.getHeader().setStatus(true);
+		respuestaGrupo.getHeader().setUid(uid);
+		String respuesta = null;
+		EducareDAO core = null;
+		List<Grupo> listGrupo = null;
+
+		try {
+			core = dao.obtenerInstanciaDao();
+			listGrupo = core.llenarComboNombreGrupo(uid);
+			if (listGrupo != null && listGrupo.size() > 0) {
+				LogHandler.info(uid, getClass(), "listGrupo: " + listGrupo);
+				for (Grupo grupo : listGrupo) {
+					if (grupo != null) {
+						grupo.setDecripcionNombreGrupo(grupo.getNumeroGrado() + " " + grupo.getNombreGrupo());
+					}
+				}
+				respuestaGrupo.setListGrupo(listGrupo);	
+			} else {
+				LogHandler.info(uid, getClass(), "la consulta no arrojo resultados.");
+				respuestaGrupo.getHeader().setStatus(false);
+				respuestaGrupo.getHeader().setMensaje("La consulta no arrojo resultados.");
+			}
+		} catch (Exception ex) {
+			LogHandler.error(uid, getClass(), "Error al consultar : " + ex.getMessage(), ex);
+			respuestaGrupo.getHeader().setStatus(false);
+			respuestaGrupo.getHeader().setMensaje(ex.getMessage());
+		}
+		respuesta = gson.toJson(respuestaGrupo);
+		LogHandler.info(uid, getClass(), "Salida del  metodo llenarComboNombreGrupo: " + respuesta);
+		return respuesta;
+	}
+	
+	/**
+	 * Metodo que realiza el llenado del combo capacidad de grupo
+	 * @param uid Identificador Unico
+	 * @return Lista de tipo grupo
+	 */
+	public String llenarComboCapacidadGrupo(String uid) {
+		LogHandler.info(uid, getClass(), "Entrada al metodo llenarComboCapacidadGrupo: " + uid);
+		RespuestaGrupo respuestaGrupo = new RespuestaGrupo();
+		respuestaGrupo.setHeader(new EncabezadoRespuesta());
+		respuestaGrupo.getHeader().setStatus(true);
+		respuestaGrupo.getHeader().setUid(uid);
+		String respuesta = null;
+		EducareDAO core = null;
+		List<Grupo> listGrupo = null;
+
+		try {
+			core = dao.obtenerInstanciaDao();
+			listGrupo = core.llenarComboCapacidadGrupo(uid);
+			if (listGrupo != null && listGrupo.size() > 0) {
+				LogHandler.info(uid, getClass(), "listGrupo: " + listGrupo);
+				respuestaGrupo.setListGrupo(listGrupo);	
+			} else {
+				LogHandler.info(uid, getClass(), "la consulta no arrojo resultados.");
+				respuestaGrupo.getHeader().setStatus(false);
+				respuestaGrupo.getHeader().setMensaje("La consulta no arrojo resultados.");
+			}
+		} catch (Exception ex) {
+			LogHandler.error(uid, getClass(), "Error al consultar : " + ex.getMessage(), ex);
+			respuestaGrupo.getHeader().setStatus(false);
+			respuestaGrupo.getHeader().setMensaje(ex.getMessage());
+		}
+		respuesta = gson.toJson(respuestaGrupo);
+		LogHandler.info(uid, getClass(), "Salida del  metodo llenarComboCapacidadGrupo: " + respuesta);
+		return respuesta;
+	}
+	
+	/**
+	 * Metodo que se utilizar para obtener todos los grupo por columna
+	 * @param uid Identificador Unico
+	 * @param ciclo Objeto de tipo Ciclo
+	 * @return Lista de tipo Ciclo
+	 */
+	public String buscarGrupo(String uid, Grupo ciclo) {
+		LogHandler.info(uid, getClass(), "Entrada al metodo buscarGrupo: " + ciclo);
+		RespuestaGrupo respuestaGrupo = new RespuestaGrupo();
+		respuestaGrupo.setHeader(new EncabezadoRespuesta());
+		respuestaGrupo.getHeader().setStatus(true);
+		respuestaGrupo.getHeader().setUid(uid);
+		String respuesta = null;
+		EducareDAO core = null;
+		List<Grupo> listGrupo = null;
+
+		try {
+			core = dao.obtenerInstanciaDao();
+			listGrupo = core.buscarGrupo(uid, ciclo);
+			if (listGrupo != null && listGrupo.size() > 0) {
+				respuestaGrupo.setListGrupo(listGrupo);
+			} else {
+				respuestaGrupo.getHeader().setStatus(false);
+				respuestaGrupo.getHeader().setMensaje("No se encontraron resultados");
+			}
+		} catch (Exception ex) {
+			LogHandler.error(uid, getClass(), "Error al consultar : " + ex.getMessage(), ex);
+			respuestaGrupo.getHeader().setStatus(false);
+			respuestaGrupo.getHeader().setMensaje(ex.getMessage());
+		}
+		respuesta = gson.toJson(respuestaGrupo);
+		LogHandler.info(uid, getClass(), "Salida del  metodo buscarGrupo: " + respuesta);
+		return respuesta;
+	}
+	
+	/***************************************TERMINAN OPERACIONES DEL CATALOGO DE GRUPO *******************************************/
 
 	/**
 	 * Metodo que se utilizar para buscar todos los grados

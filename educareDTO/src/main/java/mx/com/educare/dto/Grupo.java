@@ -4,13 +4,13 @@
 
 package mx.com.educare.dto;
 
-import mx.com.educare.dto.util.ObjetoValor;
+import java.io.Serializable;
 
 /**
  * @author tonyocampoc@gmail.com
  *
  */
-public class Grupo extends ObjetoValor {
+public class Grupo implements Serializable{
 
 	/**
 	 * Instancia de Grupo
@@ -26,12 +26,12 @@ public class Grupo extends ObjetoValor {
 	/**
 	 * The idGrupo.
 	 */
-	private int idGrupo;
+	private Integer idGrupo;
 
 	/**
 	 * The nomGrupo.
 	 */
-	private String nomGrupo;
+	private String nombreGrupo;
 
 	/**
 	 * The descripcion.
@@ -41,192 +41,196 @@ public class Grupo extends ObjetoValor {
 	/**
 	 * The capacidad.
 	 */
-	private int capacidad;
+	private Integer capacidad;
 
 	/**
 	 * The idgrado.
 	 */
-	private int idgrado;
+	private Integer idGrado;
 
 	/**
 	 * The tipoGrupo.
 	 */
-	private int tipoGrupo;
+	private Integer tipoGrupo;
 
 	/**
 	 * The status.
 	 */
-	private int status;
+	private Integer status;
+	/**
+	 * numero grado.
+	 */
+	private Integer numeroGrado;
 
 	/**
 	 * The seccion
 	 */
-	private String seccion;
+	private String descripcionSeccion;
+	/**
+	 * grado y descripcion seccion
+	 */
+	private String descripcionGrado;
+	/**
+	 * grado y nombre grupo
+	 */
+	private String decripcionNombreGrupo;
 	/**
 	 * The idSeccion.
 	 */
-	private int idSeccion;
-	/**
-	 * The numGrado.
-	 */
-	private int numGrado;
-	/**
-	 * The ultimoGrado.
-	 */
-	private int ultimoGrado;
-
-
+	private Integer idSeccion;
 	/**
 	 * @return the idGrupo
 	 */
-	public int getIdGrupo() {
+	public Integer getIdGrupo() {
 		return idGrupo;
 	}
-
 	/**
 	 * @param idGrupo the idGrupo to set
 	 */
-	public void setIdGrupo(int idGrupo) {
+	public void setIdGrupo(Integer idGrupo) {
 		this.idGrupo = idGrupo;
 	}
-
 	/**
-	 * @return the nomGrupo
+	 * @return the nombreGrupo
 	 */
-	public String getNomGrupo() {
-		return nomGrupo;
+	public String getNombreGrupo() {
+		return nombreGrupo;
 	}
-
 	/**
-	 * @param nomGrupo the nomGrupo to set
+	 * @param nombreGrupo the nombreGrupo to set
 	 */
-	public void setNomGrupo(String nomGrupo) {
-		this.nomGrupo = nomGrupo;
+	public void setNombreGrupo(String nombreGrupo) {
+		this.nombreGrupo = nombreGrupo;
 	}
-
 	/**
 	 * @return the descripcion
 	 */
 	public String getDescripcion() {
 		return descripcion;
 	}
-
 	/**
 	 * @param descripcion the descripcion to set
 	 */
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-
 	/**
 	 * @return the capacidad
 	 */
-	public int getCapacidad() {
+	public Integer getCapacidad() {
 		return capacidad;
 	}
-
 	/**
 	 * @param capacidad the capacidad to set
 	 */
-	public void setCapacidad(int capacidad) {
+	public void setCapacidad(Integer capacidad) {
 		this.capacidad = capacidad;
 	}
-
 	/**
-	 * @return the idgrado
+	 * @return the idGrado
 	 */
-	public int getIdgrado() {
-		return idgrado;
+	public Integer getIdGrado() {
+		return idGrado;
 	}
-
 	/**
-	 * @param idgrado the idgrado to set
+	 * @param idGrado the idGrado to set
 	 */
-	public void setIdgrado(int idgrado) {
-		this.idgrado = idgrado;
+	public void setIdGrado(Integer idGrado) {
+		this.idGrado = idGrado;
 	}
-
 	/**
 	 * @return the tipoGrupo
 	 */
-	public int getTipoGrupo() {
+	public Integer getTipoGrupo() {
 		return tipoGrupo;
 	}
-
 	/**
 	 * @param tipoGrupo the tipoGrupo to set
 	 */
-	public void setTipoGrupo(int tipoGrupo) {
+	public void setTipoGrupo(Integer tipoGrupo) {
 		this.tipoGrupo = tipoGrupo;
 	}
-
 	/**
 	 * @return the status
 	 */
-	public int getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
-
 	/**
 	 * @param status the status to set
 	 */
-	public void setStatus(int status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
-
 	/**
-	 * @return the seccion
+	 * @return the numeroGrado
 	 */
-	public String getSeccion() {
-		return seccion;
+	public Integer getNumeroGrado() {
+		return numeroGrado;
 	}
-
 	/**
-	 * @param seccion the seccion to set
+	 * @param numeroGrado the numeroGrado to set
 	 */
-	public void setSeccion(String seccion) {
-		this.seccion = seccion;
+	public void setNumeroGrado(Integer numeroGrado) {
+		this.numeroGrado = numeroGrado;
 	}
-
+	/**
+	 * @return the descripcionSeccion
+	 */
+	public String getDescripcionSeccion() {
+		return descripcionSeccion;
+	}
+	/**
+	 * @param descripcionSeccion the descripcionSeccion to set
+	 */
+	public void setDescripcionSeccion(String descripcionSeccion) {
+		this.descripcionSeccion = descripcionSeccion;
+	}
 	/**
 	 * @return the idSeccion
 	 */
-	public int getIdSeccion() {
+	public Integer getIdSeccion() {
 		return idSeccion;
 	}
-
 	/**
 	 * @param idSeccion the idSeccion to set
 	 */
-	public void setIdSeccion(int idSeccion) {
+	public void setIdSeccion(Integer idSeccion) {
 		this.idSeccion = idSeccion;
 	}
-
 	/**
-	 * @return the numGrado
+	 * @return the descripcionGrado
 	 */
-	public int getNumGrado() {
-		return numGrado;
+	public String getDescripcionGrado() {
+		return descripcionGrado;
 	}
-
 	/**
-	 * @param numGrado the numGrado to set
+	 * @param descripcionGrado the descripcionGrado to set
 	 */
-	public void setNumGrado(int numGrado) {
-		this.numGrado = numGrado;
+	public void setDescripcionGrado(String descripcionGrado) {
+		this.descripcionGrado = descripcionGrado;
 	}
-
 	/**
-	 * @return the ultimoGrado
+	 * @return the decripcionNombreGrupo
 	 */
-	public int getUltimoGrado() {
-		return ultimoGrado;
+	public String getDecripcionNombreGrupo() {
+		return decripcionNombreGrupo;
 	}
-
 	/**
-	 * @param ultimoGrado the ultimoGrado to set
+	 * @param decripcionNombreGrupo the decripcionNombreGrupo to set
 	 */
-	public void setUltimoGrado(int ultimoGrado) {
-		this.ultimoGrado = ultimoGrado;
+	public void setDecripcionNombreGrupo(String decripcionNombreGrupo) {
+		this.decripcionNombreGrupo = decripcionNombreGrupo;
+	}
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Grupo [idGrupo=" + idGrupo + ", nombreGrupo=" + nombreGrupo + ", descripcion=" + descripcion
+				+ ", capacidad=" + capacidad + ", idGrado=" + idGrado + ", tipoGrupo=" + tipoGrupo + ", status="
+				+ status + ", numeroGrado=" + numeroGrado + ", descripcionSeccion=" + descripcionSeccion
+				+ ", descripcionGrado=" + descripcionGrado + ", decripcionNombreGrupo=" + decripcionNombreGrupo
+				+ ", idSeccion=" + idSeccion + "]";
 	}
 }

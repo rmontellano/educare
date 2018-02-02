@@ -653,6 +653,134 @@ public class EducareDAOImpl implements EducareDAO {
 	}
 	/***************************************TERMINAN OPERACIONES DEL CATALOGO DE CICLO *******************************************/
 	/***************************************INICIA OPERACIONES DEL CATALOGO DE GRUPO *******************************************/
+	/**
+	 * Metodo que realiza el llenado del combo descripcion de grupo
+	 * @param uid Identificador Unico
+	 * @return Lista de tipo grupo
+	 */
+	public List<Grupo> llenarComboDescripcionGrupo(String uid) throws Exception {
+		LogHandler.info(uid, this.getClass(), "Entro a llenarComboDescripcionGrupo ");
+		SqlSession sesionNTx = null;
+		List<Grupo> listaGrupo = null;
+		try {		
+				sesionNTx = FabricaDeConexiones.obtenerSesionNTx();			
+				listaGrupo = sesionNTx.selectList("MapperEducareCatalogos.llenarComboDescripcionGrupo");
+				LogHandler.info(uid, this.getClass(), "listaGrupo: " + listaGrupo);
+				if (listaGrupo.isEmpty()) {
+					throw new EducareException("No hay nada de actual a mostrar");
+				}		
+		} finally {
+	    	FabricaDeConexiones.close(sesionNTx);
+	    }
+		return listaGrupo;
+	}
+	
+	/**
+	 * Metodo que realiza el llenado del combo grado de grupo
+	 * @param uid Identificador Unico
+	 * @return Lista de tipo grupo
+	 */
+	public List<Grupo> llenarComboDescripcionGradoGrupo(String uid) throws Exception {
+		LogHandler.info(uid, this.getClass(), "Entro a llenarComboDescripcionGradoGrupo ");
+		SqlSession sesionNTx = null;
+		List<Grupo> listaGrupo = null;
+		try {		
+				sesionNTx = FabricaDeConexiones.obtenerSesionNTx();			
+				listaGrupo = sesionNTx.selectList("MapperEducareCatalogos.llenarComboDescripcionGradoGrupo");
+				LogHandler.info(uid, this.getClass(), "listaGrupo: " + listaGrupo);
+				if (listaGrupo.isEmpty()) {
+					throw new EducareException("No hay nada de actual a mostrar");
+				}		
+		} finally {
+	    	FabricaDeConexiones.close(sesionNTx);
+	    }
+		return listaGrupo;
+	}
+	
+	/**
+	 * Metodo que realiza el llenado del combo nombre de grupo
+	 * @param uid Identificador Unico
+	 * @return Lista de tipo grupo
+	 */
+	public List<Grupo> llenarComboNombreGrupo(String uid) throws Exception {
+		LogHandler.info(uid, this.getClass(), "Entro a llenarComboNombreGrupo ");
+		SqlSession sesionNTx = null;
+		List<Grupo> listaGrupo = null;
+		try {		
+				sesionNTx = FabricaDeConexiones.obtenerSesionNTx();			
+				listaGrupo = sesionNTx.selectList("MapperEducareCatalogos.llenarComboNombreGrupo");
+				LogHandler.info(uid, this.getClass(), "listaGrupo: " + listaGrupo);
+				if (listaGrupo.isEmpty()) {
+					throw new EducareException("No hay nada de actual a mostrar");
+				}		
+		} finally {
+	    	FabricaDeConexiones.close(sesionNTx);
+	    }
+		return listaGrupo;
+	}
+	
+	/**
+	 * Metodo que realiza el llenado del combo capacidad de grupo
+	 * @param uid Identificador Unico
+	 * @return Lista de tipo grupo
+	 */
+	public List<Grupo> llenarComboCapacidadGrupo(String uid) throws Exception {
+		LogHandler.info(uid, this.getClass(), "Entro a llenarComboCapacidadGrupo ");
+		SqlSession sesionNTx = null;
+		List<Grupo> listaGrupo = null;
+		try {		
+				sesionNTx = FabricaDeConexiones.obtenerSesionNTx();			
+				listaGrupo = sesionNTx.selectList("MapperEducareCatalogos.llenarComboCapacidadGrupo");
+				LogHandler.info(uid, this.getClass(), "listaGrupo: " + listaGrupo);
+				if (listaGrupo.isEmpty()) {
+					throw new EducareException("No hay nada de actual a mostrar");
+				}		
+		} finally {
+	    	FabricaDeConexiones.close(sesionNTx);
+	    }
+		return listaGrupo;
+	}
+	
+	/**
+	 * Metodo que se utilizar para obtener todos los grupos por columna
+	 * @param uid Identificador Unico
+	 * @param grado Objeto de tipo grado
+	 * @return Lista de tipo grado
+	 */
+	public List<Grupo> buscarGrupo(String uid, Grupo grupo) throws EducareException {
+		LogHandler.info(uid, this.getClass(), "Entro a buscarGrupo " + grupo);
+		SqlSession sesionNTx = null;
+		List<Grupo> listaGrupo = null;
+
+		try {
+			if (grupo != null) {
+				sesionNTx = FabricaDeConexiones.obtenerSesionNTx();
+	
+				final java.util.HashMap<String, Object> parametros = new HashMap<String, Object>();
+				parametros.put("descripcionSeccion", grupo.getDescripcionSeccion());
+				parametros.put("numeroGrado", grupo.getNumeroGrado());
+				parametros.put("nombreGrupo", grupo.getNombreGrupo());
+				parametros.put("capacidad", grupo.getCapacidad());
+				LogHandler.info(uid, this.getClass(), "parametros enviados: " + parametros);
+				
+				listaGrupo = sesionNTx.selectList("MapperEducareCatalogos.buscarGrupo", parametros);
+				LogHandler.info(uid, this.getClass(), "listaGrados: " + listaGrupo);
+	
+				if (listaGrupo == null || listaGrupo.isEmpty()) {
+					throw new Exception("No hay registros a mostrar");
+				}
+			} else {
+				throw new Exception("La petición viene nula");
+			}		
+
+		} catch (Exception ex) {
+			LogHandler.error(uid, this.getClass(), ex.getMessage(), ex);
+	    } finally {
+	    	FabricaDeConexiones.close(sesionNTx);
+	    }
+
+		return listaGrupo;
+	}
 	
 	/***************************************TERMINAN OPERACIONES DEL CATALOGO DE GRUPO *******************************************/
 
@@ -703,10 +831,10 @@ public class EducareDAOImpl implements EducareDAO {
 		try {
 
 			final java.util.HashMap<String, Object> parametrosInsert = new HashMap<String, Object>();
-			parametrosInsert.put( "nomGrupo", grupo.getNomGrupo());
+//			parametrosInsert.put( "nomGrupo", grupo.getNomGrupo());
 			parametrosInsert.put( "descripcion", grupo.getDescripcion());
 			parametrosInsert.put( "capacidad", grupo.getCapacidad());
-			parametrosInsert.put( "idGrado",  grupo.getIdgrado());
+//			parametrosInsert.put( "idGrado",  grupo.getIdgrado());
 			parametrosInsert.put( "tipoGrupo", grupo.getTipoGrupo());
 			parametrosInsert.put( "status",  grupo.getStatus());
 
@@ -777,8 +905,8 @@ public class EducareDAOImpl implements EducareDAO {
 
 			final java.util.HashMap<String, Object> parametrosUpdate = new HashMap<String, Object>();
 			parametrosUpdate.put( "idGrupo", grupo.getIdGrupo());
-			parametrosUpdate.put( "idGrado", grupo.getIdgrado());
-			parametrosUpdate.put( "nomGrupo", grupo.getNomGrupo());
+//			parametrosUpdate.put( "idGrado", grupo.getIdgrado());
+//			parametrosUpdate.put( "nomGrupo", grupo.getNomGrupo());
 			parametrosUpdate.put( "descripcion", grupo.getDescripcion());
 			parametrosUpdate.put( "tipoGrupo", grupo.getTipoGrupo());
 			parametrosUpdate.put( "capacidad", grupo.getCapacidad());
@@ -916,11 +1044,7 @@ public class EducareDAOImpl implements EducareDAO {
 			} else {
 				parametros.put( "idGrupo", 0);
 			}
-			if (grupo.getNomGrupo() != null) {
-				parametros.put( "nomGrupo", grupo.getNomGrupo());
-			} else {
-				parametros.put( "nomGrupo", "");
-			}
+			
 			if (grupo.getDescripcion() != null) {
 				parametros.put( "descripcion", grupo.getDescripcion());
 			} else {
@@ -931,11 +1055,7 @@ public class EducareDAOImpl implements EducareDAO {
 			} else {
 				parametros.put( "capacidad", 0);
 			}
-			if (grupo.getIdgrado() != 0) {
-				parametros.put( "idGrado", grupo.getIdgrado());
-			} else {
-				parametros.put( "idGrado", 0);
-			}
+
 			if (grupo.getTipoGrupo() != 0) {
 				parametros.put( "tipoGrupo", grupo.getTipoGrupo());
 			} else {

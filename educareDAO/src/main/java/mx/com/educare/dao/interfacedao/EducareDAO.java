@@ -150,6 +150,42 @@ public interface EducareDAO {
 	RespuestaCiclo insertarCiclo(String uid, Ciclo ciclo) throws EducareException;
 
 	/**
+	 * Metodo de realizar el llenado del combo descripcion
+	 * @param uid Identificador Unico
+	 * @return Lista de tipo grupo
+	 */
+	List<Grupo> llenarComboDescripcionGrupo(String uid) throws Exception;
+	
+	/**
+	 * Metodo que realiza el llenado del combo grado de grupo
+	 * @param uid Identificador Unico
+	 * @return Lista de tipo grupo
+	 */
+	List<Grupo> llenarComboDescripcionGradoGrupo(String uid) throws Exception;
+	
+	/**
+	 * Metodo que realiza el llenado del combo nombre de grupo
+	 * @param uid Identificador Unico
+	 * @return Lista de tipo grupo
+	 */
+    List<Grupo> llenarComboNombreGrupo(String uid) throws Exception;
+    
+	/**
+	 * Metodo que realiza el llenado del combo capacidad de grupo
+	 * @param uid Identificador Unico
+	 * @return Lista de tipo grupo
+	 */
+	List<Grupo> llenarComboCapacidadGrupo(String uid) throws Exception;
+	
+	/**
+	 * Metodo que se utilizar para obtener todos los grupos por columna
+	 * @param uid Identificador Unico
+	 * @param grado Objeto de tipo grado
+	 * @return Lista de tipo grupo
+	 */
+	List<Grupo> buscarGrupo(String uid, Grupo grupo) throws EducareException;
+
+	/**
 	 * Metodo que se utilizar para buscar todos los Grupos
 	 * @param uid Identificador Unico
 	 * @return Lista de Grupo

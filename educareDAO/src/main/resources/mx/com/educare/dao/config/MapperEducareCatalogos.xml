@@ -330,7 +330,7 @@
 		SET
 			status = 1
 		WHERE
-			idciclo = #{idCiclo};
+			idciclo = #{idCiclo}
 	</update>
 	<insert id="insertarCiclo" parameterType="java.util.HashMap"
 		keyProperty="idCiclo">
@@ -339,6 +339,66 @@
 	</insert>
 	
 		<!-- Comienza Grupo  -->
+		
+	<select id="llenarComboDescripcionGrupo" resultType="mx.com.educare.dto.Grupo">
+	  SELECT distinct oc.descripcion AS descripcionSeccion
+		FROM grupo gru
+		INNER JOIN grado g on gru.idgrado = g.idgrado
+		INNER JOIN opcioncat oc on g.idseccion = oc.idopcioncat
+		WHERE  gru.status != 0
+		AND g.status != 0
+		ORDER BY oc.descripcion
+	</select>
+	
+	<select id="llenarComboDescripcionGradoGrupo" resultType="mx.com.educare.dto.Grupo">
+	  SELECT distinct oc.descripcion AS descripcionSeccion, g.numgrado AS numeroGrado
+		FROM grupo gru
+		INNER JOIN grado g on gru.idgrado = g.idgrado
+		INNER JOIN opcioncat oc on g.idseccion = oc.idopcioncat
+		WHERE  gru.status != 0
+		AND g.status != 0
+		ORDER BY oc.descripcion
+	</select>
+	
+	<select id="llenarComboNombreGrupo" resultType="mx.com.educare.dto.Grupo">
+	  SELECT distinct g.numgrado AS numeroGrado, gru.nomgrupo AS nombreGrupo
+		FROM grupo gru
+		INNER JOIN grado g on gru.idgrado = g.idgrado
+		WHERE  gru.status != 0
+		AND g.status != 0
+	</select>
+	
+	<select id="llenarComboCapacidadGrupo" resultType="mx.com.educare.dto.Grupo">
+	 SELECT distinct capacidad 
+		FROM educare2.grupo 
+		WHERE  status != 0
+		ORDER BY capacidad
+	</select>
+	
+	<select id="buscarGrupo" parameterType="java.util.HashMap" resultType="mx.com.educare.dto.Grupo">
+	 SELECT gru.idgrupo AS idGrupo , gru.nomgrupo AS nombreGrupo, gru.descripcion,
+       gru.capacidad, gru.idgrado AS idGrado, gru.tipogrupo AS tipoGrupo, 
+       g.numgrado AS numeroGrado, g.idseccion AS idSeccion, oc.descripcion AS descripcionSeccion
+		FROM grupo gru
+		INNER JOIN grado g on gru.idgrado = g.idgrado
+		INNER JOIN opcioncat oc on g.idseccion = oc.idopcioncat
+		WHERE  gru.status != 0
+		AND g.status != 0
+		<if test="descripcionSeccion != null">
+			AND oc.descripcion = #{descripcionSeccion}
+		</if>
+		<if test="numeroGrado != null">
+			AND g.numgrado = #{numeroGrado}
+		</if>
+		<if test="nombreGrupo != null">
+			AND gru.nomgrupo = #{nombreGrupo}
+		</if>
+		<if test="capacidad != null">
+			AND gru.capacidad = #{capacidad}
+		</if>
+		ORDER BY oc.descripcion
+	</select>
+	
 	<select id="obtieneTodosGrupos" resultMap="grupoMap">
 		SELECT gru.idgrupo as idgrupo,
 			concat(g.numgrado,' ',gru.nomgrupo,' ',s.descripcion) as descripcion
